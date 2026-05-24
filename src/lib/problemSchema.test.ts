@@ -37,6 +37,34 @@ describe('problemSchema', () => {
       }),
     ).toThrow();
   });
+
+  it('rejects empty tests array with a clear Zod error', () => {
+    expect(() =>
+      problemSchema.parse({
+        id: 'x',
+        title: 'X',
+        difficulty: 'easy',
+        estimatedMinutes: 5,
+        functionName: 'f',
+        starterCode: '',
+        tests: [],
+      }),
+    ).toThrow(/Array must contain at least 1 element/);
+  });
+
+  it('rejects TestCase missing required fields', () => {
+    expect(() =>
+      problemSchema.parse({
+        id: 'x',
+        title: 'X',
+        difficulty: 'easy',
+        estimatedMinutes: 5,
+        functionName: 'f',
+        starterCode: '',
+        tests: [{ id: 't1', hidden: false, args: [], expected: 1 }],
+      }),
+    ).toThrow();
+  });
 });
 
 describe('assessmentSchema', () => {
@@ -48,5 +76,16 @@ describe('assessmentSchema', () => {
       kataIds: ['two-sum'],
     });
     expect(parsed.durationMinutes).toBeNull();
+  });
+
+  it('rejects empty kataIds', () => {
+    expect(() =>
+      assessmentSchema.parse({
+        id: 'empty',
+        title: 'Empty',
+        durationMinutes: null,
+        kataIds: [],
+      }),
+    ).toThrow(/Array must contain at least 1 element/);
   });
 });
