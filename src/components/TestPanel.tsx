@@ -53,7 +53,15 @@ export default function TestPanel({
   if (loading) {
     return (
       <div className="test-panel" aria-live="polite">
-        <p className="test-panel-status">{loadingMessage(loadingPhase, mode)}</p>
+        <div className="test-panel-header">
+          <div className="skeleton skeleton-line skeleton-line-md" aria-hidden="true" />
+          <div className="skeleton skeleton-pill" aria-hidden="true" />
+        </div>
+        <div className="test-panel-loading-body">
+          <div className="skeleton skeleton-line skeleton-line-lg" aria-hidden="true" />
+          <div className="skeleton skeleton-line skeleton-line-sm" aria-hidden="true" />
+          <p className="test-panel-status">{loadingMessage(loadingPhase, mode)}</p>
+        </div>
       </div>
     );
   }

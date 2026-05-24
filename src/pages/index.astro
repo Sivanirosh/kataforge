@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
 import AssessmentStartActions from '../components/AssessmentStartActions';
+import FontLinks from '../components/FontLinks.astro';
+import SiteNav from '../components/SiteNav.astro';
+import ThemeScript from '../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../lib/loadConfig';
 import { loadAssessments } from '../lib/loadAssessments';
 import { loadAllKatas } from '../lib/loadKatas';
@@ -14,12 +17,13 @@ const katas = await loadAllKatas();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-mono/style.css" />
+    <ThemeScript />
+    <FontLinks />
     <title>{config.branding.title}</title>
   </head>
   <body>
+    <SiteNav title={config.branding.title} />
+
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-badge">Kata Practice Tool</div>
@@ -29,7 +33,7 @@ const katas = await loadAllKatas();
       </div>
     </section>
 
-    <main class="landing">
+    <main class="landing page-main">
       <section class="landing-section" id="assessments">
         <div class="section-header">
           <h2>Assessments</h2>
@@ -55,7 +59,7 @@ const katas = await loadAllKatas();
         </ul>
       </section>
 
-      <section class="landing-section">
+      <section class="landing-section" id="katas">
         <div class="section-header">
           <h2>Practice a Kata</h2>
         </div>

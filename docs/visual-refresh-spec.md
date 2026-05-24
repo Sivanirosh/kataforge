@@ -51,6 +51,6 @@ Cross-cutting: Playwright selector updates after PRD-8/9/10 land (issue #57).
 - `getByText('View Results')` → `getByText('Results')` in header
 - `.test-panel-summary` now inside `.test-panel-header`
 
-## Out of scope
+## Out of scope (completed in follow-up)
 
-Monaco theme, dark/light toggle, page transitions, global nav on landing, `problem/[id].astro`, npm Geist package.
+Monaco custom theme, dark/light toggle, page transitions, global nav on landing, and `problem/[id].astro` fonts — see commit implementing PRD-12 follow-up.

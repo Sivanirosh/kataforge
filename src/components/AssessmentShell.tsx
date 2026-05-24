@@ -3,6 +3,7 @@ import CodeEditor from './CodeEditor';
 import ProblemNavigator from './ProblemNavigator';
 import ProblemStatement from './ProblemStatement';
 import TestPanel from './TestPanel';
+import ThemeToggle from './ThemeToggle';
 import Timer from './Timer';
 import type { Assessment, TestCase } from '../lib/configTypes';
 import { judgeClient } from '../lib/judgeClient';
@@ -206,6 +207,7 @@ export default function AssessmentShell({
           onSelect={(index) => setSession((s) => ({ ...s, currentKataIndex: index }))}
         />
         <div className="header-actions">
+          <ThemeToggle />
           <Timer session={session} />
           <button
             type="button"

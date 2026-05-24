@@ -1,5 +1,7 @@
 ---
 import AssessmentShell from '../../components/AssessmentShell';
+import FontLinks from '../../components/FontLinks.astro';
+import ThemeScript from '../../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 import { loadAllKatas } from '../../lib/loadKatas';
 import '../../styles/global.css';
@@ -27,6 +29,8 @@ const assessment = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
     <title>{kata.title} · {config.branding.title}</title>
   </head>
   <body>

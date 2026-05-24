@@ -1,0 +1,9 @@
+<script is:inline>
+  (function () {
+    try {
+      if (localStorage.getItem('kataforge-theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    } catch (_e) {}
+  })();
+</script>

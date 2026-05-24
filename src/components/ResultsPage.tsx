@@ -14,6 +14,18 @@ interface ResultsPageProps {
   durationMinutes: number | null;
 }
 
+function ResultsSkeleton() {
+  return (
+    <div className="results-skeleton" aria-busy="true" aria-label="Loading results">
+      <div className="skeleton skeleton-line skeleton-line-title" />
+      <div className="skeleton skeleton-score-hero" />
+      <div className="skeleton skeleton-line skeleton-line-md" />
+      <div className="skeleton skeleton-line skeleton-line-md" />
+      <div className="skeleton skeleton-line skeleton-line-sm" />
+    </div>
+  );
+}
+
 export default function ResultsPage({
   assessmentId,
   kataIds,
@@ -36,7 +48,7 @@ export default function ResultsPage({
   };
 
   if (!score) {
-    return <p className="results-loading">Loading results…</p>;
+    return <ResultsSkeleton />;
   }
 
   return (
