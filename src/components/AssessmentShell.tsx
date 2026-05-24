@@ -64,6 +64,8 @@ export default function AssessmentShell({
   const [results, setResults] = useState(() => loadResults(currentKata?.id ?? '') ?? null);
   const [loading, setLoading] = useState(false);
   const [runMode, setRunMode] = useState<'samples' | 'submit' | null>(null);
+  const [panelError, setPanelError] = useState<string | null>(null);
+  const [runtimeReady, setRuntimeReady] = useState(false);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -103,6 +105,7 @@ export default function AssessmentShell({
       if (!currentKata) return;
       setLoading(true);
       setRunMode(mode);
+      setPanelError(null);
 
       const tests =
         mode === 'samples'
@@ -123,16 +126,33 @@ export default function AssessmentShell({
           revealHiddenDetails: false,
         });
 
-        if (response.results.length > 0) {
-          setResults(response.results);
-          if (mode === 'submit') {
-            saveResults(currentKata.id, response.results);
-            const allPassed = response.results.every((r) => r.status === 'passed');
-            if (allPassed) {
-              setCompleted((prev) => ({ ...prev, [currentKata.id]: true }));
-            }
+        setRuntimeReady(true);
+
+        if (response.error) {
+          setPanelError(response.error);
+          setResults(response.results.length > 0 ? response.results : null);
+          return;
+        }
+
+        if (response.results.length === 0) {
+          setPanelError('Judge returned no results. Try running again.');
+          setResults(null);
+          return;
+        }
+
+        setPanelError(null);
+        setResults(response.results);
+        if (mode === 'submit') {
+          saveResults(currentKata.id, response.results);
+          const allPassed = response.results.every((r) => r.status === 'passed');
+          if (allPassed) {
+            setCompleted((prev) => ({ ...prev, [currentKata.id]: true }));
           }
         }
+      } catch {
+        setRuntimeReady(true);
+        setPanelError('Judge failed unexpectedly. Try running again.');
+        setResults(null);
       } finally {
         setLoading(false);
         setRunMode(null);
@@ -235,7 +255,15 @@ export default function AssessmentShell({
             onRunSamples={() => runTests('samples')}
             onSubmit={() => runTests('submit')}
           />
-          <TestPanel results={results} loading={loading} mode={runMode} />
+          <TestPanel
+            results={results}
+            loading={loading}
+            mode={runMode}
+            loadingPhase={
+              loading ? (runtimeReady ? runMode : 'runtime') : null
+            }
+            error={panelError}
+          />
         </section>
       </main>
     </div>

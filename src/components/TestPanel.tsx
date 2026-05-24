@@ -1,9 +1,14 @@
 import type { TestResult } from '../lib/configTypes';
+import { loadingMessage } from './testPanelMessages';
+
+export type TestPanelLoadingPhase = 'runtime' | 'samples' | 'submit';
 
 interface TestPanelProps {
   results: TestResult[] | null;
   loading: boolean;
   mode: 'samples' | 'submit' | null;
+  loadingPhase?: TestPanelLoadingPhase | null;
+  error?: string | null;
 }
 
 function statusLabel(status: TestResult['status']): string {
@@ -21,11 +26,54 @@ function statusLabel(status: TestResult['status']): string {
   }
 }
 
-export default function TestPanel({ results, loading, mode }: TestPanelProps) {
+export default function TestPanel({
+  results,
+  loading,
+  mode,
+  loadingPhase = null,
+  error = null,
+}: TestPanelProps) {
   if (loading) {
     return (
       <div className="test-panel" aria-live="polite">
-        <p className="test-panel-status">Running {mode === 'submit' ? 'submit' : 'samples'}…</p>
+        <p className="test-panel-status">{loadingMessage(loadingPhase, mode)}</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="test-panel" aria-live="polite">
+        <p className="test-panel-error" role="alert">
+          {error}
+        </p>
+        {results && results.length > 0 ? (
+          <>
+            <div className="test-panel-summary">
+              {results.filter((r) => r.status === 'passed').length}/{results.length} tests passed
+            </div>
+            <ul className="test-list">
+              {results.map((result) => (
+                <li
+                  key={result.testId}
+                  className={`test-item test-${result.status}`}
+                  aria-label={`${result.name}: ${statusLabel(result.status)}`}
+                >
+                  <div className="test-item-header">
+                    <span className="test-name">
+                      {result.hidden ? `[hidden] ${result.name}` : result.name}
+                    </span>
+                    <span className={`test-status status-${result.status}`}>
+                      {statusLabel(result.status)}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="test-panel-empty">Run Samples or Submit to try again.</p>
+        )}
       </div>
     );
   }
