@@ -36,12 +36,33 @@ _Avoid_: Autosave, cache
 A local overlay of Katas and Assessments outside the public repository (see CONTEXT-MAP.md).
 _Avoid_: Plugin, extension
 
+**Cursus**:
+An ordered learning path of Modules mixing Lessons and Kata drills; progress is tracked per step, not as a single Assessment score.
+_Avoid_: Course, track (use in generic prose only)
+
+**Module**:
+A chapter within a Cursus containing an ordered list of Steps.
+_Avoid_: Section, unit (ambiguous)
+
+**Step**:
+An atomic unit inside a Module; either a Lesson (read) or a Kata reference (code drill).
+_Avoid_: Page, slide
+
+**Lesson**:
+Read-only markdown content step within a Cursus Module.
+_Avoid_: Article, doc
+
+**CursusProgress**:
+Persisted completion state for a Cursus (completed steps, last visited step).
+_Avoid_: Enrollment, checkpoint
+
 ## Resolved design decisions
 
 - Assessments are JSON-defined (variable number of Katas); generic repo ships a single-Kata quick practice.
 - The Judge re-executes candidate code for each TestCase (maximum isolation).
 - Per-TestCase timeouts: 2000 ms for RunSamples, 3000 ms for Submit; worker is terminated and recreated on timeout.
 - Committed UI branding is "KataForge"; ProblemPack overlays may customize locally.
+- Cursus routes use Tailwind v4 + extracted Vercel Academy tokens; Assessment workspace stays vanilla CSS (see ADR-0002).
 
 ## Example dialogue
 
