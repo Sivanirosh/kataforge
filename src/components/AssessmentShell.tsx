@@ -11,6 +11,7 @@ import {
   clearDraft,
   isTimerExpired,
   loadDraft,
+  loadKataCompletionMap,
   loadResults,
   loadSession,
   saveDraft,
@@ -66,7 +67,9 @@ export default function AssessmentShell({
   const [runMode, setRunMode] = useState<'samples' | 'submit' | null>(null);
   const [panelError, setPanelError] = useState<string | null>(null);
   const [runtimeReady, setRuntimeReady] = useState(false);
-  const [completed, setCompleted] = useState<Record<string, boolean>>({});
+  const [completed, setCompleted] = useState<Record<string, boolean>>(() =>
+    loadKataCompletionMap(assessment.kataIds),
+  );
 
   useEffect(() => {
     saveSession(session);
@@ -168,6 +171,13 @@ export default function AssessmentShell({
     setResults(null);
   };
 
+  const handleSubmitAssessment = useCallback(() => {
+    const updated: SessionState = { ...session, submitted: true };
+    setSession(updated);
+    saveSession(updated);
+    window.location.href = `/results/${assessment.id}`;
+  }, [session, assessment.id]);
+
   const expired = isTimerExpired(session);
 
   if (!currentKata) {
@@ -191,6 +201,14 @@ export default function AssessmentShell({
           completed={completed}
           onSelect={(index) => setSession((s) => ({ ...s, currentKataIndex: index }))}
         />
+        <button
+          type="button"
+          className="btn btn-accent"
+          onClick={handleSubmitAssessment}
+          aria-label="Submit Assessment"
+        >
+          Submit Assessment
+        </button>
         <a
           href={`/results/${assessment.id}`}
           className="btn btn-secondary"
