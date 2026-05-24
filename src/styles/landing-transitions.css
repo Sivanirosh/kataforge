@@ -1,0 +1,25 @@
+/* Cross-document transitions for SSR landing pages only — not cursus workspace steps. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.2s;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-group(page-main) {
+    background-color: #09090e;
+  }
+
+  html[data-theme='light'] ::view-transition-group(root),
+  html[data-theme='light'] ::view-transition-group(page-main) {
+    background-color: #fafafa;
+  }
+}
+
+.page-main {
+  view-transition-name: page-main;
+}

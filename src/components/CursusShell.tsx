@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react';
 import type { Cursus } from '../lib/cursusSchema';
 import {
   countCursusSteps,
+  cursusStepPath,
   flattenCursusSteps,
   getFlatStep,
+  parseCursusStepIndex,
   type FlatCursusStep,
 } from '../lib/cursusSteps';
 import type { LessonData } from '../lib/loadLessons';
@@ -50,9 +52,26 @@ export default function CursusShell({
   brandingTitle,
 }: CursusShellProps) {
   const flatSteps = useMemo(() => flattenCursusSteps(cursus), [cursus]);
-  const current = getFlatStep(cursus, currentGlobalIndex);
   const totalSteps = countCursusSteps(cursus);
+  const [stepIndex, setStepIndex] = useState(currentGlobalIndex);
   const [progressTick, setProgressTick] = useState(0);
+
+  useEffect(() => {
+    setStepIndex(currentGlobalIndex);
+  }, [currentGlobalIndex]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      const fromUrl = parseCursusStepIndex(window.location.pathname);
+      if (fromUrl !== null) {
+        setStepIndex(fromUrl);
+      }
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const current = getFlatStep(cursus, stepIndex);
 
   useEffect(() => {
     if (current) {
@@ -61,8 +80,17 @@ export default function CursusShell({
   }, [cursus.id, current?.key]);
 
   useEffect(() => {
-    document.getElementById('cursus-boot')?.remove();
-  }, []);
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        document.getElementById('cursus-boot')?.remove();
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [stepIndex]);
 
   const completionPercent = useMemo(
     () => cursusCompletionPercent(cursus.id, totalSteps),
@@ -71,19 +99,33 @@ export default function CursusShell({
 
   const navigateTo = useCallback(
     (index: number) => {
-      window.location.href = `/cursus/${cursus.id}/step/${index}`;
+      if (index < 0 || index >= flatSteps.length || index === stepIndex) return;
+      window.history.pushState({ cursusStep: index }, '', cursusStepPath(cursus.id, index));
+      setStepIndex(index);
+      window.scrollTo(0, 0);
     },
-    [cursus.id],
+    [cursus.id, flatSteps.length, stepIndex],
+  );
+
+  const handleStepLinkClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, index: number) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return;
+      }
+      event.preventDefault();
+      navigateTo(index);
+    },
+    [navigateTo],
   );
 
   const handleLessonContinue = useCallback(() => {
     if (!current) return;
     markCursusStepComplete(cursus.id, current.key);
     setProgressTick((n) => n + 1);
-    if (currentGlobalIndex < flatSteps.length - 1) {
-      navigateTo(currentGlobalIndex + 1);
+    if (stepIndex < flatSteps.length - 1) {
+      navigateTo(stepIndex + 1);
     }
-  }, [current, cursus.id, currentGlobalIndex, flatSteps.length, navigateTo]);
+  }, [current, cursus.id, stepIndex, flatSteps.length, navigateTo]);
 
   const handleKataSuccess = useCallback(() => {
     if (!current) return;
@@ -96,7 +138,7 @@ export default function CursusShell({
   }
 
   const currentComplete = isCursusStepComplete(cursus.id, current.key);
-  const canGoNext = currentComplete && currentGlobalIndex < flatSteps.length - 1;
+  const canGoNext = currentComplete && stepIndex < flatSteps.length - 1;
 
   return (
     <div className="cursus-shell">
@@ -113,7 +155,7 @@ export default function CursusShell({
         <div className="cursus-progress" aria-live="polite">
           <span className="cursus-progress-value">{completionPercent}% complete</span>
           <span className="cursus-progress-detail">
-            Step {currentGlobalIndex + 1} of {totalSteps}
+            Step {stepIndex + 1} of {totalSteps}
           </span>
         </div>
         <div className="header-actions">
@@ -127,20 +169,21 @@ export default function CursusShell({
             <section key={mod.id} className="cursus-module">
               <h2 className="cursus-module-title">{mod.title}</h2>
               <ul className="cursus-step-list">
-                {mod.steps.map((step, stepIndex) => {
+                {mod.steps.map((step, moduleStepIndex) => {
                   const flat = flatSteps.find(
-                    (item) => item.moduleId === mod.id && item.stepIndex === stepIndex,
+                    (item) => item.moduleId === mod.id && item.stepIndex === moduleStepIndex,
                   );
                   if (!flat) return null;
-                  const active = flat.globalIndex === currentGlobalIndex;
+                  const active = flat.globalIndex === stepIndex;
                   const done = isCursusStepComplete(cursus.id, flat.key);
                   const kind = step.type === 'lesson' ? 'Lesson' : 'Kata';
                   return (
                     <li key={flat.key}>
                       <a
-                        href={`/cursus/${cursus.id}/step/${flat.globalIndex}`}
+                        href={cursusStepPath(cursus.id, flat.globalIndex)}
                         className={`cursus-step-link${active ? ' active' : ''}${done ? ' done' : ''}`}
                         aria-current={active ? 'step' : undefined}
+                        onClick={(event) => handleStepLinkClick(event, flat.globalIndex)}
                       >
                         <span className="cursus-step-kind">{kind}</span>
                         <span className="cursus-step-name">{stepLabel(flat, lessonMap, kataMap)}</span>
@@ -160,12 +203,14 @@ export default function CursusShell({
           <div className="cursus-content">
             {current.step.type === 'lesson' ? (
               <LessonView
+                key={current.key}
                 title={lessonMap[current.step.lessonId]?.title ?? current.step.lessonId}
                 bodyHtml={lessonMap[current.step.lessonId]?.bodyHtml ?? '<p>Lesson not found.</p>'}
                 onContinue={handleLessonContinue}
               />
             ) : kataMap[current.step.kataId] ? (
               <CursusKataStep
+                key={current.key}
                 assessment={{
                   id: `cursus-${cursus.id}-step-${current.globalIndex}`,
                   title: kataMap[current.step.kataId]?.title ?? current.step.kataId,
@@ -186,8 +231,8 @@ export default function CursusShell({
             <button
               type="button"
               className="btn btn-secondary"
-              disabled={currentGlobalIndex === 0}
-              onClick={() => navigateTo(currentGlobalIndex - 1)}
+              disabled={stepIndex === 0}
+              onClick={() => navigateTo(stepIndex - 1)}
             >
               Previous
             </button>
@@ -195,7 +240,7 @@ export default function CursusShell({
               type="button"
               className="btn btn-primary"
               disabled={!canGoNext}
-              onClick={() => navigateTo(currentGlobalIndex + 1)}
+              onClick={() => navigateTo(stepIndex + 1)}
             >
               Next
             </button>

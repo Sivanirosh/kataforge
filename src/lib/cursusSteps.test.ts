@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Cursus } from './cursusSchema';
-import { flattenCursusSteps, getFlatStep, stepKey, collectCursusKataIds, collectCursusLessonIds } from './cursusSteps';
+import { flattenCursusSteps, getFlatStep, stepKey, collectCursusKataIds, collectCursusLessonIds, cursusStepPath, parseCursusStepIndex } from './cursusSteps';
 
 const sampleCursus: Cursus = {
   id: 'demo',
@@ -42,5 +42,12 @@ describe('cursusSteps', () => {
   it('collects lesson and kata ids referenced by the cursus', () => {
     expect(collectCursusLessonIds(sampleCursus)).toEqual(['l1', 'l2']);
     expect(collectCursusKataIds(sampleCursus)).toEqual(['k1']);
+  });
+
+  it('builds and parses cursus step paths', () => {
+    expect(cursusStepPath('demo', 3)).toBe('/cursus/demo/step/3');
+    expect(parseCursusStepIndex('/cursus/demo/step/3')).toBe(3);
+    expect(parseCursusStepIndex('/cursus/demo/step/3/')).toBe(3);
+    expect(parseCursusStepIndex('/cursus')).toBeNull();
   });
 });

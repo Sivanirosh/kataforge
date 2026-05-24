@@ -226,4 +226,52 @@ test.describe('acceptance smoke', () => {
     );
     expect(progress).toContain('agent-loop:0');
   });
+
+  test('cursus step navigation avoids full page reload', async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto('/cursus/build-ai-agent-harness/step/0');
+    await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible({
+      timeout: 45_000,
+    });
+
+    const navCountBefore = await page.evaluate(
+      () => performance.getEntriesByType('navigation').length,
+    );
+
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await expect(page).toHaveURL(/\/cursus\/build-ai-agent-harness\/step\/1$/);
+    await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible({
+      timeout: 45_000,
+    });
+
+    const navCountAfter = await page.evaluate(
+      () => performance.getEntriesByType('navigation').length,
+    );
+    expect(navCountAfter).toBe(navCountBefore);
+  });
+
+  test('cursus step pages do not opt into cross-document view transitions', async ({ page }) => {
+    await page.goto('/cursus/build-ai-agent-harness/step/0');
+    await expect(page.locator('.cursus-shell')).toBeVisible({ timeout: 45_000 });
+
+    const hasAutoNavigation = await page.evaluate(() => {
+      for (const sheet of document.styleSheets) {
+        try {
+          for (const rule of sheet.cssRules) {
+            if (
+              rule.cssText.includes('@view-transition') &&
+              rule.cssText.includes('navigation: auto')
+            ) {
+              return true;
+            }
+          }
+        } catch {
+          // Cross-origin stylesheets are not readable.
+        }
+      }
+      return false;
+    });
+
+    expect(hasAutoNavigation).toBe(false);
+  });
 });

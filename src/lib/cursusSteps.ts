@@ -65,3 +65,12 @@ export function collectCursusKataIds(cursus: Cursus): string[] {
   }
   return [...ids];
 }
+
+export function cursusStepPath(cursusId: string, stepIndex: number): string {
+  return `/cursus/${cursusId}/step/${stepIndex}`;
+}
+
+export function parseCursusStepIndex(pathname: string): number | null {
+  const match = pathname.match(/\/cursus\/[^/]+\/step\/(\d+)\/?$/);
+  return match ? Number(match[1]) : null;
+}

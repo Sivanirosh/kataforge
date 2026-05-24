@@ -65,6 +65,7 @@ export default function CodeEditor({
         value={value}
         onChange={(v) => onChange(v ?? '')}
         onMount={handleMount}
+        loading={<div className="editor-loading" aria-hidden="true" />}
         options={{
           readOnly,
           minimap: { enabled: false },
