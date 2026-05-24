@@ -37,12 +37,13 @@ With an incorrect solution:
 
 ## Persistence
 
-- [ ] Code draft survives navigation between katas
-- [ ] Timer survives reload (timed assessment)
-- [ ] currentKataIndex survives reload (multi-Kata assessment)
-- [ ] Navigator completion markers restore after reload when Submit passed all tests
+- [x] Code draft survives navigation between katas *(e2e: `e2e/smoke.spec.ts`)*
+- [x] Timer survives reload (timed assessment) *(manual; same storage layer covered by unit tests)*
+- [x] currentKataIndex survives reload (multi-Kata assessment) *(unit test: `storage.test.ts`)*
+- [x] Navigator completion markers restore after reload when Submit passed all tests *(PRD-5)*
 - [ ] Reset restores starter code
 
 ## Results
 
-- [ ] Results page shows accurate scores from localStorage
+- [x] Results page shows accurate scores from localStorage *(e2e + `ResultsPage.test.tsx`)*
+- [x] Hidden TestCases on results show pass/fail only *(PRD-6 `ResultSummary`)*

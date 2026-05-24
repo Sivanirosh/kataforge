@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "pnpm build && playwright test",
     "lint": "astro check"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@playwright/test": "^1.60.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "happy-dom": "^17.4.4",
@@ -34,6 +36,9 @@
     "vitest": "^3.0.9"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
