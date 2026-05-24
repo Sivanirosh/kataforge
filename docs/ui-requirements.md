@@ -31,7 +31,7 @@ Clean coding-assessment layout: prompt left, editor right, test output below the
 
 - Total score and elapsed time
 - Per-Kata pass counts
-- Hidden TestCases: pass/fail only
+- Hidden TestCases: pass/fail rows by name (no expected/actual on results page)
 
 ## Layout (desktop)
 

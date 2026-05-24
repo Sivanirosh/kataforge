@@ -1,8 +1,9 @@
-import type { AssessmentScore } from '../lib/configTypes';
+import type { AssessmentScore, TestResult } from '../lib/configTypes';
 
 interface ResultSummaryProps {
   score: AssessmentScore;
   kataTitles: Record<string, string>;
+  hiddenResultsByKata: Record<string, TestResult[]>;
 }
 
 function formatDuration(ms: number): string {
@@ -12,7 +13,15 @@ function formatDuration(ms: number): string {
   return `${min}m ${sec}s`;
 }
 
-export default function ResultSummary({ score, kataTitles }: ResultSummaryProps) {
+function hiddenStatusLabel(status: TestResult['status']): string {
+  return status === 'passed' ? 'Passed' : 'Failed';
+}
+
+export default function ResultSummary({
+  score,
+  kataTitles,
+  hiddenResultsByKata,
+}: ResultSummaryProps) {
   return (
     <div className="result-summary">
       <h2>Assessment Results</h2>
@@ -23,14 +32,34 @@ export default function ResultSummary({ score, kataTitles }: ResultSummaryProps)
         </div>
       </div>
       <ul className="problem-scores">
-        {score.problems.map((p) => (
-          <li key={p.kataId}>
-            <span className="problem-score-name">{kataTitles[p.kataId] ?? p.kataId}</span>
-            <span className="problem-score-value">
-              {p.passed}/{p.total} ({p.percentage}%)
-            </span>
-          </li>
-        ))}
+        {score.problems.map((p) => {
+          const hiddenResults = hiddenResultsByKata[p.kataId] ?? [];
+          return (
+            <li key={p.kataId} className="problem-score-item">
+              <div className="problem-score-row">
+                <span className="problem-score-name">{kataTitles[p.kataId] ?? p.kataId}</span>
+                <span className="problem-score-value">
+                  {p.passed}/{p.total} ({p.percentage}%)
+                </span>
+              </div>
+              {hiddenResults.length > 0 && (
+                <ul className="hidden-test-list" aria-label={`Hidden tests for ${kataTitles[p.kataId] ?? p.kataId}`}>
+                  {hiddenResults.map((result) => (
+                    <li
+                      key={result.testId}
+                      className={`hidden-test-item status-${result.status}`}
+                    >
+                      <span className="hidden-test-name">{result.name}</span>
+                      <span className="hidden-test-status">
+                        {hiddenStatusLabel(result.status)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
