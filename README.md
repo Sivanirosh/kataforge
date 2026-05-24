@@ -57,4 +57,4 @@ Place private content under `private/problems/` and `private/assessments/`. See 
 
 ## License
 
-MIT
+MIT — see [LICENSE](./LICENSE).
