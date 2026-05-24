@@ -5,6 +5,7 @@ import ProblemStatement from './ProblemStatement';
 import TestPanel from './TestPanel';
 import ThemeToggle from './ThemeToggle';
 import Timer from './Timer';
+import SolutionReview from './SolutionReview';
 import type { Assessment, TestCase } from '../lib/configTypes';
 import { judgeClient } from '../lib/judgeClient';
 import { scoreProblem } from '../lib/scoring';
@@ -15,7 +16,7 @@ import {
   loadKataCompletionMap,
   loadResults,
   loadSession,
-  saveDraft,
+  syncDraft,
   saveResults,
   saveSession,
   type SessionState,
@@ -30,6 +31,8 @@ export interface KataData {
   functionName: string;
   tags: string[];
   starterCode: string;
+  solutionCode?: string;
+  solutionExplanationHtml?: string;
   tests: TestCase[];
   bodyHtml: string;
 }
@@ -72,6 +75,7 @@ export default function AssessmentShell({
   const [completed, setCompleted] = useState<Record<string, boolean>>(() =>
     loadKataCompletionMap(assessment.kataIds),
   );
+  const [showSolution, setShowSolution] = useState(false);
 
   useEffect(() => {
     saveSession(session);
@@ -82,6 +86,7 @@ export default function AssessmentShell({
     const draft = loadDraft(currentKata.id);
     setCode(draft ?? currentKata.starterCode);
     setResults(loadResults(currentKata.id));
+    setShowSolution(false);
   }, [currentKata?.id, currentKata?.starterCode]);
 
   useEffect(() => {
@@ -100,7 +105,7 @@ export default function AssessmentShell({
   const handleCodeChange = useCallback(
     (value: string) => {
       setCode(value);
-      if (currentKata) saveDraft(currentKata.id, value);
+      if (currentKata) syncDraft(currentKata.id, value, currentKata.starterCode);
     },
     [currentKata],
   );
@@ -152,6 +157,9 @@ export default function AssessmentShell({
           const allPassed = response.results.every((r) => r.status === 'passed');
           if (allPassed) {
             setCompleted((prev) => ({ ...prev, [currentKata.id]: true }));
+            setShowSolution(false);
+          } else {
+            setShowSolution(true);
           }
         }
       } catch {
@@ -168,9 +176,19 @@ export default function AssessmentShell({
 
   const handleReset = () => {
     if (!currentKata) return;
+    const atStarter = code === currentKata.starterCode;
+    if (
+      !atStarter &&
+      !window.confirm(
+        'Replace your code with the starter template? Your current edits will be lost.',
+      )
+    ) {
+      return;
+    }
     setCode(currentKata.starterCode);
     clearDraft(currentKata.id);
     setResults(null);
+    setPanelError(null);
   };
 
   const handleSubmitAssessment = useCallback(() => {
@@ -270,12 +288,13 @@ export default function AssessmentShell({
             </div>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-secondary"
               onClick={handleReset}
               disabled={loading}
-              aria-label="Reset code to starter"
+              aria-label="Reset to starter code"
+              title="Restore the original starter template"
             >
-              Reset
+              Reset to starter
             </button>
           </div>
           <CodeEditor
@@ -293,6 +312,14 @@ export default function AssessmentShell({
             }
             error={panelError}
           />
+          {showSolution &&
+            (currentKata.solutionCode || currentKata.solutionExplanationHtml) && (
+              <SolutionReview
+                solutionCode={currentKata.solutionCode}
+                solutionExplanationHtml={currentKata.solutionExplanationHtml}
+                heading="View solution and explanation"
+              />
+            )}
         </section>
       </main>
     </div>

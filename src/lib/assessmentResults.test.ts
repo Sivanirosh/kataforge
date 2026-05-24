@@ -3,6 +3,7 @@ import type { TestResult } from './configTypes';
 import {
   buildAssessmentScore,
   loadHiddenResultsByKata,
+  loadResultsByKata,
   persistAssessmentScore,
 } from './assessmentResults';
 import { loadAssessmentScore } from './storage';
@@ -82,6 +83,13 @@ describe('assessmentResults', () => {
   it('returns only hidden test results grouped by kata', () => {
     expect(loadHiddenResultsByKata(['kata-a'])).toEqual({
       'kata-a': [hiddenFail],
+    });
+  });
+
+  it('returns all saved results grouped by kata', () => {
+    expect(loadResultsByKata(['kata-a', 'missing'])).toEqual({
+      'kata-a': [visiblePass, hiddenFail],
+      missing: [],
     });
   });
 });

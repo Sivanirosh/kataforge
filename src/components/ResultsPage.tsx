@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import ResultSummary from './ResultSummary';
-import type { AssessmentScore } from '../lib/configTypes';
-import {
-  loadHiddenResultsByKata,
-  persistAssessmentScore,
-} from '../lib/assessmentResults';
-import { startFreshSession } from '../lib/storage';
+import ResultSummary, { type KataSolution } from './ResultSummary';
+import type { AssessmentScore, TestResult } from '../lib/configTypes';
+import { loadResultsByKata, persistAssessmentScore } from '../lib/assessmentResults';
+import { retryAssessmentSession } from '../lib/storage';
 
 interface ResultsPageProps {
   assessmentId: string;
   kataIds: string[];
   kataTitles: Record<string, string>;
+  kataSolutions: Record<string, KataSolution>;
   durationMinutes: number | null;
 }
 
@@ -30,20 +28,19 @@ export default function ResultsPage({
   assessmentId,
   kataIds,
   kataTitles,
+  kataSolutions,
   durationMinutes,
 }: ResultsPageProps) {
   const [score, setScore] = useState<AssessmentScore | null>(null);
-  const [hiddenResultsByKata, setHiddenResultsByKata] = useState<
-    Record<string, ReturnType<typeof loadHiddenResultsByKata>[string]>
-  >({});
+  const [resultsByKata, setResultsByKata] = useState<Record<string, TestResult[]>>({});
 
   useEffect(() => {
     setScore(persistAssessmentScore(assessmentId, kataIds));
-    setHiddenResultsByKata(loadHiddenResultsByKata(kataIds));
+    setResultsByKata(loadResultsByKata(kataIds));
   }, [assessmentId, kataIds]);
 
   const handleRetry = () => {
-    startFreshSession(assessmentId, durationMinutes, kataIds);
+    retryAssessmentSession(assessmentId, durationMinutes, kataIds);
     window.location.href = `/assessment/${assessmentId}`;
   };
 
@@ -56,7 +53,8 @@ export default function ResultsPage({
       <ResultSummary
         score={score}
         kataTitles={kataTitles}
-        hiddenResultsByKata={hiddenResultsByKata}
+        resultsByKata={resultsByKata}
+        kataSolutions={kataSolutions}
       />
       <div className="results-actions">
         <button type="button" className="btn btn-primary" onClick={handleRetry}>

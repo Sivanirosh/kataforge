@@ -22,6 +22,18 @@ const kataMap = await loadKataMap();
 const kataTitles = Object.fromEntries(
   Object.values(kataMap).map((k) => [k.id, k.title]),
 );
+const kataSolutions = Object.fromEntries(
+  assessment.kataIds.map((kataId) => {
+    const kata = kataMap[kataId];
+    return [
+      kataId,
+      {
+        solutionCode: kata?.solutionCode,
+        solutionExplanationHtml: kata?.solutionExplanationHtml,
+      },
+    ];
+  }),
+);
 ---
 
 <html lang="en">
@@ -40,6 +52,7 @@ const kataTitles = Object.fromEntries(
         assessmentId={assessment.id}
         kataIds={assessment.kataIds}
         kataTitles={kataTitles}
+        kataSolutions={kataSolutions}
         durationMinutes={assessment.durationMinutes}
       />
     </main>

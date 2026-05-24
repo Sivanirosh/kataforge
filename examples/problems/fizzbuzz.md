@@ -11,6 +11,23 @@ starterCode: |
   def fizzbuzz(n):
       # Return a list of strings from 1 to n (inclusive)
       pass
+solutionCode: |
+  def fizzbuzz(n):
+      result = []
+      for i in range(1, n + 1):
+          if i % 15 == 0:
+              result.append("FizzBuzz")
+          elif i % 3 == 0:
+              result.append("Fizz")
+          elif i % 5 == 0:
+              result.append("Buzz")
+          else:
+              result.append(str(i))
+      return result
+solutionExplanation: |
+  Loop from `1` to `n` and build each label with divisibility checks.
+
+  Check `% 15` first so multiples of both 3 and 5 become `"FizzBuzz"`, then `% 3`, then `% 5`, otherwise append the number as a string.
 tests:
   - id: sample-1
     name: n equals 5

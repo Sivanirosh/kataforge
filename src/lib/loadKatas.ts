@@ -21,6 +21,7 @@ export async function loadAllKatas(): Promise<KataData[]> {
       const raw = fs.readFileSync(filePath, 'utf-8');
       const { data, content } = matter(raw);
       const parsed = problemSchema.parse(data);
+      const { solutionExplanation, ...kataFields } = parsed;
 
       const existingPath = idToPath.get(parsed.id);
       if (existingPath) {
@@ -31,8 +32,11 @@ export async function loadAllKatas(): Promise<KataData[]> {
       idToPath.set(parsed.id, filePath);
 
       katas.push({
-        ...parsed,
+        ...kataFields,
         bodyHtml: marked.parse(content) as string,
+        solutionExplanationHtml: solutionExplanation
+          ? (marked.parse(solutionExplanation) as string)
+          : undefined,
       });
     }
   }

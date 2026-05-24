@@ -24,6 +24,31 @@ describe('problemSchema', () => {
     expect(parsed.id).toBe('two-sum');
   });
 
+  it('accepts optional solution fields', () => {
+    const parsed = problemSchema.parse({
+      id: 'two-sum',
+      title: 'Two Sum',
+      difficulty: 'easy',
+      estimatedMinutes: 15,
+      functionName: 'two_sum',
+      tags: ['arrays'],
+      starterCode: 'def two_sum(nums, target):\n    pass',
+      solutionCode: 'def two_sum(nums, target):\n    return []',
+      solutionExplanation: 'Use a hash map.',
+      tests: [
+        {
+          id: 's1',
+          name: 'basic',
+          hidden: false,
+          args: [[1, 2], 3],
+          expected: [0, 1],
+        },
+      ],
+    });
+    expect(parsed.solutionCode).toContain('return []');
+    expect(parsed.solutionExplanation).toBe('Use a hash map.');
+  });
+
   it('rejects invalid difficulty', () => {
     expect(() =>
       problemSchema.parse({

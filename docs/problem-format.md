@@ -38,6 +38,8 @@ tests:
 | `functionName` | string | Python function the candidate implements |
 | `tags` | string[] | Topic labels |
 | `starterCode` | string | Initial editor content |
+| `solutionCode` | string (optional) | Reference solution shown after a failed submit |
+| `solutionExplanation` | string (optional) | Markdown explanation for the reference solution |
 | `tests` | TestCase[] | Visible and hidden test cases |
 
 ## TestCase

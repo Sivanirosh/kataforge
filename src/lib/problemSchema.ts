@@ -16,6 +16,8 @@ export const problemSchema = z.object({
   functionName: z.string().min(1),
   tags: z.array(z.string()).default([]),
   starterCode: z.string(),
+  solutionCode: z.string().optional(),
+  solutionExplanation: z.string().optional(),
   tests: z.array(testCaseSchema).min(1),
 });
 

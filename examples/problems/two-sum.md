@@ -11,6 +11,19 @@ starterCode: |
   def two_sum(nums, target):
       # Return indices of two numbers that add up to target
       pass
+solutionCode: |
+  def two_sum(nums, target):
+      seen = {}
+      for i, num in enumerate(nums):
+          complement = target - num
+          if complement in seen:
+              return [seen[complement], i]
+          seen[num] = i
+      return []
+solutionExplanation: |
+  Use a hash map to remember each value and its index as you scan the array once.
+
+  For each number, check whether `target - num` was seen earlier. If yes, return both indices. Otherwise store the current number.
 tests:
   - id: sample-1
     name: basic pair

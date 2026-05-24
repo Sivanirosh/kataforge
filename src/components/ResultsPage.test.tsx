@@ -29,6 +29,16 @@ const passedVisible: TestResult = {
   durationMs: 1,
 };
 
+const failedVisible: TestResult = {
+  testId: 'v2',
+  name: 'visible fail',
+  hidden: false,
+  status: 'failed',
+  expected: [0, 1],
+  actual: [],
+  durationMs: 1,
+};
+
 const failedHidden: TestResult = {
   testId: 'h1',
   name: 'hidden fail',
@@ -57,7 +67,10 @@ describe('ResultsPage', () => {
         submitted: true,
       }),
     );
-    store.set('kataforge:results:kata-a', JSON.stringify([passedVisible, failedHidden]));
+    store.set(
+      'kataforge:results:kata-a',
+      JSON.stringify([passedVisible, failedVisible, failedHidden]),
+    );
     store.set('kataforge:results:kata-b', JSON.stringify([passedVisible]));
 
     container = document.createElement('div');
@@ -74,26 +87,36 @@ describe('ResultsPage', () => {
     vi.unstubAllGlobals();
   });
 
-  it('renders hero percentage, per-kata rows, and hidden pass/fail names', async () => {
+  it('renders review details and solution for incomplete katas', async () => {
     await act(async () => {
       root.render(
         <ResultsPage
           assessmentId="demo"
           kataIds={['kata-a', 'kata-b']}
           kataTitles={{ 'kata-a': 'Kata A', 'kata-b': 'Kata B' }}
+          kataSolutions={{
+            'kata-a': {
+              solutionCode: 'def solve():\n    return 1',
+              solutionExplanationHtml: '<p>Use a hash map.</p>',
+            },
+          }}
           durationMinutes={null}
         />,
       );
     });
 
-    expect(container.textContent).toContain('67%');
-    expect(container.textContent).toContain('2/3 tests passed');
+    expect(container.textContent).toContain('50%');
+    expect(container.textContent).toContain('2/4 tests passed');
     expect(container.textContent).toContain('5m 0s');
     expect(container.textContent).toContain('Kata A');
     expect(container.textContent).toContain('Kata B');
+    expect(container.textContent).toContain('Where you missed');
+    expect(container.textContent).toContain('visible fail');
     expect(container.textContent).toContain('hidden fail');
-    expect(container.textContent).toContain('Failed');
-    expect(container.textContent).not.toContain('Expected');
+    expect(container.textContent).toContain('Expected:');
+    expect(container.textContent).toContain('[0,1]');
+    expect(container.textContent).toContain('View solution and explanation');
+    expect(container.textContent).toContain('def solve():');
     expect(store.get('kataforge:score:demo')).toBeTruthy();
   });
 });

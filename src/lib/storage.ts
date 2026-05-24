@@ -24,6 +24,15 @@ export function saveDraft(kataId: string, code: string): void {
   localStorage.setItem(key(`draft:${kataId}`), code);
 }
 
+/** Persist edits only when they differ from the starter template. */
+export function syncDraft(kataId: string, code: string, starterCode: string): void {
+  if (!code.trim() || code === starterCode) {
+    clearDraft(kataId);
+    return;
+  }
+  saveDraft(kataId, code);
+}
+
 export function clearDraft(kataId: string): void {
   if (typeof localStorage === 'undefined') return;
   localStorage.removeItem(key(`draft:${kataId}`));
@@ -107,17 +116,41 @@ export function loadKataCompletionMap(kataIds: string[]): Record<string, boolean
   return completed;
 }
 
+export interface ClearAssessmentAttemptOptions {
+  preserveDrafts?: boolean;
+}
+
 export function clearAssessmentAttempt(
   assessmentId: string,
   kataIds: string[],
+  options?: ClearAssessmentAttemptOptions,
 ): void {
   if (typeof localStorage === 'undefined') return;
   localStorage.removeItem(key(`session:${assessmentId}`));
   localStorage.removeItem(key(`score:${assessmentId}`));
   for (const kataId of kataIds) {
-    localStorage.removeItem(key(`draft:${kataId}`));
+    if (!options?.preserveDrafts) {
+      localStorage.removeItem(key(`draft:${kataId}`));
+    }
     localStorage.removeItem(key(`results:${kataId}`));
   }
+}
+
+export function retryAssessmentSession(
+  assessmentId: string,
+  durationMinutes: number | null,
+  kataIds: string[],
+): SessionState {
+  clearAssessmentAttempt(assessmentId, kataIds, { preserveDrafts: true });
+  const session: SessionState = {
+    assessmentId,
+    startedAt: Date.now(),
+    durationMinutes,
+    currentKataIndex: 0,
+    submitted: false,
+  };
+  saveSession(session);
+  return session;
 }
 
 export function startFreshSession(

@@ -13,8 +13,10 @@ import {
   saveAssessmentScore,
   loadAssessmentScore,
   saveDraft,
+  syncDraft,
   saveResults,
   saveSession,
+  retryAssessmentSession,
   startFreshSession,
   hasAssessmentSession,
   type SessionState,
@@ -68,6 +70,20 @@ describe('storage', () => {
     expect(loadDraft('two-sum')).toBe('def two_sum(): pass');
     clearDraft('two-sum');
     expect(loadDraft('two-sum')).toBeNull();
+  });
+
+  it('syncDraft clears storage for empty or starter-matching code', () => {
+    const starter = 'def two_sum(nums, target):\n    pass';
+    saveDraft('two-sum', 'user edited code');
+    syncDraft('two-sum', starter, starter);
+    expect(loadDraft('two-sum')).toBeNull();
+
+    saveDraft('two-sum', 'user edited code');
+    syncDraft('two-sum', '   \n', starter);
+    expect(loadDraft('two-sum')).toBeNull();
+
+    syncDraft('two-sum', 'def two_sum(nums, target):\n    return []', starter);
+    expect(loadDraft('two-sum')).toBe('def two_sum(nums, target):\n    return []');
   });
 
   it('round-trips session with startedAt and currentKataIndex', () => {
@@ -144,6 +160,35 @@ describe('storage', () => {
     };
     saveAssessmentScore(score);
     expect(loadAssessmentScore('quick-practice')).toEqual(score);
+  });
+
+  it('retry assessment preserves drafts but clears results and score', () => {
+    saveSession({
+      assessmentId: 'full-examples',
+      startedAt: 100,
+      durationMinutes: 45,
+      currentKataIndex: 1,
+      submitted: true,
+    });
+    saveDraft('two-sum', 'def two_sum(): return [0, 1]');
+    saveResults('two-sum', [passedResult]);
+    saveAssessmentScore({
+      assessmentId: 'full-examples',
+      problems: [{ kataId: 'two-sum', passed: 1, total: 1, percentage: 100 }],
+      totalPassed: 1,
+      totalTests: 1,
+      percentage: 100,
+      elapsedMs: 60_000,
+    });
+
+    const retried = retryAssessmentSession('full-examples', 45, ['two-sum', 'fizzbuzz']);
+
+    expect(loadDraft('two-sum')).toBe('def two_sum(): return [0, 1]');
+    expect(loadResults('two-sum')).toBeNull();
+    expect(loadAssessmentScore('full-examples')).toBeNull();
+    expect(loadSession('full-examples')).toEqual(retried);
+    expect(retried.submitted).toBe(false);
+    expect(retried.currentKataIndex).toBe(0);
   });
 
   it('clears assessment attempt data on start over', () => {

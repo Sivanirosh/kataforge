@@ -1,9 +1,17 @@
 import type { AssessmentScore, TestResult } from '../lib/configTypes';
+import FailedTestReview from './FailedTestReview';
+import SolutionReview from './SolutionReview';
+
+export interface KataSolution {
+  solutionCode?: string;
+  solutionExplanationHtml?: string;
+}
 
 interface ResultSummaryProps {
   score: AssessmentScore;
   kataTitles: Record<string, string>;
-  hiddenResultsByKata: Record<string, TestResult[]>;
+  resultsByKata: Record<string, TestResult[]>;
+  kataSolutions: Record<string, KataSolution>;
 }
 
 function formatDuration(ms: number): string {
@@ -13,14 +21,11 @@ function formatDuration(ms: number): string {
   return `${min}m ${sec}s`;
 }
 
-function hiddenStatusLabel(status: TestResult['status']): string {
-  return status === 'passed' ? 'Passed' : 'Failed';
-}
-
 export default function ResultSummary({
   score,
   kataTitles,
-  hiddenResultsByKata,
+  resultsByKata,
+  kataSolutions,
 }: ResultSummaryProps) {
   return (
     <div className="result-summary">
@@ -32,30 +37,33 @@ export default function ResultSummary({
         </div>
       </div>
       <ul className="problem-scores">
-        {score.problems.map((p) => {
-          const hiddenResults = hiddenResultsByKata[p.kataId] ?? [];
+        {score.problems.map((problem) => {
+          const kataResults = resultsByKata[problem.kataId] ?? [];
+          const solution = kataSolutions[problem.kataId];
+          const needsReview = problem.percentage < 100;
+          const hasSolution = Boolean(solution?.solutionCode || solution?.solutionExplanationHtml);
+
           return (
-            <li key={p.kataId} className="problem-score-item">
+            <li key={problem.kataId} className="problem-score-item">
               <div className="problem-score-row">
-                <span className="problem-score-name">{kataTitles[p.kataId] ?? p.kataId}</span>
+                <span className="problem-score-name">
+                  {kataTitles[problem.kataId] ?? problem.kataId}
+                </span>
                 <span className="problem-score-value">
-                  {p.passed}/{p.total} ({p.percentage}%)
+                  {problem.passed}/{problem.total} ({problem.percentage}%)
                 </span>
               </div>
-              {hiddenResults.length > 0 && (
-                <ul className="hidden-test-list" aria-label={`Hidden tests for ${kataTitles[p.kataId] ?? p.kataId}`}>
-                  {hiddenResults.map((result) => (
-                    <li
-                      key={result.testId}
-                      className={`hidden-test-item status-${result.status}`}
-                    >
-                      <span className="hidden-test-name">{result.name}</span>
-                      <span className="hidden-test-status">
-                        {hiddenStatusLabel(result.status)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+              {needsReview && (
+                <div className="problem-review">
+                  <FailedTestReview results={kataResults} />
+                  {hasSolution && (
+                    <SolutionReview
+                      solutionCode={solution.solutionCode}
+                      solutionExplanationHtml={solution.solutionExplanationHtml}
+                      heading="View solution and explanation"
+                    />
+                  )}
+                </div>
               )}
             </li>
           );

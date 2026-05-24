@@ -26,6 +26,12 @@ export function persistAssessmentScore(
   return score;
 }
 
+export function loadResultsByKata(
+  kataIds: string[],
+): Record<string, TestResult[]> {
+  return Object.fromEntries(kataIds.map((id) => [id, loadResults(id) ?? []]));
+}
+
 export function loadHiddenResultsByKata(
   kataIds: string[],
 ): Record<string, TestResult[]> {
