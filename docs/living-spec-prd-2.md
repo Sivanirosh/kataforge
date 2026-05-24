@@ -40,7 +40,7 @@ Harden the Kata and Assessment content pipeline: schema edge-case tests, unified
 | #22 | Reuse problemSchema in Astro content collection | **done** | Commit `8851ec6` (interim; removed in #29) |
 | #24 | Fail build on duplicate Kata IDs | **done** | Commit `22d36b1` |
 | #25 | Validate Assessment kataIds | **done** | Commit `2785597` |
-| #29 | Consolidate to single Kata load pipeline | **done** | Option B; commit pending |
+| #29 | Consolidate to single Kata load pipeline | **done** | Option B; commit `2243d9b` |
 
 ## Integration Log
 
