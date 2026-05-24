@@ -12,15 +12,18 @@
 
 ```text
 src/
-  content.config.ts      # glob loaders for problem dirs
   pages/                 # index, assessment, problem, results
   components/            # React islands
-  lib/                   # schema, compare, storage, scoring, config
+  lib/                   # schema, compare, storage, scoring, config, loadKatas
   workers/               # pyodideJudge.worker.ts
 examples/
   problems/              # generic sample katas
   assessments/           # generic assessment configs
 ```
+
+## Content pipeline
+
+Katas and assessments load through `loadKatas` / `loadAssessments` in `src/lib/`, validated by shared Zod schemas in `problemSchema.ts`. Astro pages call these loaders at build time, so invalid frontmatter or unknown assessment `kataIds` fail `pnpm build`. There is no separate Astro content collection for problems.
 
 ## Config overlay
 

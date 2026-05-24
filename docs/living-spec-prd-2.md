@@ -36,12 +36,16 @@ Harden the Kata and Assessment content pipeline: schema edge-case tests, unified
 
 | Issue | Title | Status | Notes |
 |-------|-------|--------|-------|
-| #8 | Add schema edge-case unit tests | IN-PROGRESS | No blockers |
-| #22 | Reuse problemSchema in Astro content collection | PENDING | |
-| #24 | Fail build on duplicate Kata IDs | PENDING | |
-| #25 | Validate Assessment kataIds | PENDING | |
-| #29 | Consolidate to single Kata load pipeline | PENDING | Option B pending feedback |
+| #8 | Add schema edge-case unit tests | **done** | Commit `277243e` |
+| #22 | Reuse problemSchema in Astro content collection | **done** | Commit `8851ec6` (interim; removed in #29) |
+| #24 | Fail build on duplicate Kata IDs | **done** | Commit `22d36b1` |
+| #25 | Validate Assessment kataIds | **done** | Commit `2785597` |
+| #29 | Consolidate to single Kata load pipeline | **done** | Option B; commit pending |
 
 ## Integration Log
 
-_(updated per slice)_
+- **#8**: Extended `problemSchema.test.ts` — 17 tests total.
+- **#22**: Shared `problemSchema` in content collection; Astro JSON schema warning noted.
+- **#24**: `loadKatas` throws on duplicate id with both paths; unit test added.
+- **#25**: `loadAssessments` cross-checks kataIds against `loadKataMap`.
+- **#29**: Removed `content.config.ts`; pages validate via `loadKatas`/`loadAssessments` at build. Decision AD-P2-4 documented in architecture.md.
