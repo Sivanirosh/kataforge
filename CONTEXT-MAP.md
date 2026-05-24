@@ -7,7 +7,7 @@
 
 ## Relationships
 
-- **ProblemPack → KataForge**: ProblemPack supplies additional Kata Markdown files and Assessment JSON configs consumed at build/dev time via `kataforge.local.ts`
+- **ProblemPack → KataForge**: ProblemPack supplies additional Kata Markdown files and Assessment JSON configs consumed at build/dev time via `kataforge.local.json`
 - **KataForge → Judge**: Each Kata's TestCases are executed by the Judge deep module; ProblemPack Katas use the same schema
 
 ## Setup

@@ -25,7 +25,7 @@ examples/
 ## Config overlay
 
 - `kataforge.config.ts` — committed defaults
-- `kataforge.local.ts` — gitignored ProblemPack paths
+- `kataforge.local.json` — gitignored ProblemPack path overlay (copy from `kataforge.local.example.json`)
 
 ## Deep modules
 
