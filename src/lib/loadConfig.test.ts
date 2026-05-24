@@ -16,6 +16,8 @@ describe('loadKataForgeConfig', () => {
     const config = loadKataForgeConfigSync();
     expect(config.problemDirs).toEqual(['examples/problems']);
     expect(config.assessmentDirs).toEqual(['examples/assessments']);
+    expect(config.cursusDirs).toEqual(['examples/cursus']);
+    expect(config.lessonDirs).toEqual(['examples/lessons']);
     expect(config.branding.title).toBe('KataForge');
     expect(config.judge.sampleTimeoutMs).toBe(2000);
     expect(config.judge.submitTimeoutMs).toBe(3000);
@@ -83,6 +85,16 @@ describe('loadKataForgeConfig', () => {
     expect(config.problemDirs).toEqual(['examples/problems']);
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('Failed to parse kataforge.local.json'),
+    );
+  });
+
+  it('throws when overlay JSON is malformed and KATAFORGE_STRICT_CONFIG=1', () => {
+    vi.stubEnv('KATAFORGE_STRICT_CONFIG', '1');
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue('{ not valid json');
+
+    expect(() => loadKataForgeConfigSync()).toThrow(
+      /Failed to parse kataforge.local.json/,
     );
   });
 });

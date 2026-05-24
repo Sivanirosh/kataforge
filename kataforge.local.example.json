@@ -1,4 +1,6 @@
 {
   "problemDirs": ["examples/problems", "private/problems"],
-  "assessmentDirs": ["examples/assessments", "private/assessments"]
+  "assessmentDirs": ["examples/assessments", "private/assessments"],
+  "cursusDirs": ["examples/cursus", "private/cursus"],
+  "lessonDirs": ["examples/lessons", "private/lessons"]
 }

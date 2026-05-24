@@ -173,3 +173,78 @@ export function startFreshSession(
 export function hasAssessmentSession(assessmentId: string): boolean {
   return loadSession(assessmentId) !== null;
 }
+
+export interface CursusProgress {
+  cursusId: string;
+  completedStepKeys: string[];
+  lastStepKey: string;
+  startedAt: number;
+}
+
+export function loadCursusProgress(cursusId: string): CursusProgress | null {
+  if (typeof localStorage === 'undefined') return null;
+  const raw = localStorage.getItem(key(`cursus-progress:${cursusId}`));
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as CursusProgress;
+  } catch {
+    return null;
+  }
+}
+
+export function saveCursusProgress(progress: CursusProgress): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(key(`cursus-progress:${progress.cursusId}`), JSON.stringify(progress));
+}
+
+export function ensureCursusProgress(cursusId: string, lastStepKey: string): CursusProgress {
+  const existing = loadCursusProgress(cursusId);
+  if (existing) {
+    if (existing.lastStepKey !== lastStepKey) {
+      const updated = { ...existing, lastStepKey };
+      saveCursusProgress(updated);
+      return updated;
+    }
+    return existing;
+  }
+  const progress: CursusProgress = {
+    cursusId,
+    completedStepKeys: [],
+    lastStepKey,
+    startedAt: Date.now(),
+  };
+  saveCursusProgress(progress);
+  return progress;
+}
+
+export function markCursusStepComplete(
+  cursusId: string,
+  stepKey: string,
+): CursusProgress {
+  const existing = ensureCursusProgress(cursusId, stepKey);
+  if (existing.completedStepKeys.includes(stepKey)) {
+    return existing;
+  }
+  const updated: CursusProgress = {
+    ...existing,
+    completedStepKeys: [...existing.completedStepKeys, stepKey],
+    lastStepKey: stepKey,
+  };
+  saveCursusProgress(updated);
+  return updated;
+}
+
+export function isCursusStepComplete(cursusId: string, stepKey: string): boolean {
+  const progress = loadCursusProgress(cursusId);
+  return Boolean(progress?.completedStepKeys.includes(stepKey));
+}
+
+export function cursusCompletionPercent(
+  cursusId: string,
+  totalSteps: number,
+): number {
+  if (totalSteps === 0) return 0;
+  const progress = loadCursusProgress(cursusId);
+  const completed = progress?.completedStepKeys.length ?? 0;
+  return Math.round((completed / totalSteps) * 100);
+}

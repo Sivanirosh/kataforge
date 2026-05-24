@@ -9,9 +9,12 @@ function loadLocalOverlay(): Partial<KataForgeConfig> {
   try {
     return JSON.parse(fs.readFileSync(localPath, 'utf-8')) as Partial<KataForgeConfig>;
   } catch {
-    console.warn(
-      '[KataForge] Failed to parse kataforge.local.json — using base config. Check JSON syntax.',
-    );
+    const message =
+      '[KataForge] Failed to parse kataforge.local.json — using base config. Check JSON syntax.';
+    if (process.env.KATAFORGE_STRICT_CONFIG === '1') {
+      throw new Error(message);
+    }
+    console.warn(message);
     return {};
   }
 }
@@ -24,6 +27,8 @@ function mergeConfig(local: Partial<KataForgeConfig>): KataForgeConfig {
     judge: { ...baseConfig.judge, ...local.judge },
     problemDirs: local.problemDirs ?? baseConfig.problemDirs,
     assessmentDirs: local.assessmentDirs ?? baseConfig.assessmentDirs,
+    cursusDirs: local.cursusDirs ?? baseConfig.cursusDirs,
+    lessonDirs: local.lessonDirs ?? baseConfig.lessonDirs,
   };
 }
 

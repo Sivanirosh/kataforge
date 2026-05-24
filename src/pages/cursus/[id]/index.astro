@@ -1,0 +1,73 @@
+---
+import FontLinks from '../../../components/FontLinks.astro';
+import SiteNav from '../../../components/SiteNav.astro';
+import ThemeScript from '../../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../../lib/loadConfig';
+import { loadCursusById } from '../../../lib/loadCursus';
+import { countCursusSteps } from '../../../lib/cursusSteps';
+import '../../../styles/cursus.css';
+
+export async function getStaticPaths() {
+  const { loadAllCursus } = await import('../../../lib/loadCursus');
+  const all = await loadAllCursus();
+  return all.map((cursus) => ({
+    params: { id: cursus.id },
+    props: { cursus },
+  }));
+}
+
+const { cursus } = Astro.props;
+const config = await loadKataForgeConfig();
+const totalSteps = countCursusSteps(cursus);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>{cursus.title} · {config.branding.title}</title>
+  </head>
+  <body class="cursus-page bg-background text-foreground">
+    <SiteNav title={config.branding.title} />
+    <main class="mx-auto max-w-3xl px-6 py-10">
+      <p class="text-sm font-medium uppercase tracking-wide text-primary">Cursus</p>
+      <h1 class="mt-2 text-3xl font-semibold">{cursus.title}</h1>
+      <p class="mt-4 text-neutral-600 dark:text-neutral-300">{cursus.description}</p>
+      {cursus.estimatedHours && (
+        <p class="mt-2 text-sm text-neutral-500">Estimated {cursus.estimatedHours} hours</p>
+      )}
+      {cursus.prerequisites.length > 0 && (
+        <div class="mt-6">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-500">Prerequisites</h2>
+          <ul class="mt-2 list-disc pl-5 text-sm">
+            {cursus.prerequisites.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div class="mt-8">
+        <h2 class="text-lg font-semibold">Modules</h2>
+        <ul class="mt-3 space-y-3">
+          {cursus.modules.map((mod) => (
+            <li class="rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
+              <h3 class="font-medium">{mod.title}</h3>
+              {mod.summary && <p class="mt-1 text-sm text-neutral-500">{mod.summary}</p>}
+              <p class="mt-2 text-xs text-neutral-500">{mod.steps.length} steps</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="mt-10">
+        <a
+          class="inline-flex rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700"
+          href={`/cursus/${cursus.id}/step/0`}
+        >
+          Start Cursus ({totalSteps} steps)
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

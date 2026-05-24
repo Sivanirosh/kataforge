@@ -1,0 +1,25 @@
+{
+  "id": "build-ai-agent-harness",
+  "title": "Build Your Own AI Coding Agent Harness",
+  "description": "Learn how agent harnesses combine tools, safety gates, and context management. Python analog drills mirror the Vercel Academy Agent Loop module.",
+  "estimatedHours": 2,
+  "prerequisites": [
+    "Basic Python functions and dictionaries",
+    "Comfort reading short technical prose"
+  ],
+  "modules": [
+    {
+      "id": "agent-loop",
+      "title": "Module 1: The Agent Loop",
+      "summary": "From chatbot to tool-using agent with safety gates.",
+      "steps": [
+        { "type": "lesson", "lessonId": "from-chat-to-agent" },
+        { "type": "kata", "kataId": "agent-loop-chatbot" },
+        { "type": "lesson", "lessonId": "your-first-tools" },
+        { "type": "kata", "kataId": "agent-loop-read-grep" },
+        { "type": "lesson", "lessonId": "completing-the-toolbox" },
+        { "type": "kata", "kataId": "agent-loop-bash-gates" }
+      ]
+    }
+  ]
+}

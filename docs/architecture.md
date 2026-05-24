@@ -12,13 +12,16 @@
 
 ```text
 src/
-  pages/                 # index, assessment, problem, results
-  components/            # React islands
-  lib/                   # schema, compare, storage, scoring, config, loadKatas
+  pages/                 # index, assessment, problem, results, cursus
+  components/            # React islands (incl. CursusShell)
+  lib/                   # schema, compare, storage, scoring, config, loaders
   workers/               # pyodideJudge.worker.ts
+  styles/                # global.css (assessment), cursus.css (Tailwind)
 examples/
   problems/              # generic sample katas
   assessments/           # generic assessment configs
+  cursus/                # cursus JSON definitions
+  lessons/               # lesson markdown for cursus steps
 ```
 
 ## Content pipeline
@@ -29,6 +32,8 @@ Katas and assessments load through `loadKatas` / `loadAssessments` in `src/lib/`
 
 - `kataforge.config.ts` — committed defaults
 - `kataforge.local.json` — gitignored ProblemPack path overlay (copy from `kataforge.local.example.json`)
+
+Malformed overlay JSON: warn by default; set `KATAFORGE_STRICT_CONFIG=1` to throw at load time.
 
 ## Deep modules
 

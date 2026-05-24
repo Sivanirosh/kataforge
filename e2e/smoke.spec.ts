@@ -210,4 +210,19 @@ test.describe('acceptance smoke', () => {
     expect(session.submitted).toBe(false);
     await expect(page.locator('.monaco-editor')).toContainText('old_draft_marker');
   });
+
+  test('cursus lesson continue persists progress', async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto('/cursus/build-ai-agent-harness/step/0');
+    await expect(page.getByRole('heading', { name: 'From Chat to Agent' })).toBeVisible({
+      timeout: 45_000,
+    });
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await expect(page).toHaveURL(/\/cursus\/build-ai-agent-harness\/step\/1$/);
+
+    const progress = await page.evaluate(() =>
+      localStorage.getItem('kataforge:cursus-progress:build-ai-agent-harness'),
+    );
+    expect(progress).toContain('agent-loop:0');
+  });
 });

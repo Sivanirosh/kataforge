@@ -3,6 +3,8 @@ import type { KataForgeConfig } from './src/lib/configTypes';
 const config: KataForgeConfig = {
   problemDirs: ['examples/problems'],
   assessmentDirs: ['examples/assessments'],
+  cursusDirs: ['examples/cursus'],
+  lessonDirs: ['examples/lessons'],
   branding: {
     title: 'KataForge',
     tagline: 'Build and practice custom coding assessments locally.',

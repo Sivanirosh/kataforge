@@ -524,6 +524,19 @@ a {
   min-height: 0;
 }
 
+.assessment-shell-embedded {
+  min-height: auto;
+}
+
+.workspace-embedded {
+  grid-template-columns: 1fr;
+  min-height: 480px;
+}
+
+.workspace-embedded .pane-code {
+  border-left: none;
+}
+
 .pane {
   min-height: 0;
   overflow: auto;

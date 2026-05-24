@@ -19,6 +19,9 @@ import {
   retryAssessmentSession,
   startFreshSession,
   hasAssessmentSession,
+  markCursusStepComplete,
+  loadCursusProgress,
+  cursusCompletionPercent,
   type SessionState,
 } from './storage';
 
@@ -252,5 +255,14 @@ describe('storage', () => {
       submitted: false,
     });
     expect(hasAssessmentSession('demo')).toBe(true);
+  });
+
+  it('tracks cursus step completion separately from assessments', () => {
+    markCursusStepComplete('agent-harness', 'agent-loop:0');
+    markCursusStepComplete('agent-harness', 'agent-loop:1');
+
+    const progress = loadCursusProgress('agent-harness');
+    expect(progress?.completedStepKeys).toEqual(['agent-loop:0', 'agent-loop:1']);
+    expect(cursusCompletionPercent('agent-harness', 6)).toBe(33);
   });
 });

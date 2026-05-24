@@ -1,0 +1,52 @@
+---
+import FontLinks from '../../components/FontLinks.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import ThemeScript from '../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../lib/loadConfig';
+import { loadAllCursus } from '../../lib/loadCursus';
+import { countCursusSteps } from '../../lib/cursusSteps';
+import '../../styles/cursus.css';
+
+const config = await loadKataForgeConfig();
+const cursusList = await loadAllCursus();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>Cursus · {config.branding.title}</title>
+  </head>
+  <body class="cursus-page bg-background text-foreground">
+    <SiteNav title={config.branding.title} />
+    <main class="mx-auto max-w-4xl px-6 py-10">
+      <h1 class="text-3xl font-semibold">Cursus</h1>
+      <p class="mt-2 text-neutral-600 dark:text-neutral-300">
+        Guided learning paths that mix lessons with coding drills.
+      </p>
+      <ul class="mt-8 space-y-4">
+        {cursusList.map((cursus) => (
+          <li class="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800">
+            <h2 class="text-xl font-semibold">
+              <a class="hover:text-primary" href={`/cursus/${cursus.id}`}>
+                {cursus.title}
+              </a>
+            </h2>
+            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">{cursus.description}</p>
+            <p class="mt-3 text-xs text-neutral-500">
+              {cursus.modules.length} modules · {countCursusSteps(cursus)} steps
+            </p>
+            <a
+              class="mt-4 inline-flex text-sm font-semibold text-primary hover:underline"
+              href={`/cursus/${cursus.id}`}
+            >
+              View overview
+            </a>
+          </li>
+        ))}
+      </ul>
+    </main>
+  </body>
+</html>

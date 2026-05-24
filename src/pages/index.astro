@@ -6,10 +6,13 @@ import SiteNav from '../components/SiteNav.astro';
 import ThemeScript from '../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../lib/loadConfig';
 import { loadAssessments } from '../lib/loadAssessments';
+import { loadAllCursus } from '../lib/loadCursus';
 import { loadAllKatas } from '../lib/loadKatas';
+import { countCursusSteps } from '../lib/cursusSteps';
 
 const config = await loadKataForgeConfig();
 const assessments = await loadAssessments();
+const cursusList = await loadAllCursus();
 const katas = await loadAllKatas();
 ---
 
@@ -34,6 +37,25 @@ const katas = await loadAllKatas();
     </section>
 
     <main class="landing page-main">
+      <section class="landing-section" id="cursus">
+        <div class="section-header">
+          <h2>Cursus</h2>
+        </div>
+        <ul class="card-list">
+          {cursusList.map((cursus) => (
+            <li class="card">
+              <h3>{cursus.title}</h3>
+              <p>
+                {cursus.modules.length} modules · {countCursusSteps(cursus)} steps
+              </p>
+              <a class="btn btn-primary" href={`/cursus/${cursus.id}`}>
+                Open
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section class="landing-section" id="assessments">
         <div class="section-header">
           <h2>Assessments</h2>

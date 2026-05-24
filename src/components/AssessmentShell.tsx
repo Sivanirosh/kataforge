@@ -45,6 +45,8 @@ interface AssessmentShellProps {
     submitTimeoutMs: number;
   };
   brandingTitle: string;
+  embedded?: boolean;
+  onKataSubmitSuccess?: () => void;
 }
 
 export default function AssessmentShell({
@@ -52,6 +54,8 @@ export default function AssessmentShell({
   katas,
   judgeConfig,
   brandingTitle,
+  embedded = false,
+  onKataSubmitSuccess,
 }: AssessmentShellProps) {
   const [session, setSession] = useState<SessionState>(() => {
     const existing = loadSession(assessment.id);
@@ -78,8 +82,9 @@ export default function AssessmentShell({
   const [showSolution, setShowSolution] = useState(false);
 
   useEffect(() => {
+    if (embedded) return;
     saveSession(session);
-  }, [session]);
+  }, [session, embedded]);
 
   useEffect(() => {
     if (!currentKata) return;
@@ -158,6 +163,7 @@ export default function AssessmentShell({
           if (allPassed) {
             setCompleted((prev) => ({ ...prev, [currentKata.id]: true }));
             setShowSolution(false);
+            onKataSubmitSuccess?.();
           } else {
             setShowSolution(true);
           }
@@ -171,7 +177,7 @@ export default function AssessmentShell({
         setRunMode(null);
       }
     },
-    [code, currentKata, judgeConfig],
+    [code, currentKata, judgeConfig, onKataSubmitSuccess],
   );
 
   const handleReset = () => {
@@ -206,7 +212,8 @@ export default function AssessmentShell({
   }
 
   return (
-    <div className="assessment-shell">
+    <div className={`assessment-shell${embedded ? ' assessment-shell-embedded' : ''}`}>
+      {!embedded && (
       <header className="app-header">
         <div className="header-brand">
           <a href="/" className="brand">
@@ -247,14 +254,16 @@ export default function AssessmentShell({
           </a>
         </div>
       </header>
+      )}
 
-      {expired && (
+      {!embedded && expired && (
         <div className="banner banner-warning" role="status">
           Time expired — you may still submit, but your session is marked late.
         </div>
       )}
 
-      <main className="workspace">
+      <main className={`workspace${embedded ? ' workspace-embedded' : ''}`}>
+        {!embedded && (
         <section className="pane pane-prompt">
           <ProblemStatement
             title={currentKata.title}
@@ -264,6 +273,7 @@ export default function AssessmentShell({
             body={currentKata.bodyHtml}
           />
         </section>
+        )}
         <section className="pane pane-code">
           <div className="toolbar">
             <div className="toolbar-group">

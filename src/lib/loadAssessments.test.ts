@@ -44,7 +44,9 @@ describe('loadAssessments', () => {
     mockedLoadConfig.mockResolvedValue({
       problemDirs: [],
       assessmentDirs: [tempDir],
-      branding: { appName: 'KataForge', tagline: '' },
+      cursusDirs: [],
+      lessonDirs: [],
+      branding: { title: 'KataForge', tagline: '' },
       judge: {
         pyodideVersion: '0.27.7',
         sampleTimeoutMs: 2000,

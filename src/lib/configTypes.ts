@@ -21,6 +21,8 @@ export interface KataForgeJudgeConfig {
 export interface KataForgeConfig {
   problemDirs: string[];
   assessmentDirs: string[];
+  cursusDirs: string[];
+  lessonDirs: string[];
   branding: KataForgeBranding;
   judge: KataForgeJudgeConfig;
 }
