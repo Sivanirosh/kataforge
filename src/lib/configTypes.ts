@@ -70,6 +70,20 @@ export interface JudgeRequest {
   revealHiddenDetails: boolean;
 }
 
+export interface JudgeWorkerConfigureMessage {
+  type: 'configure';
+  interruptBuffer?: Uint8Array;
+}
+
+export interface JudgeWorkerRunMessage {
+  type: 'run';
+  request: JudgeRequest;
+}
+
+export type JudgeWorkerInboundMessage =
+  | JudgeWorkerConfigureMessage
+  | JudgeWorkerRunMessage;
+
 export interface ProblemScore {
   kataId: string;
   passed: number;

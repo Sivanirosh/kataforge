@@ -2,11 +2,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { JudgeRequest, TestCase } from './configTypes';
 import {
   applyHiddenRedaction,
-  createInterruptBuffer,
+  createLocalInterruptBuffer,
   executeJudgeRequest,
+  canUseSharedInterruptBuffer,
+  isSharedInterruptBuffer,
   parseRunnerOutput,
   runSingleTestWithTimeout,
-  supportsSharedInterruptBuffer,
   type PyodideRunner,
 } from './judgeHarness';
 
@@ -80,17 +81,28 @@ function createMockPyodide(responses: unknown[]): PyodideRunner {
 }
 
 describe('createInterruptBuffer', () => {
-  it('falls back when SharedArrayBuffer is unavailable', () => {
+  it('falls back to a local buffer when cross-origin isolation is unavailable', () => {
     const sab = globalThis.SharedArrayBuffer;
+    const isolated = Object.getOwnPropertyDescriptor(globalThis, 'crossOriginIsolated');
     // @ts-expect-error test stub
     delete globalThis.SharedArrayBuffer;
+    Object.defineProperty(globalThis, 'crossOriginIsolated', {
+      configurable: true,
+      value: false,
+    });
 
-    const buffer = createInterruptBuffer();
+    expect(canUseSharedInterruptBuffer()).toBe(false);
+    const buffer = createLocalInterruptBuffer();
     expect(buffer).toHaveLength(1);
-    expect(supportsSharedInterruptBuffer()).toBe(false);
-    expect(buffer.buffer).toBeInstanceOf(ArrayBuffer);
+    expect(isSharedInterruptBuffer(buffer)).toBe(false);
 
-    globalThis.SharedArrayBuffer = sab;
+    if (sab) globalThis.SharedArrayBuffer = sab;
+    if (isolated) {
+      Object.defineProperty(globalThis, 'crossOriginIsolated', isolated);
+    } else {
+      // @ts-expect-error cleanup
+      delete globalThis.crossOriginIsolated;
+    }
   });
 });
 
@@ -166,7 +178,7 @@ describe('executeJudgeRequest', () => {
 
     const response = await executeJudgeRequest(
       pyodide,
-      createInterruptBuffer(),
+      createLocalInterruptBuffer(),
       request,
     );
 
@@ -196,7 +208,7 @@ describe('executeJudgeRequest', () => {
 
     const response = await executeJudgeRequest(
       pyodide,
-      createInterruptBuffer(),
+      createLocalInterruptBuffer(),
       request,
     );
 
@@ -217,7 +229,7 @@ describe('runSingleTestWithTimeout', () => {
       () => new Promise(() => {}),
       okPayload(42),
     ]);
-    const interruptBuffer = createInterruptBuffer();
+    const interruptBuffer = createLocalInterruptBuffer();
 
     const hung = runSingleTestWithTimeout(
       pyodide,

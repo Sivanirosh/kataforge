@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { JudgeRequest, JudgeResponse } from './configTypes';
+import type { JudgeRequest, JudgeResponse, JudgeWorkerInboundMessage } from './configTypes';
 import { JudgeClient } from './judgeClient';
 
 class MockWorker {
@@ -12,7 +12,9 @@ class MockWorker {
     MockWorker.instances.push(this);
   }
 
-  postMessage(request: JudgeRequest) {
+  postMessage(payload: JudgeWorkerInboundMessage) {
+    if (payload.type !== 'run') return;
+    const request = payload.request;
     queueMicrotask(() => {
       this.onmessage?.({
         data: {

@@ -17,7 +17,13 @@ Candidate code is re-executed for each TestCase (no shared mutable globals betwe
 
 ## Timeouts
 
-Each TestCase is capped at the request `timeoutMs` (RunSamples vs Submit). A hung test returns `status: timeout` for that case only; subsequent cases still run. Pyodide's interrupt buffer is used to stop runaway Python; the harness also races each test against a JS timer.
+Each TestCase is capped at the request `timeoutMs` (RunSamples vs Submit). A hung test returns `status: timeout` for that case only; subsequent cases still run.
+
+When [cross-origin isolation](https://developer.mozilla.org/en-US/docs/Web/API/crossOriginIsolated) is enabled, the main thread allocates a `SharedArrayBuffer` and posts it to the Pyodide worker (see Pyodide [keyboard interrupts](https://pyodide.org/en/stable/usage/keyboard-interrupts.html)). The worker uses Pyodide's interrupt buffer to stop runaway Python. Without isolation, the harness still times out via a JS timer race, but Python may keep running until the worker safety timeout terminates it.
+
+Dev and preview servers set `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: credentialless` in `astro.config.mjs`. Static hosts should serve the same headers (`public/_headers` is included for Netlify-style deploys).
+
+Verify isolation in the browser console: `crossOriginIsolated` should be `true`.
 
 If the worker stops responding entirely, the client applies a safety timeout, terminates the worker, and recreates it on the next run.
 

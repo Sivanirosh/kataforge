@@ -1,4 +1,9 @@
-import type { JudgeRequest, JudgeResponse } from './configTypes';
+import type {
+  JudgeRequest,
+  JudgeResponse,
+  JudgeWorkerInboundMessage,
+} from './configTypes';
+import { createMainThreadInterruptBuffer } from './judgeHarness';
 
 type PendingRun = {
   request: JudgeRequest;
@@ -9,6 +14,7 @@ type PendingRun = {
 export class JudgeClient {
   private worker: Worker | null = null;
   private pending: PendingRun | null = null;
+  private configured = false;
 
   private createWorker(): Worker {
     return new Worker(new URL('../workers/pyodideJudge.worker.ts', import.meta.url), {
@@ -19,6 +25,17 @@ export class JudgeClient {
   private resetWorker(): void {
     this.worker?.terminate();
     this.worker = null;
+    this.configured = false;
+  }
+
+  private configureWorker(worker: Worker): void {
+    const interruptBuffer = createMainThreadInterruptBuffer();
+    const message: JudgeWorkerInboundMessage = {
+      type: 'configure',
+      ...(interruptBuffer ? { interruptBuffer } : {}),
+    };
+    worker.postMessage(message);
+    this.configured = true;
   }
 
   private ensureWorker(): Worker {
@@ -51,6 +68,11 @@ export class JudgeClient {
         });
       };
     }
+
+    if (!this.configured) {
+      this.configureWorker(this.worker);
+    }
+
     return this.worker;
   }
 
@@ -77,7 +99,8 @@ export class JudgeClient {
       }, safetyTimeout);
 
       this.pending = { request, resolve, safetyTimer };
-      this.ensureWorker().postMessage(request);
+      const message: JudgeWorkerInboundMessage = { type: 'run', request };
+      this.ensureWorker().postMessage(message);
     });
   }
 }

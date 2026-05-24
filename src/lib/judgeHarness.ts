@@ -20,15 +20,36 @@ type PythonRunPayload = {
   category?: JudgeErrorCategory;
 };
 
-export function supportsSharedInterruptBuffer(): boolean {
-  return typeof SharedArrayBuffer !== 'undefined';
+export function canUseSharedInterruptBuffer(): boolean {
+  return (
+    typeof SharedArrayBuffer !== 'undefined' &&
+    typeof globalThis.crossOriginIsolated === 'boolean' &&
+    globalThis.crossOriginIsolated
+  );
 }
 
-export function createInterruptBuffer(): Uint8Array {
-  if (supportsSharedInterruptBuffer()) {
-    return new Uint8Array(new SharedArrayBuffer(1));
-  }
+/** Pyodide expects the interrupt buffer to be allocated on the main thread and posted to the worker. */
+export function createMainThreadInterruptBuffer(): Uint8Array | null {
+  if (!canUseSharedInterruptBuffer()) return null;
+  return new Uint8Array(new SharedArrayBuffer(1));
+}
+
+export function isSharedInterruptBuffer(buffer: Uint8Array): boolean {
+  return typeof SharedArrayBuffer !== 'undefined' && buffer.buffer instanceof SharedArrayBuffer;
+}
+
+export function createLocalInterruptBuffer(): Uint8Array {
   return new Uint8Array(1);
+}
+
+/** @deprecated Use createMainThreadInterruptBuffer or createLocalInterruptBuffer. */
+export function createInterruptBuffer(): Uint8Array {
+  return createMainThreadInterruptBuffer() ?? createLocalInterruptBuffer();
+}
+
+/** @deprecated Use canUseSharedInterruptBuffer. */
+export function supportsSharedInterruptBuffer(): boolean {
+  return canUseSharedInterruptBuffer();
 }
 
 export function buildPythonRunner(
@@ -156,7 +177,7 @@ export async function runSingleTestWithTimeout(
   test: TestCase,
   timeoutMs: number,
 ): Promise<Omit<TestResult, 'testId' | 'name' | 'hidden'>> {
-  const canInterrupt = interruptBuffer.buffer instanceof SharedArrayBuffer;
+  const canInterrupt = isSharedInterruptBuffer(interruptBuffer);
   interruptBuffer[0] = 0;
 
   const timeoutResult = new Promise<Omit<TestResult, 'testId' | 'name' | 'hidden'>>(
