@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { TestResult } from './configTypes';
+import type { AssessmentScore, TestResult } from './configTypes';
 import {
   clearAssessmentAttempt,
   clearDraft,
@@ -10,6 +10,8 @@ import {
   loadKataCompletionMap,
   loadResults,
   loadSession,
+  saveAssessmentScore,
+  loadAssessmentScore,
   saveDraft,
   saveResults,
   saveSession,
@@ -128,6 +130,19 @@ describe('storage', () => {
     expect(loadKataCompletionMap(['fizzbuzz', 'two-sum', 'missing'])).toEqual({
       fizzbuzz: true,
     });
+  });
+
+  it('round-trips assessment score save/load', () => {
+    const score: AssessmentScore = {
+      assessmentId: 'quick-practice',
+      problems: [{ kataId: 'two-sum', passed: 2, total: 3, percentage: 67 }],
+      totalPassed: 2,
+      totalTests: 3,
+      percentage: 67,
+      elapsedMs: 120_000,
+    };
+    saveAssessmentScore(score);
+    expect(loadAssessmentScore('quick-practice')).toEqual(score);
   });
 
   it('clears assessment attempt data on start over', () => {

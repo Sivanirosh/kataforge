@@ -1,31 +1,39 @@
 import { useEffect, useState } from 'react';
 import ResultSummary from './ResultSummary';
 import type { AssessmentScore } from '../lib/configTypes';
-import { scoreAssessment, scoreProblem } from '../lib/scoring';
-import { getElapsedMs, loadResults, loadSession } from '../lib/storage';
+import {
+  loadHiddenResultsByKata,
+  persistAssessmentScore,
+} from '../lib/assessmentResults';
+import { startFreshSession } from '../lib/storage';
 
 interface ResultsPageProps {
   assessmentId: string;
   kataIds: string[];
   kataTitles: Record<string, string>;
+  durationMinutes: number | null;
 }
 
 export default function ResultsPage({
   assessmentId,
   kataIds,
   kataTitles,
+  durationMinutes,
 }: ResultsPageProps) {
   const [score, setScore] = useState<AssessmentScore | null>(null);
+  const [hiddenResultsByKata, setHiddenResultsByKata] = useState<
+    Record<string, ReturnType<typeof loadHiddenResultsByKata>[string]>
+  >({});
 
   useEffect(() => {
-    const session = loadSession(assessmentId);
-    const elapsedMs = session ? getElapsedMs(session) : 0;
-    const problemScores = kataIds.map((id) => {
-      const results = loadResults(id) ?? [];
-      return scoreProblem(id, results);
-    });
-    setScore(scoreAssessment(assessmentId, problemScores, elapsedMs));
+    setScore(persistAssessmentScore(assessmentId, kataIds));
+    setHiddenResultsByKata(loadHiddenResultsByKata(kataIds));
   }, [assessmentId, kataIds]);
+
+  const handleRetry = () => {
+    startFreshSession(assessmentId, durationMinutes, kataIds);
+    window.location.href = `/assessment/${assessmentId}`;
+  };
 
   if (!score) {
     return <p className="results-loading">Loading results…</p>;
@@ -33,11 +41,15 @@ export default function ResultsPage({
 
   return (
     <div className="results-page-inner">
-      <ResultSummary score={score} kataTitles={kataTitles} />
+      <ResultSummary
+        score={score}
+        kataTitles={kataTitles}
+        hiddenResultsByKata={hiddenResultsByKata}
+      />
       <div className="results-actions">
-        <a href={`/assessment/${assessmentId}`} className="btn btn-primary">
+        <button type="button" className="btn btn-primary" onClick={handleRetry}>
           Retry assessment
-        </a>
+        </button>
         <a href="/" className="btn btn-secondary">
           Back to home
         </a>

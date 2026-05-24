@@ -19,6 +19,7 @@ import {
   saveSession,
   type SessionState,
 } from '../lib/storage';
+import { persistAssessmentScore } from '../lib/assessmentResults';
 
 export interface KataData {
   id: string;
@@ -172,11 +173,12 @@ export default function AssessmentShell({
   };
 
   const handleSubmitAssessment = useCallback(() => {
+    persistAssessmentScore(assessment.id, assessment.kataIds);
     const updated: SessionState = { ...session, submitted: true };
     setSession(updated);
     saveSession(updated);
     window.location.href = `/results/${assessment.id}`;
-  }, [session, assessment.id]);
+  }, [session, assessment.id, assessment.kataIds]);
 
   const expired = isTimerExpired(session);
 
