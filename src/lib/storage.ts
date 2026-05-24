@@ -91,3 +91,52 @@ export function getRemainingMs(session: SessionState): number | null {
   const remaining = session.durationMinutes * 60 * 1000 - getElapsedMs(session);
   return Math.max(0, remaining);
 }
+
+export function isKataComplete(kataId: string): boolean {
+  const saved = loadResults(kataId);
+  return Boolean(saved && saved.length > 0 && saved.every((r) => r.status === 'passed'));
+}
+
+export function loadKataCompletionMap(kataIds: string[]): Record<string, boolean> {
+  const completed: Record<string, boolean> = {};
+  for (const kataId of kataIds) {
+    if (isKataComplete(kataId)) {
+      completed[kataId] = true;
+    }
+  }
+  return completed;
+}
+
+export function clearAssessmentAttempt(
+  assessmentId: string,
+  kataIds: string[],
+): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.removeItem(key(`session:${assessmentId}`));
+  localStorage.removeItem(key(`score:${assessmentId}`));
+  for (const kataId of kataIds) {
+    localStorage.removeItem(key(`draft:${kataId}`));
+    localStorage.removeItem(key(`results:${kataId}`));
+  }
+}
+
+export function startFreshSession(
+  assessmentId: string,
+  durationMinutes: number | null,
+  kataIds: string[],
+): SessionState {
+  clearAssessmentAttempt(assessmentId, kataIds);
+  const session: SessionState = {
+    assessmentId,
+    startedAt: Date.now(),
+    durationMinutes,
+    currentKataIndex: 0,
+    submitted: false,
+  };
+  saveSession(session);
+  return session;
+}
+
+export function hasAssessmentSession(assessmentId: string): boolean {
+  return loadSession(assessmentId) !== null;
+}

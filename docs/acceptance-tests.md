@@ -39,6 +39,8 @@ With an incorrect solution:
 
 - [ ] Code draft survives navigation between katas
 - [ ] Timer survives reload (timed assessment)
+- [ ] currentKataIndex survives reload (multi-Kata assessment)
+- [ ] Navigator completion markers restore after reload when Submit passed all tests
 - [ ] Reset restores starter code
 
 ## Results
