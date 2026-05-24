@@ -17,7 +17,8 @@ describe('loadKataForgeConfig', () => {
     expect(config.problemDirs).toEqual(['examples/problems']);
     expect(config.assessmentDirs).toEqual(['examples/assessments']);
     expect(config.branding.title).toBe('KataForge');
-    expect(config.judge.reexecPerTest).toBe(true);
+    expect(config.judge.sampleTimeoutMs).toBe(2000);
+    expect(config.judge.submitTimeoutMs).toBe(3000);
   });
 
   it('returns base config unchanged when local overlay file is missing', () => {
@@ -61,7 +62,6 @@ describe('loadKataForgeConfig', () => {
     expect(config.judge).toEqual({
       sampleTimeoutMs: 5000,
       submitTimeoutMs: 3000,
-      reexecPerTest: true,
     });
   });
 

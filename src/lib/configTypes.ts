@@ -16,7 +16,6 @@ export interface KataForgeBranding {
 export interface KataForgeJudgeConfig {
   sampleTimeoutMs: number;
   submitTimeoutMs: number;
-  reexecPerTest: boolean;
 }
 
 export interface KataForgeConfig {
@@ -69,7 +68,6 @@ export interface JudgeRequest {
   tests: TestCase[];
   timeoutMs: number;
   revealHiddenDetails: boolean;
-  reexecPerTest: boolean;
 }
 
 export interface ProblemScore {

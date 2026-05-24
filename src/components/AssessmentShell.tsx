@@ -37,7 +37,6 @@ interface AssessmentShellProps {
   judgeConfig: {
     sampleTimeoutMs: number;
     submitTimeoutMs: number;
-    reexecPerTest: boolean;
   };
   brandingTitle: string;
 }
@@ -122,7 +121,6 @@ export default function AssessmentShell({
           tests,
           timeoutMs,
           revealHiddenDetails: false,
-          reexecPerTest: judgeConfig.reexecPerTest,
         });
 
         if (response.results.length > 0) {

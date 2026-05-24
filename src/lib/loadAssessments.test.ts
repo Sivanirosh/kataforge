@@ -49,7 +49,6 @@ describe('loadAssessments', () => {
         pyodideVersion: '0.27.7',
         sampleTimeoutMs: 2000,
         submitTimeoutMs: 3000,
-        reexecPerTest: true,
       },
     });
     mockedLoadKataMap.mockResolvedValue({
