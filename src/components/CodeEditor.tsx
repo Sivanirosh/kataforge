@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef, type ComponentProps } from 'react';
 import Editor from '@monaco-editor/react';
 
 interface CodeEditorProps {
@@ -18,24 +18,21 @@ export default function CodeEditor({
 }: CodeEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handler = (event: KeyboardEvent) => {
-      const mod = event.metaKey || event.ctrlKey;
-      if (!mod || event.key !== 'Enter') return;
-      event.preventDefault();
-      if (event.shiftKey) {
-        onSubmit?.();
-      } else {
+  const handleMount = useCallback<NonNullable<ComponentProps<typeof Editor>['onMount']>>(
+    (editor, monaco) => {
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
         onRunSamples?.();
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [onRunSamples, onSubmit]);
-
-  const handleMount = useCallback(() => {
-    containerRef.current?.focus();
-  }, []);
+      });
+      editor.addCommand(
+        monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter,
+        () => {
+          onSubmit?.();
+        },
+      );
+      containerRef.current?.focus();
+    },
+    [onRunSamples, onSubmit],
+  );
 
   return (
     <div ref={containerRef} className="editor-pane">

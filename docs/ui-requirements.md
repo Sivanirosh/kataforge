@@ -49,5 +49,9 @@ Mobile: stacked columns.
 
 ## Keyboard shortcuts
 
+Shortcuts apply when the Monaco editor is focused:
+
 - Cmd/Ctrl + Enter: Run Samples
 - Cmd/Ctrl + Shift + Enter: Submit
+
+Toolbar buttons remain available when the editor is not focused.
