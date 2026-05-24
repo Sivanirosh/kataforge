@@ -60,6 +60,10 @@ export default function CursusShell({
     }
   }, [cursus.id, current?.key]);
 
+  useEffect(() => {
+    document.getElementById('cursus-boot')?.remove();
+  }, []);
+
   const completionPercent = useMemo(
     () => cursusCompletionPercent(cursus.id, totalSteps),
     [cursus.id, totalSteps, progressTick],

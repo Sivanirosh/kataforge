@@ -50,8 +50,14 @@ const kataMap = Object.fromEntries(
     <ThemeScript />
     <FontLinks />
     <title>{cursus.title} · Step {stepIndex + 1} · {config.branding.title}</title>
+    <style is:inline>
+      @view-transition {
+        navigation: none;
+      }
+    </style>
   </head>
-  <body>
+  <body class="cursus-step-page">
+    <div id="cursus-boot" class="cursus-boot-shell" aria-hidden="true"></div>
     <CursusShell
       client:only="react"
       cursus={cursus}

@@ -1455,6 +1455,14 @@ a {
   ::view-transition-new(root) {
     animation-duration: 0.2s;
   }
+
+  ::view-transition-group(root) {
+    background-color: #09090e;
+  }
+
+  html[data-theme='light'] ::view-transition-group(root) {
+    background-color: #fafafa;
+  }
 }
 
 .page-main {
