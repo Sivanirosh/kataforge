@@ -16,6 +16,7 @@ import {
   saveResults,
   saveSession,
   startFreshSession,
+  hasAssessmentSession,
   type SessionState,
 } from './storage';
 
@@ -167,5 +168,44 @@ describe('storage', () => {
 
     clearAssessmentAttempt('full-examples', ['fizzbuzz']);
     expect(loadSession('full-examples')).toBeNull();
+  });
+
+  it('reports remaining time after reload from saved session startedAt', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-01T00:00:00Z'));
+
+    const session: SessionState = {
+      assessmentId: 'full-examples',
+      startedAt: Date.now(),
+      durationMinutes: 30,
+      currentKataIndex: 0,
+      submitted: false,
+    };
+    saveSession(session);
+
+    vi.setSystemTime(new Date('2026-01-01T00:05:00Z'));
+    const reloaded = loadSession('full-examples')!;
+    expect(getRemainingMs(reloaded)).toBe(25 * 60 * 1000);
+    expect(isTimerExpired(reloaded)).toBe(false);
+
+    vi.useRealTimers();
+  });
+
+  it('reset clears saved draft so starter code is used', () => {
+    saveDraft('two-sum', 'user edited code');
+    clearDraft('two-sum');
+    expect(loadDraft('two-sum')).toBeNull();
+  });
+
+  it('detects when an assessment session exists', () => {
+    expect(hasAssessmentSession('demo')).toBe(false);
+    saveSession({
+      assessmentId: 'demo',
+      startedAt: Date.now(),
+      durationMinutes: null,
+      currentKataIndex: 0,
+      submitted: false,
+    });
+    expect(hasAssessmentSession('demo')).toBe(true);
   });
 });

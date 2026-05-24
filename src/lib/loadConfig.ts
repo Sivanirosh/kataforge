@@ -9,6 +9,9 @@ function loadLocalOverlay(): Partial<KataForgeConfig> {
   try {
     return JSON.parse(fs.readFileSync(localPath, 'utf-8')) as Partial<KataForgeConfig>;
   } catch {
+    console.warn(
+      '[KataForge] Failed to parse kataforge.local.json — using base config. Check JSON syntax.',
+    );
     return {};
   }
 }

@@ -38,10 +38,10 @@ With an incorrect solution:
 ## Persistence
 
 - [x] Code draft survives navigation between katas *(e2e: `e2e/smoke.spec.ts`)*
-- [x] Timer survives reload (timed assessment) *(manual; same storage layer covered by unit tests)*
+- [x] Timer survives reload (timed assessment) *(e2e: `e2e/smoke.spec.ts`)*
 - [x] currentKataIndex survives reload (multi-Kata assessment) *(unit test: `storage.test.ts`)*
 - [x] Navigator completion markers restore after reload when Submit passed all tests *(PRD-5)*
-- [ ] Reset restores starter code
+- [x] Reset restores starter code *(unit test: `storage.test.ts` — clearDraft)*
 
 ## Results
 

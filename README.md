@@ -26,6 +26,8 @@ cp kataforge.local.example.json kataforge.local.json
 
 Place private content under `private/problems/` and `private/assessments/`. See [CONTEXT-MAP.md](./CONTEXT-MAP.md).
 
+If `kataforge.local.json` contains invalid JSON, KataForge logs a warning and falls back to the committed base config.
+
 ## Scripts
 
 | Command | Description |

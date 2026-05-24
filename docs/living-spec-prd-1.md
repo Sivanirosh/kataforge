@@ -43,7 +43,7 @@ Establish a dual-layer KataForge repo: committed generic framework plus gitignor
 | #19 | Add GitHub Actions CI | **done** | Commit `2b6d5f8`, `.github/workflows/ci.yml` |
 | #20 | Add MIT LICENSE file | **done** | Commit `8af238e` |
 | #21 | Expand config overlay merge tests | **done** | Commit `40fba82`, 5 tests |
-| #23 | Fail loudly on malformed local overlay JSON | **blocked** | Requires human: warn vs fail vs strict flag |
+| #23 | Fail loudly on malformed local overlay JSON | **done** | Console warn + base config (TDD slice) |
 
 ## Scout Dialogue Log
 

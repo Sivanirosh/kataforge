@@ -72,4 +72,17 @@ describe('loadKataForgeConfig', () => {
 
     expect(existsSpy).toHaveBeenCalledWith(localConfigPath);
   });
+
+  it('warns and returns base config when overlay JSON is malformed', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue('{ not valid json');
+
+    const config = loadKataForgeConfigSync();
+
+    expect(config.problemDirs).toEqual(['examples/problems']);
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Failed to parse kataforge.local.json'),
+    );
+  });
 });

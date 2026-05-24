@@ -66,4 +66,30 @@ test.describe('acceptance smoke', () => {
 
     await expect(page.locator('.monaco-editor')).toContainText('draft_marker');
   });
+
+  test('timed session keeps remaining time after reload', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => {
+      const startedAt = Date.now() - 5 * 60 * 1000;
+      localStorage.setItem(
+        'kataforge:session:full-examples',
+        JSON.stringify({
+          assessmentId: 'full-examples',
+          startedAt,
+          durationMinutes: 30,
+          currentKataIndex: 0,
+          submitted: false,
+        }),
+      );
+    });
+
+    await page.goto('/assessment/full-examples');
+    await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible({
+      timeout: 45_000,
+    });
+    await expect(page.locator('.timer')).toHaveAttribute(
+      'aria-label',
+      /^Time remaining 2[45]:/,
+    );
+  });
 });
