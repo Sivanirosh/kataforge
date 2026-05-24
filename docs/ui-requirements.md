@@ -9,7 +9,7 @@ Clean coding-assessment layout: prompt left, editor right, test output below the
 ### Landing
 
 - Product title and tagline (from config)
-- List of available Assessments
+- List of available Assessments with Start, or Resume + Start Over when a session exists
 - Links to practice individual Katas
 
 ### Assessment

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import AssessmentStartActions from '../components/AssessmentStartActions';
 import { loadKataForgeConfig } from '../lib/loadConfig';
 import { loadAssessments } from '../lib/loadAssessments';
 import { loadAllKatas } from '../lib/loadKatas';
@@ -34,9 +35,12 @@ const katas = await loadAllKatas();
                   ? ` · ${assessment.durationMinutes} min`
                   : ' · untimed'}
               </p>
-              <a class="btn btn-primary" href={`/assessment/${assessment.id}`}>
-                Start
-              </a>
+              <AssessmentStartActions
+                client:load="react"
+                assessmentId={assessment.id}
+                durationMinutes={assessment.durationMinutes}
+                kataIds={assessment.kataIds}
+              />
             </li>
           ))}
         </ul>
