@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+import { loadKataForgeConfig } from '../lib/loadConfig';
+import { loadAssessments } from '../lib/loadAssessments';
+import { loadAllKatas } from '../lib/loadKatas';
+
+const config = await loadKataForgeConfig();
+const assessments = await loadAssessments();
+const katas = await loadAllKatas();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{config.branding.title}</title>
+  </head>
+  <body>
+    <main class="landing">
+      <header class="landing-header">
+        <h1>{config.branding.title}</h1>
+        <p class="tagline">{config.branding.tagline}</p>
+      </header>
+
+      <section class="landing-section">
+        <h2>Assessments</h2>
+        <ul class="card-list">
+          {assessments.map((assessment) => (
+            <li class="card">
+              <h3>{assessment.title}</h3>
+              <p>
+                {assessment.kataIds.length} katas
+                {assessment.durationMinutes
+                  ? ` · ${assessment.durationMinutes} min`
+                  : ' · untimed'}
+              </p>
+              <a class="btn btn-primary" href={`/assessment/${assessment.id}`}>
+                Start
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="landing-section">
+        <h2>Practice a Kata</h2>
+        <ul class="card-list">
+          {katas.map((kata) => (
+            <li class="card">
+              <h3>{kata.title}</h3>
+              <p>
+                <span class={`badge badge-${kata.difficulty}`}>{kata.difficulty}</span>
+                {' '}
+                {kata.estimatedMinutes} min
+              </p>
+              <a class="btn btn-secondary" href={`/problem/${kata.id}`}>
+                Open
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

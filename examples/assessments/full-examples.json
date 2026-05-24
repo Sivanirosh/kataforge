@@ -1,0 +1,6 @@
+{
+  "id": "full-examples",
+  "title": "Example Katas",
+  "durationMinutes": 30,
+  "kataIds": ["two-sum", "fizzbuzz"]
+}

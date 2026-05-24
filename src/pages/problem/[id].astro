@@ -1,0 +1,41 @@
+---
+import AssessmentShell from '../../components/AssessmentShell';
+import { loadKataForgeConfig } from '../../lib/loadConfig';
+import { loadAllKatas } from '../../lib/loadKatas';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const katas = await loadAllKatas();
+  return katas.map((kata) => ({
+    params: { id: kata.id },
+    props: { kata },
+  }));
+}
+
+const { kata } = Astro.props;
+const config = await loadKataForgeConfig();
+
+const assessment = {
+  id: `practice-${kata.id}`,
+  title: kata.title,
+  durationMinutes: null,
+  kataIds: [kata.id],
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{kata.title} · {config.branding.title}</title>
+  </head>
+  <body>
+    <AssessmentShell
+      client:only="react"
+      assessment={assessment}
+      katas={[kata]}
+      judgeConfig={config.judge}
+      brandingTitle={config.branding.title}
+    />
+  </body>
+</html>

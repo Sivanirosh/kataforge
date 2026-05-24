@@ -1,0 +1,9 @@
+private/
+kataforge.local.ts
+kataforge.local.json
+.env
+node_modules/
+dist/
+.astro/
+sources/repos/
+sources/opensrc/

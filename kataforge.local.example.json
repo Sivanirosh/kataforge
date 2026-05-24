@@ -1,0 +1,4 @@
+{
+  "problemDirs": ["examples/problems", "private/problems"],
+  "assessmentDirs": ["examples/assessments", "private/assessments"]
+}
