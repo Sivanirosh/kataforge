@@ -10,6 +10,7 @@ import type { LessonData } from '../lib/loadLessons';
 import type { KataData } from './AssessmentShell';
 import CursusKataStep from './CursusKataStep';
 import LessonView from './LessonView';
+import ThemeToggle from './ThemeToggle';
 import {
   cursusCompletionPercent,
   ensureCursusProgress,
@@ -87,37 +88,41 @@ export default function CursusShell({
   }, [current, cursus.id]);
 
   if (!current) {
-    return <p className="p-6 text-foreground">Step not found.</p>;
+    return <p className="cursus-empty">Step not found.</p>;
   }
 
   const currentComplete = isCursusStepComplete(cursus.id, current.key);
   const canGoNext = currentComplete && currentGlobalIndex < flatSteps.length - 1;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="flex items-center justify-between border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
-        <div>
-          <a href="/" className="text-sm text-neutral-500 hover:text-primary">
+    <div className="cursus-shell">
+      <header className="app-header">
+        <div className="header-brand">
+          <a href="/" className="brand">
             {brandingTitle}
           </a>
-          <h1 className="text-lg font-semibold">{cursus.title}</h1>
+          <span className="header-sep" aria-hidden="true">
+            /
+          </span>
+          <span className="assessment-name">{cursus.title}</span>
         </div>
-        <div className="text-right text-sm">
-          <div className="font-medium">{completionPercent}% complete</div>
-          <div className="text-neutral-500">
+        <div className="cursus-progress" aria-live="polite">
+          <span className="cursus-progress-value">{completionPercent}% complete</span>
+          <span className="cursus-progress-detail">
             Step {currentGlobalIndex + 1} of {totalSteps}
-          </div>
+          </span>
+        </div>
+        <div className="header-actions">
+          <ThemeToggle />
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
-        <aside className="hidden w-72 shrink-0 overflow-y-auto border-r border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-950 md:block">
+      <div className="cursus-layout">
+        <aside className="cursus-sidebar" aria-label="Cursus modules">
           {cursus.modules.map((mod) => (
-            <section key={mod.id} className="mb-6">
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-                {mod.title}
-              </h2>
-              <ul className="space-y-1">
+            <section key={mod.id} className="cursus-module">
+              <h2 className="cursus-module-title">{mod.title}</h2>
+              <ul className="cursus-step-list">
                 {mod.steps.map((step, stepIndex) => {
                   const flat = flatSteps.find(
                     (item) => item.moduleId === mod.id && item.stepIndex === stepIndex,
@@ -130,15 +135,14 @@ export default function CursusShell({
                     <li key={flat.key}>
                       <a
                         href={`/cursus/${cursus.id}/step/${flat.globalIndex}`}
-                        className={`block rounded-md px-3 py-2 text-sm ${
-                          active
-                            ? 'bg-primary text-white'
-                            : 'text-foreground hover:bg-neutral-100 dark:hover:bg-neutral-900'
-                        }`}
+                        className={`cursus-step-link${active ? ' active' : ''}${done ? ' done' : ''}`}
+                        aria-current={active ? 'step' : undefined}
                       >
-                        <span className="mr-2">{done ? '✓' : '○'}</span>
-                        <span className="text-xs uppercase text-inherit opacity-70">{kind}</span>
-                        <div className="font-medium">{stepLabel(flat, lessonMap, kataMap)}</div>
+                        <span className="cursus-step-kind">{kind}</span>
+                        <span className="cursus-step-name">{stepLabel(flat, lessonMap, kataMap)}</span>
+                        <span className="cursus-step-status" aria-hidden="true">
+                          {done ? '✓' : '○'}
+                        </span>
                       </a>
                     </li>
                   );
@@ -148,8 +152,8 @@ export default function CursusShell({
           ))}
         </aside>
 
-        <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-6">
+        <div className="cursus-main">
+          <div className="cursus-content">
             {current.step.type === 'lesson' ? (
               <LessonView
                 title={lessonMap[current.step.lessonId]?.title ?? current.step.lessonId}
@@ -170,14 +174,14 @@ export default function CursusShell({
                 onKataSubmitSuccess={handleKataSuccess}
               />
             ) : (
-              <p>Kata not found: {current.step.kataId}</p>
+              <p className="cursus-empty">Kata not found: {current.step.kataId}</p>
             )}
           </div>
 
-          <footer className="flex items-center justify-between border-t border-neutral-200 px-6 py-4 dark:border-neutral-800">
+          <footer className="cursus-footer">
             <button
               type="button"
-              className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium disabled:opacity-40"
+              className="btn btn-secondary"
               disabled={currentGlobalIndex === 0}
               onClick={() => navigateTo(currentGlobalIndex - 1)}
             >
@@ -185,14 +189,14 @@ export default function CursusShell({
             </button>
             <button
               type="button"
-              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
+              className="btn btn-primary"
               disabled={!canGoNext}
               onClick={() => navigateTo(currentGlobalIndex + 1)}
             >
               Next
             </button>
           </footer>
-        </main>
+        </div>
       </div>
     </div>
   );

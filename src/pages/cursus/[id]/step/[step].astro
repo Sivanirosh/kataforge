@@ -1,11 +1,12 @@
 ---
+import '../../../../styles/global.css';
 import CursusShell from '../../../../components/CursusShell';
 import FontLinks from '../../../../components/FontLinks.astro';
 import ThemeScript from '../../../../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../../../../lib/loadConfig';
+import { collectCursusKataIds, collectCursusLessonIds } from '../../../../lib/cursusSteps';
 import { loadLessonMap } from '../../../../lib/loadLessons';
 import { loadKataMap } from '../../../../lib/loadKatas';
-import '../../../../styles/cursus.css';
 
 export async function getStaticPaths() {
   const { loadAllCursus } = await import('../../../../lib/loadCursus');
@@ -28,8 +29,18 @@ export async function getStaticPaths() {
 
 const { cursus, stepIndex } = Astro.props;
 const config = await loadKataForgeConfig();
-const lessonMap = await loadLessonMap();
-const kataMap = await loadKataMap();
+const allLessons = await loadLessonMap();
+const allKatas = await loadKataMap();
+const lessonMap = Object.fromEntries(
+  collectCursusLessonIds(cursus)
+    .map((id) => [id, allLessons[id]])
+    .filter(([, lesson]) => Boolean(lesson)),
+);
+const kataMap = Object.fromEntries(
+  collectCursusKataIds(cursus)
+    .map((id) => [id, allKatas[id]])
+    .filter(([, kata]) => Boolean(kata)),
+);
 ---
 
 <html lang="en">
@@ -40,7 +51,7 @@ const kataMap = await loadKataMap();
     <FontLinks />
     <title>{cursus.title} · Step {stepIndex + 1} · {config.branding.title}</title>
   </head>
-  <body class="cursus-page">
+  <body>
     <CursusShell
       client:only="react"
       cursus={cursus}

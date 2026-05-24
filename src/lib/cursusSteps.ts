@@ -41,3 +41,27 @@ export function countCursusSteps(cursus: Cursus): number {
 export function findModuleForStep(cursus: Cursus, moduleId: string): CursusModule | undefined {
   return cursus.modules.find((mod) => mod.id === moduleId);
 }
+
+export function collectCursusLessonIds(cursus: Cursus): string[] {
+  const ids = new Set<string>();
+  for (const mod of cursus.modules) {
+    for (const step of mod.steps) {
+      if (step.type === 'lesson') {
+        ids.add(step.lessonId);
+      }
+    }
+  }
+  return [...ids];
+}
+
+export function collectCursusKataIds(cursus: Cursus): string[] {
+  const ids = new Set<string>();
+  for (const mod of cursus.modules) {
+    for (const step of mod.steps) {
+      if (step.type === 'kata') {
+        ids.add(step.kataId);
+      }
+    }
+  }
+  return [...ids];
+}

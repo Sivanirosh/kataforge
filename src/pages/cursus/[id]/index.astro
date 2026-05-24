@@ -1,11 +1,10 @@
 ---
+import '../../../styles/global.css';
 import FontLinks from '../../../components/FontLinks.astro';
 import SiteNav from '../../../components/SiteNav.astro';
 import ThemeScript from '../../../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../../../lib/loadConfig';
-import { loadCursusById } from '../../../lib/loadCursus';
 import { countCursusSteps } from '../../../lib/cursusSteps';
-import '../../../styles/cursus.css';
 
 export async function getStaticPaths() {
   const { loadAllCursus } = await import('../../../lib/loadCursus');
@@ -29,45 +28,47 @@ const totalSteps = countCursusSteps(cursus);
     <FontLinks />
     <title>{cursus.title} · {config.branding.title}</title>
   </head>
-  <body class="cursus-page bg-background text-foreground">
+  <body>
     <SiteNav title={config.branding.title} />
-    <main class="mx-auto max-w-3xl px-6 py-10">
-      <p class="text-sm font-medium uppercase tracking-wide text-primary">Cursus</p>
-      <h1 class="mt-2 text-3xl font-semibold">{cursus.title}</h1>
-      <p class="mt-4 text-neutral-600 dark:text-neutral-300">{cursus.description}</p>
-      {cursus.estimatedHours && (
-        <p class="mt-2 text-sm text-neutral-500">Estimated {cursus.estimatedHours} hours</p>
-      )}
-      {cursus.prerequisites.length > 0 && (
-        <div class="mt-6">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-500">Prerequisites</h2>
-          <ul class="mt-2 list-disc pl-5 text-sm">
-            {cursus.prerequisites.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
+    <main class="landing page-main">
+      <section class="landing-section">
+        <span class="cursus-overview-badge">Cursus</span>
+        <div class="section-header">
+          <h2>{cursus.title}</h2>
         </div>
-      )}
-      <div class="mt-8">
-        <h2 class="text-lg font-semibold">Modules</h2>
-        <ul class="mt-3 space-y-3">
+        <p>{cursus.description}</p>
+        {cursus.estimatedHours && (
+          <p class="cursus-meta-line">Estimated {cursus.estimatedHours} hours</p>
+        )}
+        {cursus.prerequisites.length > 0 && (
+          <div class="cursus-prerequisites">
+            <h3>Prerequisites</h3>
+            <ul>
+              {cursus.prerequisites.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div class="cursus-modules-block">
+          <h3>Modules</h3>
           {cursus.modules.map((mod) => (
-            <li class="rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
-              <h3 class="font-medium">{mod.title}</h3>
-              {mod.summary && <p class="mt-1 text-sm text-neutral-500">{mod.summary}</p>}
-              <p class="mt-2 text-xs text-neutral-500">{mod.steps.length} steps</p>
-            </li>
+            <div class="cursus-module-card">
+              <h3>{mod.title}</h3>
+              {mod.summary && <p>{mod.summary}</p>}
+              <p>{mod.steps.length} steps</p>
+            </div>
           ))}
-        </ul>
-      </div>
-      <div class="mt-10">
-        <a
-          class="inline-flex rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700"
-          href={`/cursus/${cursus.id}/step/0`}
-        >
-          Start Cursus ({totalSteps} steps)
-        </a>
-      </div>
+        </div>
+        <div class="card-actions">
+          <a class="btn btn-primary btn-lg" href={`/cursus/${cursus.id}/step/0`}>
+            Start Cursus ({totalSteps} steps)
+          </a>
+          <a class="btn btn-secondary" href="/cursus">
+            All Cursus
+          </a>
+        </div>
+      </section>
     </main>
   </body>
 </html>

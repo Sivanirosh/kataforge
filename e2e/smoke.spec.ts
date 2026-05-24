@@ -214,9 +214,10 @@ test.describe('acceptance smoke', () => {
   test('cursus lesson continue persists progress', async ({ page }) => {
     test.setTimeout(60_000);
     await page.goto('/cursus/build-ai-agent-harness/step/0');
-    await expect(page.getByRole('heading', { name: 'From Chat to Agent' })).toBeVisible({
+    await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible({
       timeout: 45_000,
     });
+    await expect(page.locator('.cursus-lesson-title')).toHaveText('From Chat to Agent');
     await page.getByRole('button', { name: 'Continue' }).click();
     await expect(page).toHaveURL(/\/cursus\/build-ai-agent-harness\/step\/1$/);
 

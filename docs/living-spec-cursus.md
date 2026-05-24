@@ -9,7 +9,7 @@ Add Vercel Academy–style **Cursus** routes with Module 1 (Agent Loop): three l
 | ID | Decision | Rationale |
 |----|----------|-----------|
 | ADR-0001 | Cursus separate from Assessment | Mixed step types; different progress model |
-| ADR-0002 | Tailwind scoped to `/cursus/*` | Preserve vanilla CSS for assessment workspace |
+| ADR-0002 | Cursus UI uses shared `global.css` | Matches landing/assessment visual system |
 | AD-C1 | Flat global step index in URLs | `/cursus/{id}/step/{n}` simplifies navigation |
 | AD-C2 | Step key `{moduleId}:{stepIndex}` in progress | Stable across content edits within a module |
 

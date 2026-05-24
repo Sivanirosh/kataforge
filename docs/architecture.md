@@ -16,7 +16,7 @@ src/
   components/            # React islands (incl. CursusShell)
   lib/                   # schema, compare, storage, scoring, config, loaders
   workers/               # pyodideJudge.worker.ts
-  styles/                # global.css (assessment), cursus.css (Tailwind)
+  styles/                # global.css (shared by assessment + cursus)
 examples/
   problems/              # generic sample katas
   assessments/           # generic assessment configs

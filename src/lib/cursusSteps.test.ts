@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Cursus } from './cursusSchema';
-import { flattenCursusSteps, getFlatStep, stepKey } from './cursusSteps';
+import { flattenCursusSteps, getFlatStep, stepKey, collectCursusKataIds, collectCursusLessonIds } from './cursusSteps';
 
 const sampleCursus: Cursus = {
   id: 'demo',
@@ -37,5 +37,10 @@ describe('cursusSteps', () => {
     const step = getFlatStep(sampleCursus, 1);
     expect(step?.step.type).toBe('kata');
     expect(step?.step).toEqual({ type: 'kata', kataId: 'k1' });
+  });
+
+  it('collects lesson and kata ids referenced by the cursus', () => {
+    expect(collectCursusLessonIds(sampleCursus)).toEqual(['l1', 'l2']);
+    expect(collectCursusKataIds(sampleCursus)).toEqual(['k1']);
   });
 });

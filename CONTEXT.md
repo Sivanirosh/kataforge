@@ -62,7 +62,7 @@ _Avoid_: Enrollment, checkpoint
 - The Judge re-executes candidate code for each TestCase (maximum isolation).
 - Per-TestCase timeouts: 2000 ms for RunSamples, 3000 ms for Submit; worker is terminated and recreated on timeout.
 - Committed UI branding is "KataForge"; ProblemPack overlays may customize locally.
-- Cursus routes use Tailwind v4 + extracted Vercel Academy tokens; Assessment workspace stays vanilla CSS (see ADR-0002).
+- Cursus routes share the same vanilla CSS design system as assessments and landing (see `global.css`).
 
 ## Example dialogue
 
