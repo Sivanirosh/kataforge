@@ -11,6 +11,7 @@ Ranked references for KataForge MVP implementation. Ingest rows approved for cod
 | 5 | `coderscreen/coderscreen` | vendor | Assessment flow, editor layout, session UX | vendor | GPL-3.0 — study only, no code copy |
 | 6 | `engineer-man/piston` | vendor | REST execute API for future remote judge | vendor | MIT; post-MVP hidden tests |
 | 7 | `judge0/judge0` | vendor | Sandbox execution API contract | vendor | GPL-3.0 — study only |
+| 8 | `Manavarya09/design-extract` | vendor | `designlang` CLI, DTCG tokens, shadcn theme emit | vendor | MIT; Cursus UI extraction from Vercel Academy |
 
 ## Bibliography (no ingest)
 
@@ -24,6 +25,7 @@ Ranked references for KataForge MVP implementation. Ingest rows approved for cod
 rg "client:only" sources/opensrc/links/withastro_astro
 rg "loadPyodide" sources/opensrc/links/pyodide_pyodide
 rg "defineCollection" sources/opensrc/links/withastro_astro
+npx designlang https://vercel.com/academy/build-ai-agent-harness --full --dark --depth 1
 ```
 
 ## License note

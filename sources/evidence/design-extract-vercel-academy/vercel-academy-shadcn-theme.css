@@ -1,0 +1,23 @@
+/* shadcn/ui Theme — extracted from https://vercel.com/academy/build-ai-agent-harness */
+/* Paste into your globals.css */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
+    --primary: 216 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 208 100% 66%;
+    --secondary-foreground: 0 0% 0%;
+    --accent: 212 100% 48%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 40 100% 97%;
+    --muted-foreground: 0 0% 9%;
+    --border: 0 0% 40%;
+    --radius: 8px;
+  }
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 93%;
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "targets": [
+    {
+      "type": "docs",
+      "url": "https://vercel.com/docs/functions/sandbox",
+      "anchor": "Vercel Sandbox"
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://vercel.com/docs/functions/sandbox",
+      "type": "docs",
+      "intent": {
+        "type": "docs",
+        "confidence": 0.9,
+        "path": "/docs/functions/sandbox",
+        "title": "Vercel Sandbox",
+        "description": "",
+        "signals": [
+          {
+            "kind": "url",
+            "type": "docs",
+            "weight": 0.9
+          }
+        ],
+        "alternates": [],
+        "needsSmart": false
+      },
+      "error": null
+    }
+  ],
+  "consistency": {
+    "pairwise": [],
+    "drift": {},
+    "shared": {}
+  }
+}

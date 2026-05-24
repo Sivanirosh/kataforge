@@ -1,0 +1,88 @@
+{
+  "openGraph": {
+    "title": "Dashboard – Vercel",
+    "image": "https://vercel.com/api/product-og?product=dashboard"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Dashboard – Vercel",
+    "image": "https://vercel.com/api/product-og?product=dashboard"
+  },
+  "description": null,
+  "canonical": null,
+  "themeColor": "#FFFFFF",
+  "viewport": "width=device-width, initial-scale=1, maximum-scale=1",
+  "favicons": [
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-57x57.png",
+      "sizes": "57x57",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-60x60.png",
+      "sizes": "60x60",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-72x72.png",
+      "sizes": "72x72",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-76x76.png",
+      "sizes": "76x76",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-114x114.png",
+      "sizes": "114x114",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-120x120.png",
+      "sizes": "120x120",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-144x144.png",
+      "sizes": "144x144",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-152x152.png",
+      "sizes": "152x152",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-180x180.png",
+      "sizes": "180x180",
+      "type": ""
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-256x256.png",
+      "sizes": "256x256",
+      "type": ""
+    }
+  ],
+  "manifest": "https://vercel.com/manifest.webmanifest",
+  "structuredData": [],
+  "score": {
+    "hasOg": true,
+    "hasTwitter": true,
+    "hasDescription": false,
+    "hasCanonical": false,
+    "hasStructuredData": false,
+    "hasFavicon": true,
+    "hasThemeColor": true
+  }
+}

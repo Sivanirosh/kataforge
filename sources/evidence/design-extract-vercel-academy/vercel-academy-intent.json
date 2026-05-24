@@ -1,0 +1,140 @@
+{
+  "pageIntent": {
+    "type": "legal",
+    "confidence": 0.4,
+    "path": "/academy/build-ai-agent-harness",
+    "title": "Build Your Own AI Coding Agent Harness | Vercel Academy",
+    "description": "",
+    "signals": [
+      {
+        "kind": "dom",
+        "type": "legal",
+        "weight": 0.4
+      }
+    ],
+    "alternates": [],
+    "needsSmart": true
+  },
+  "sectionRoles": {
+    "sections": [
+      {
+        "index": 0,
+        "tag": "header",
+        "role": "cta",
+        "subrole": null,
+        "confidence": 0.75,
+        "heading": null,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 64
+        },
+        "buttonCount": 2,
+        "cardCount": 2,
+        "slots": {
+          "ctaCount": 2,
+          "lede": "Sign Up"
+        },
+        "needsSmart": false
+      },
+      {
+        "index": 1,
+        "tag": "nav",
+        "role": "nav",
+        "subrole": null,
+        "confidence": 0.9,
+        "heading": null,
+        "bounds": {
+          "x": 24,
+          "y": 0,
+          "w": 1232,
+          "h": 64
+        },
+        "buttonCount": 2,
+        "cardCount": 1,
+        "slots": {
+          "ctaCount": 2,
+          "lede": "Sign Up"
+        },
+        "needsSmart": false
+      },
+      {
+        "index": 2,
+        "tag": "nav",
+        "role": "nav",
+        "subrole": null,
+        "confidence": 0.9,
+        "heading": null,
+        "bounds": {
+          "x": 1180,
+          "y": 16,
+          "w": 76,
+          "h": 32
+        },
+        "buttonCount": 2,
+        "cardCount": 0,
+        "slots": {
+          "ctaCount": 2,
+          "lede": "Sign Up"
+        },
+        "needsSmart": false
+      },
+      {
+        "index": 3,
+        "tag": "main",
+        "role": "hero",
+        "subrole": null,
+        "confidence": 0.85,
+        "heading": "Log in to Vercel",
+        "bounds": {
+          "x": 0,
+          "y": 64,
+          "w": 1280,
+          "h": 736
+        },
+        "buttonCount": 19,
+        "cardCount": 6,
+        "slots": {
+          "heading": "Log in to Vercel",
+          "ctaCount": 19,
+          "lede": "Log in to Vercel\nContinue with Email\nContinue with Google\nContinue with GitHub\nContinue with Apple\nContinue with SAML SSO\nContinue with Passkey\nShow other options"
+        },
+        "needsSmart": false
+      },
+      {
+        "index": 4,
+        "tag": "footer",
+        "role": "footer",
+        "subrole": null,
+        "confidence": 0.95,
+        "heading": null,
+        "bounds": {
+          "x": 0,
+          "y": 736,
+          "w": 1280,
+          "h": 64
+        },
+        "buttonCount": 0,
+        "cardCount": 2,
+        "slots": {
+          "lede": "Terms\nPrivacy Policy"
+        },
+        "needsSmart": false
+      }
+    ],
+    "counts": {
+      "cta": 1,
+      "nav": 2,
+      "hero": 1,
+      "footer": 1
+    },
+    "readingOrder": [
+      "cta",
+      "nav",
+      "nav",
+      "hero",
+      "footer"
+    ]
+  }
+}

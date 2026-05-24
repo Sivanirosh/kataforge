@@ -1,0 +1,139 @@
+{
+  "url": "https://vercel.com/legal/terms",
+  "path": "/legal/terms",
+  "added": {},
+  "changed": {
+    "primitive": {
+      "color": {
+        "brand": {
+          "primary": {
+            "$value": "#0072f5"
+          }
+        },
+        "neutral": {
+          "n100": {
+            "$value": "#171717"
+          },
+          "n200": {
+            "$value": "#ebebeb"
+          },
+          "n300": {
+            "$value": "#4d4d4d"
+          },
+          "n400": {
+            "$value": "#a8a8a8"
+          },
+          "n500": {
+            "$value": "#666666"
+          },
+          "n600": {
+            "$value": "#000000"
+          },
+          "n700": {
+            "$value": "#ffffff"
+          },
+          "n800": {
+            "$value": "#8f8f8f"
+          }
+        },
+        "background": {
+          "bg0": {
+            "$value": "#fafafa"
+          }
+        },
+        "text": {
+          "text2": {
+            "$value": "#4d4d4d"
+          },
+          "text3": {
+            "$value": "#ffffff"
+          },
+          "text4": {
+            "$value": "#666666"
+          },
+          "text5": {
+            "$value": "#0070f3"
+          },
+          "text6": {
+            "$value": "#111111"
+          },
+          "text7": {
+            "$value": "#8f8f8f"
+          }
+        }
+      },
+      "spacing": {
+        "s0": {
+          "$value": "1px"
+        },
+        "s1": {
+          "$value": "22px"
+        },
+        "s2": {
+          "$value": "32px"
+        },
+        "s3": {
+          "$value": "40px"
+        },
+        "s4": {
+          "$value": "48px"
+        },
+        "s5": {
+          "$value": "64px"
+        },
+        "s6": {
+          "$value": "90px"
+        }
+      },
+      "radius": {
+        "r0": {
+          "$value": "2px"
+        },
+        "r1": {
+          "$value": "6px"
+        },
+        "r2": {
+          "$value": "50px"
+        },
+        "r3": {
+          "$value": "100px"
+        },
+        "r4": {
+          "$value": "9999px"
+        }
+      },
+      "shadow": {
+        "sh0": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px"
+        },
+        "sh1": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(235, 235, 235) 0px 0px 0px 1px"
+        },
+        "sh2": {
+          "$value": "rgb(235, 235, 235) 0px 0px 0px 1px"
+        },
+        "sh3": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px inset"
+        },
+        "sh4": {
+          "$value": "rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px"
+        },
+        "sh5": {
+          "$value": "rgb(235, 235, 235) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+        }
+      }
+    },
+    "semantic": {
+      "typography": {
+        "body": {
+          "$value": {
+            "fontFamily": "Geist",
+            "fontSize": "56px",
+            "fontWeight": "600",
+            "lineHeight": "56px"
+          }
+        }
+      }
+    }
+  }
+}
