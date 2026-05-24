@@ -101,6 +101,7 @@ describe('ResultsPage', () => {
             },
           }}
           durationMinutes={null}
+          retryHref="/assessment/demo"
         />,
       );
     });

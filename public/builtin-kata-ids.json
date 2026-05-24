@@ -1,0 +1,11 @@
+[
+  "agent-loop-bash-gates",
+  "agent-loop-chatbot",
+  "agent-loop-read-grep",
+  "agent-workflow-scheduler",
+  "fizzbuzz",
+  "largest-square-interval-blob",
+  "simulation-log-summary",
+  "tool-capability-bitmask",
+  "two-sum"
+]

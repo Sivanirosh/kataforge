@@ -36,6 +36,10 @@ _Avoid_: Autosave, cache
 A local overlay of Katas and Assessments outside the public repository (see CONTEXT-MAP.md).
 _Avoid_: Plugin, extension
 
+**UserKata**:
+A Kata imported at runtime via JSON and stored in the browser; appears on the hub alongside built-in Katas.
+_Avoid_: Custom problem, imported problem
+
 **Cursus**:
 An ordered learning path of Modules mixing Lessons and Kata drills; progress is tracked per step, not as a single Assessment score.
 _Avoid_: Course, track (use in generic prose only)
@@ -70,6 +74,10 @@ _Avoid_: Enrollment, checkpoint
 
 **Dev:** RunSamples will skip it; Submit will run it and show pass/fail only in the TestPanel.
 
-**Author:** If I start the quick-practice Assessment, is that one Kata or four?
+**Author:** If I start practice for Two Sum, is that one kata or a full assessment?
 
-**Dev:** One. The four-Kata timed Assessment lives in your private ProblemPack config, not in the generic repo.
+**Dev:** One kata at `/problem/two-sum`. Results and progress use the kata id (`/results/two-sum`). Multi-kata timed assessments live in assessment JSON (e.g. `private/assessments/nc-60min.json`).
+
+**Author:** I generated a kata with ChatGPT — how do I add it?
+
+**Dev:** Paste the JSON on the Practice hub (**Import kata**) to import a **UserKata** (instant, browser-only). For git-tracked content, add Markdown under a **ProblemPack** directory and rebuild.

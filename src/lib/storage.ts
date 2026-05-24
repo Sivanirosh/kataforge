@@ -54,8 +54,48 @@ export function saveResults(kataId: string, results: TestResult[]): void {
   localStorage.setItem(key(`results:${kataId}`), JSON.stringify(results));
 }
 
+const LEGACY_ASSESSMENT_ID_ALIASES: Record<string, string> = {
+  'practice-two-sum': 'two-sum',
+  'quick-practice': 'two-sum',
+};
+
+/** Copy session/score keys from retired practice assessment ids when present. */
+export function migrateLegacyAssessmentStorage(): void {
+  if (typeof localStorage === 'undefined') return;
+
+  for (const [legacyId, canonicalId] of Object.entries(LEGACY_ASSESSMENT_ID_ALIASES)) {
+    for (const suffix of ['session', 'score'] as const) {
+      const legacyKey = key(`${suffix}:${legacyId}`);
+      const canonicalKey = key(`${suffix}:${canonicalId}`);
+      const legacyValue = localStorage.getItem(legacyKey);
+      if (!legacyValue || localStorage.getItem(canonicalKey)) continue;
+
+      if (suffix === 'session') {
+        try {
+          const session = JSON.parse(legacyValue) as SessionState;
+          session.assessmentId = canonicalId;
+          localStorage.setItem(canonicalKey, JSON.stringify(session));
+        } catch {
+          localStorage.setItem(canonicalKey, legacyValue);
+        }
+      } else {
+        try {
+          const score = JSON.parse(legacyValue) as AssessmentScore;
+          score.assessmentId = canonicalId;
+          localStorage.setItem(canonicalKey, JSON.stringify(score));
+        } catch {
+          localStorage.setItem(canonicalKey, legacyValue);
+        }
+      }
+
+      localStorage.removeItem(legacyKey);
+    }
+  }
+}
+
 export function loadSession(assessmentId: string): SessionState | null {
   if (typeof localStorage === 'undefined') return null;
+  migrateLegacyAssessmentStorage();
   const raw = localStorage.getItem(key(`session:${assessmentId}`));
   if (!raw) return null;
   try {
@@ -72,6 +112,7 @@ export function saveSession(session: SessionState): void {
 
 export function loadAssessmentScore(assessmentId: string): AssessmentScore | null {
   if (typeof localStorage === 'undefined') return null;
+  migrateLegacyAssessmentStorage();
   const raw = localStorage.getItem(key(`score:${assessmentId}`));
   if (!raw) return null;
   try {

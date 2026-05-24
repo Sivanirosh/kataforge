@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '../styles/landing-transitions.css';
 import AssessmentStartActions from '../components/AssessmentStartActions';
 import FontLinks from '../components/FontLinks.astro';
+import KataPracticeSection from '../components/KataPracticeSection';
 import SiteNav from '../components/SiteNav.astro';
 import ThemeScript from '../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../lib/loadConfig';
@@ -83,24 +84,16 @@ const katas = await loadAllKatas();
       </section>
 
       <section class="landing-section" id="katas">
-        <div class="section-header">
-          <h2>Practice a Kata</h2>
-        </div>
-        <ul class="card-list">
-          {katas.map((kata) => (
-            <li class="card">
-              <h3>{kata.title}</h3>
-              <p>
-                <span class={`badge badge-${kata.difficulty}`}>{kata.difficulty}</span>
-                {' '}
-                {kata.estimatedMinutes} min
-              </p>
-              <a class="btn btn-secondary" href={`/problem/${kata.id}`}>
-                Open
-              </a>
-            </li>
-          ))}
-        </ul>
+        <KataPracticeSection
+          client:load
+          builtInKatas={katas.map((kata) => ({
+            id: kata.id,
+            title: kata.title,
+            difficulty: kata.difficulty,
+            estimatedMinutes: kata.estimatedMinutes,
+          }))}
+          builtInIds={katas.map((kata) => kata.id)}
+        />
       </section>
     </main>
   </body>

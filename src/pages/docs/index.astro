@@ -1,0 +1,26 @@
+---
+import '../../styles/global.css';
+import FontLinks from '../../components/FontLinks.astro';
+import KataAuthoringReference from '../../components/KataAuthoringReference';
+import SiteNav from '../../components/SiteNav.astro';
+import ThemeScript from '../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../lib/loadConfig';
+
+const config = await loadKataForgeConfig();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>Docs · {config.branding.title}</title>
+  </head>
+  <body>
+    <SiteNav title={config.branding.title} />
+    <main class="page-main">
+      <KataAuthoringReference client:load />
+    </main>
+  </body>
+</html>

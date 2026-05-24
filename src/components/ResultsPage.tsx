@@ -10,6 +10,7 @@ interface ResultsPageProps {
   kataTitles: Record<string, string>;
   kataSolutions: Record<string, KataSolution>;
   durationMinutes: number | null;
+  retryHref: string;
 }
 
 function ResultsSkeleton() {
@@ -30,6 +31,7 @@ export default function ResultsPage({
   kataTitles,
   kataSolutions,
   durationMinutes,
+  retryHref,
 }: ResultsPageProps) {
   const [score, setScore] = useState<AssessmentScore | null>(null);
   const [resultsByKata, setResultsByKata] = useState<Record<string, TestResult[]>>({});
@@ -41,7 +43,7 @@ export default function ResultsPage({
 
   const handleRetry = () => {
     retryAssessmentSession(assessmentId, durationMinutes, kataIds);
-    window.location.href = `/assessment/${assessmentId}`;
+    window.location.href = retryHref;
   };
 
   if (!score) {

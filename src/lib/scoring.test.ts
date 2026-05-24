@@ -22,7 +22,7 @@ describe('scoring', () => {
 
   it('scores an assessment', () => {
     const score = scoreAssessment(
-      'quick-practice',
+      'full-examples',
       [
         { kataId: 'a', passed: 2, total: 2, percentage: 100 },
         { kataId: 'b', passed: 1, total: 2, percentage: 50 },

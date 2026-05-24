@@ -154,7 +154,7 @@ describe('storage', () => {
 
   it('round-trips assessment score save/load', () => {
     const score: AssessmentScore = {
-      assessmentId: 'quick-practice',
+      assessmentId: 'two-sum',
       problems: [{ kataId: 'two-sum', passed: 2, total: 3, percentage: 67 }],
       totalPassed: 2,
       totalTests: 3,
@@ -162,7 +162,36 @@ describe('storage', () => {
       elapsedMs: 120_000,
     };
     saveAssessmentScore(score);
-    expect(loadAssessmentScore('quick-practice')).toEqual(score);
+    expect(loadAssessmentScore('two-sum')).toEqual(score);
+  });
+
+  it('migrates legacy practice assessment storage keys', () => {
+    store.set(
+      'kataforge:session:practice-two-sum',
+      JSON.stringify({
+        assessmentId: 'practice-two-sum',
+        startedAt: 100,
+        durationMinutes: null,
+        currentKataIndex: 0,
+        submitted: true,
+      }),
+    );
+    store.set(
+      'kataforge:score:quick-practice',
+      JSON.stringify({
+        assessmentId: 'quick-practice',
+        problems: [],
+        totalPassed: 0,
+        totalTests: 0,
+        percentage: 0,
+        elapsedMs: 0,
+      }),
+    );
+
+    expect(loadSession('two-sum')?.assessmentId).toBe('two-sum');
+    expect(loadAssessmentScore('two-sum')?.assessmentId).toBe('two-sum');
+    expect(store.get('kataforge:session:practice-two-sum')).toBeUndefined();
+    expect(store.get('kataforge:score:quick-practice')).toBeUndefined();
   });
 
   it('retry assessment preserves drafts but clears results and score', () => {

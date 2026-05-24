@@ -26,7 +26,7 @@ cp kataforge.local.example.json kataforge.local.json
 
 Place private content under `private/problems/` and `private/assessments/`. See [CONTEXT-MAP.md](./CONTEXT-MAP.md).
 
-If `kataforge.local.json` contains invalid JSON, KataForge logs a warning and falls back to the committed base config.
+If `kataforge.local.json` contains invalid JSON, KataForge logs a warning and falls back to the committed base config. Set `KATAFORGE_STRICT_CONFIG=1` to fail the build instead (useful in CI pipelines that validate ProblemPack overlays).
 
 ## Scripts
 
@@ -41,8 +41,11 @@ If `kataforge.local.json` contains invalid JSON, KataForge logs a warning and fa
 
 ## Adding a Kata
 
-1. Create a Markdown file in `examples/problems/` (see [docs/problem-format.md](./docs/problem-format.md))
-2. Restart dev server if needed — invalid frontmatter fails at build time
+**UserKata (browser import):** Copy the LLM template from `/docs`, generate JSON, then use **Import kata** on the Practice hub. UserKatas appear immediately without a rebuild. Export via **Manage imported** on the hub.
+
+**ProblemPack (disk overlay):** Create Markdown in `examples/problems/` or `private/problems/` (see [docs/problem-format.md](./docs/problem-format.md)). Restart dev server if needed — invalid frontmatter fails at build time.
+
+Static hosts must serve `404.html` for unknown paths so UserKata routes (`/problem/{id}`, `/results/{id}`) work after import.
 
 ## Known limitations
 

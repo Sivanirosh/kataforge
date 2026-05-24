@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/generate-builtin-kata-ids.mjs && astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "test:watch": "vitest",

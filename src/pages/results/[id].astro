@@ -1,19 +1,33 @@
 ---
-import ResultsPage from '../../components/ResultsPage';
 import FontLinks from '../../components/FontLinks.astro';
+import ResultsPageLoader from '../../components/ResultsPageLoader';
 import SiteNav from '../../components/SiteNav.astro';
 import ThemeScript from '../../components/ThemeScript.astro';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 import { loadAssessments } from '../../lib/loadAssessments';
+import { kataPracticeAssessment } from '../../lib/kataPractice';
 import { loadKataMap } from '../../lib/loadKatas';
 import '../../styles/global.css';
 
 export async function getStaticPaths() {
   const assessments = await loadAssessments();
-  return assessments.map((assessment) => ({
+  const kataMap = await loadKataMap();
+  const assessmentIds = new Set(assessments.map((assessment) => assessment.id));
+
+  const paths = assessments.map((assessment) => ({
     params: { id: assessment.id },
     props: { assessment },
   }));
+
+  for (const kata of Object.values(kataMap)) {
+    if (assessmentIds.has(kata.id)) continue;
+    paths.push({
+      params: { id: kata.id },
+      props: { assessment: kataPracticeAssessment(kata) },
+    });
+  }
+
+  return paths;
 }
 
 const { assessment } = Astro.props;
@@ -34,6 +48,7 @@ const kataSolutions = Object.fromEntries(
     ];
   }),
 );
+const isKataPractice = assessment.kataIds.length === 1 && assessment.id === assessment.kataIds[0];
 ---
 
 <html lang="en">
@@ -47,13 +62,14 @@ const kataSolutions = Object.fromEntries(
   <body>
     <SiteNav title={config.branding.title} />
     <main class="results-page page-main">
-      <ResultsPage
+      <ResultsPageLoader
         client:load
         assessmentId={assessment.id}
-        kataIds={assessment.kataIds}
-        kataTitles={kataTitles}
-        kataSolutions={kataSolutions}
+        builtInAssessment={assessment}
+        builtInKataTitles={kataTitles}
+        builtInKataSolutions={kataSolutions}
         durationMinutes={assessment.durationMinutes}
+        retryHref={isKataPractice ? `/problem/${assessment.id}` : `/assessment/${assessment.id}`}
       />
     </main>
   </body>

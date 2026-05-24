@@ -55,6 +55,8 @@ tests:
 - `hidden: false` — runs on RunSamples; full details on failure
 - `hidden: true` — runs only on Submit; pass/fail only in UI
 
+For LLM-generated **UserKata** JSON import (browser, no rebuild), see the in-app reference at `/docs` and import from the Practice hub.
+
 ## Function convention
 
 The Judge calls `functionName(*args)`. Candidates do not parse stdin.

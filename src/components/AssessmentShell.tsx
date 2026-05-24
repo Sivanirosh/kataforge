@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react';
 import CodeEditor from './CodeEditor';
 import ProblemNavigator from './ProblemNavigator';
 import ProblemStatement from './ProblemStatement';
@@ -6,7 +6,7 @@ import TestPanel from './TestPanel';
 import ThemeToggle from './ThemeToggle';
 import Timer from './Timer';
 import SolutionReview from './SolutionReview';
-import type { Assessment, TestCase } from '../lib/configTypes';
+import type { Assessment, TestCase, TestResult } from '../lib/configTypes';
 import { judgeClient } from '../lib/judgeClient';
 import { scoreProblem } from '../lib/scoring';
 import {
@@ -22,6 +22,7 @@ import {
   type SessionState,
 } from '../lib/storage';
 import { persistAssessmentScore } from '../lib/assessmentResults';
+import { isSessionAssessment } from '../lib/kataPractice';
 
 export interface KataData {
   id: string;
@@ -80,6 +81,7 @@ export default function AssessmentShell({
     loadKataCompletionMap(assessment.kataIds),
   );
   const [showSolution, setShowSolution] = useState(false);
+  const sessionAssessment = isSessionAssessment(assessment);
 
   useEffect(() => {
     if (embedded) return;
@@ -115,12 +117,32 @@ export default function AssessmentShell({
     [currentKata],
   );
 
+  const goToResults = useCallback(
+    (finalize: boolean) => {
+      persistAssessmentScore(assessment.id, assessment.kataIds);
+      if (finalize) {
+        const updated: SessionState = { ...session, submitted: true };
+        setSession(updated);
+        saveSession(updated);
+      }
+      window.location.href = `/results/${assessment.id}`;
+    },
+    [session, assessment.id, assessment.kataIds],
+  );
+
   const runTests = useCallback(
     async (mode: 'samples' | 'submit') => {
       if (!currentKata) return;
       setLoading(true);
       setRunMode(mode);
       setPanelError(null);
+
+      const navigateAfterSubmit = (submitResults: TestResult[]) => {
+        saveResults(currentKata.id, submitResults);
+        if (!sessionAssessment && !embedded) {
+          goToResults(true);
+        }
+      };
 
       const tests =
         mode === 'samples'
@@ -146,6 +168,9 @@ export default function AssessmentShell({
         if (response.error) {
           setPanelError(response.error);
           setResults(response.results.length > 0 ? response.results : null);
+          if (mode === 'submit' && response.results.length > 0) {
+            navigateAfterSubmit(response.results);
+          }
           return;
         }
 
@@ -158,6 +183,10 @@ export default function AssessmentShell({
         setPanelError(null);
         setResults(response.results);
         if (mode === 'submit') {
+          if (!sessionAssessment && !embedded) {
+            navigateAfterSubmit(response.results);
+            return;
+          }
           saveResults(currentKata.id, response.results);
           const allPassed = response.results.every((r) => r.status === 'passed');
           if (allPassed) {
@@ -177,7 +206,7 @@ export default function AssessmentShell({
         setRunMode(null);
       }
     },
-    [code, currentKata, judgeConfig, onKataSubmitSuccess],
+    [code, currentKata, judgeConfig, onKataSubmitSuccess, sessionAssessment, embedded, goToResults],
   );
 
   const handleReset = () => {
@@ -197,13 +226,17 @@ export default function AssessmentShell({
     setPanelError(null);
   };
 
-  const handleSubmitAssessment = useCallback(() => {
-    persistAssessmentScore(assessment.id, assessment.kataIds);
-    const updated: SessionState = { ...session, submitted: true };
-    setSession(updated);
-    saveSession(updated);
-    window.location.href = `/results/${assessment.id}`;
-  }, [session, assessment.id, assessment.kataIds]);
+  const handleFinishAssessment = useCallback(() => {
+    goToResults(true);
+  }, [goToResults]);
+
+  const handleViewResults = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault();
+      goToResults(false);
+    },
+    [goToResults],
+  );
 
   const expired = isTimerExpired(session);
 
@@ -234,24 +267,25 @@ export default function AssessmentShell({
         <div className="header-actions">
           <ThemeToggle />
           <Timer session={session} />
-          <button
-            type="button"
-            className="btn btn-accent"
-            onClick={handleSubmitAssessment}
-            aria-label="Submit Assessment"
-          >
-            Submit
-          </button>
-          <a
-            href={`/results/${assessment.id}`}
-            className="btn btn-secondary"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = `/results/${assessment.id}`;
-            }}
-          >
-            Results
-          </a>
+          {sessionAssessment && (
+            <>
+              <button
+                type="button"
+                className="btn btn-accent"
+                onClick={handleFinishAssessment}
+                aria-label="Finish assessment"
+              >
+                Finish
+              </button>
+              <a
+                href={`/results/${assessment.id}`}
+                className="btn btn-secondary"
+                onClick={handleViewResults}
+              >
+                Results
+              </a>
+            </>
+          )}
         </div>
       </header>
       )}

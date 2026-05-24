@@ -7,13 +7,21 @@ test.describe('acceptance smoke', () => {
     await expect(page.getByRole('heading', { name: 'Assessments' })).toBeVisible();
   });
 
+  test('kata practice results route is available', async ({ page }) => {
+    await page.goto('/results/two-sum');
+    await expect(page.locator('.results-page')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Retry assessment' })).toBeVisible({
+      timeout: 45_000,
+    });
+  });
+
   test('results page shows seeded scores', async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => {
       localStorage.setItem(
-        'kataforge:session:quick-practice',
+        'kataforge:session:two-sum',
         JSON.stringify({
-          assessmentId: 'quick-practice',
+          assessmentId: 'two-sum',
           startedAt: Date.now() - 90_000,
           durationMinutes: null,
           currentKataIndex: 0,
@@ -41,10 +49,10 @@ test.describe('acceptance smoke', () => {
       );
     });
 
-    await page.goto('/results/quick-practice');
+    await page.goto('/results/two-sum');
     await expect(page.locator('.score-percent')).toHaveText('100%');
-    await expect(page.getByText('hidden case')).toBeVisible();
-    await expect(page.locator('.hidden-test-status').first()).toHaveText('Passed');
+    await expect(page.locator('.problem-score-name')).toHaveText('Two Sum');
+    await expect(page.locator('.problem-score-value')).toHaveText('2/2 (100%)');
   });
 
   test('draft survives kata navigation in multi-kata assessment', async ({ page }) => {
@@ -119,6 +127,20 @@ test.describe('acceptance smoke', () => {
       timeout: 45_000,
     });
     await expect(page.locator('.monaco-editor')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Finish assessment' })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Results' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Submit' })).toHaveCount(1);
+  });
+
+  test('multi-kata assessment shows Finish and Results in header', async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto('/assessment/full-examples');
+    await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible({
+      timeout: 45_000,
+    });
+    await expect(page.getByRole('button', { name: 'Finish assessment' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Results' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Submit' })).toHaveCount(1);
   });
 
   test('reset to starter restores initial code and clears draft', async ({ page }) => {
@@ -151,9 +173,9 @@ test.describe('acceptance smoke', () => {
     await page.goto('/');
     await page.evaluate(() => {
       localStorage.setItem(
-        'kataforge:session:quick-practice',
+        'kataforge:session:two-sum',
         JSON.stringify({
-          assessmentId: 'quick-practice',
+          assessmentId: 'two-sum',
           startedAt: Date.now() - 90_000,
           durationMinutes: null,
           currentKataIndex: 0,
@@ -177,9 +199,9 @@ test.describe('acceptance smoke', () => {
         'old_draft_marker = True\ndef two_sum(nums, target):\n    pass',
       );
       localStorage.setItem(
-        'kataforge:score:quick-practice',
+        'kataforge:score:two-sum',
         JSON.stringify({
-          assessmentId: 'quick-practice',
+          assessmentId: 'two-sum',
           totalKatas: 1,
           passedKatas: 1,
           percent: 100,
@@ -188,7 +210,7 @@ test.describe('acceptance smoke', () => {
       );
     });
 
-    await page.goto('/results/quick-practice');
+    await page.goto('/results/two-sum');
     await expect(page.locator('.score-percent')).toHaveText('100%');
     await page.getByRole('button', { name: 'Retry assessment' }).click();
     await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible({
@@ -198,8 +220,8 @@ test.describe('acceptance smoke', () => {
     const storage = await page.evaluate(() => ({
       draft: localStorage.getItem('kataforge:draft:two-sum'),
       results: localStorage.getItem('kataforge:results:two-sum'),
-      score: localStorage.getItem('kataforge:score:quick-practice'),
-      session: localStorage.getItem('kataforge:session:quick-practice'),
+      score: localStorage.getItem('kataforge:score:two-sum'),
+      session: localStorage.getItem('kataforge:session:two-sum'),
     }));
 
     expect(storage.results).toBeNull();
@@ -273,5 +295,64 @@ test.describe('acceptance smoke', () => {
     });
 
     expect(hasAutoNavigation).toBe(false);
+  });
+
+  test('docs page is reference-only with combined copy block', async ({ page }) => {
+    await page.goto('/docs');
+    await expect(page.getByRole('heading', { name: 'Kata Authoring' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Copy prompt and format' })).toBeVisible();
+    await expect(page.getByText('--- EXAMPLE JSON OUTPUT ---')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Import' })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Go to Practice hub' })).toBeVisible();
+  });
+
+  test('user kata import appears on hub and opens practice route', async ({ page }) => {
+    test.setTimeout(90_000);
+    const userKata = {
+      id: 'e2e-user-kata',
+      title: 'E2E User Kata',
+      difficulty: 'easy',
+      estimatedMinutes: 5,
+      functionName: 'always_one',
+      tags: ['demo'],
+      starterCode: 'def always_one():\n    return 1',
+      bodyMarkdown: '# Always One\n\nReturn `1`.',
+      tests: [
+        {
+          id: 'sample-1',
+          name: 'returns one',
+          hidden: false,
+          args: [],
+          expected: 1,
+        },
+        {
+          id: 'hidden-1',
+          name: 'still one',
+          hidden: true,
+          args: [],
+          expected: 1,
+        },
+      ],
+    };
+
+    await page.goto('/#katas');
+    await page.getByRole('button', { name: 'Import kata' }).click();
+    await page.locator('.docs-import-textarea').fill(JSON.stringify(userKata, null, 2));
+    await page.getByRole('button', { name: 'Import', exact: true }).click();
+    await expect(page.getByText('Imported "E2E User Kata"')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'E2E User Kata' })).toBeVisible();
+    await expect(page.locator('.badge-user-kata')).toHaveText('custom');
+
+    await page.goto('/problem/e2e-user-kata');
+    await expect(page.locator('h2', { hasText: 'E2E User Kata' })).toBeVisible({
+      timeout: 45_000,
+    });
+    await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible({
+      timeout: 45_000,
+    });
+
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await expect(page.locator('.results-page')).toBeVisible({ timeout: 60_000 });
+    await expect(page.locator('.score-percent')).toHaveText('100%');
   });
 });
