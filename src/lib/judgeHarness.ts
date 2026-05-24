@@ -20,8 +20,15 @@ type PythonRunPayload = {
   category?: JudgeErrorCategory;
 };
 
+export function supportsSharedInterruptBuffer(): boolean {
+  return typeof SharedArrayBuffer !== 'undefined';
+}
+
 export function createInterruptBuffer(): Uint8Array {
-  return new Uint8Array(new SharedArrayBuffer(1));
+  if (supportsSharedInterruptBuffer()) {
+    return new Uint8Array(new SharedArrayBuffer(1));
+  }
+  return new Uint8Array(1);
 }
 
 export function buildPythonRunner(
@@ -149,12 +156,15 @@ export async function runSingleTestWithTimeout(
   test: TestCase,
   timeoutMs: number,
 ): Promise<Omit<TestResult, 'testId' | 'name' | 'hidden'>> {
+  const canInterrupt = interruptBuffer.buffer instanceof SharedArrayBuffer;
   interruptBuffer[0] = 0;
 
   const timeoutResult = new Promise<Omit<TestResult, 'testId' | 'name' | 'hidden'>>(
     (resolve) => {
       setTimeout(() => {
-        interruptBuffer[0] = 2;
+        if (canInterrupt) {
+          interruptBuffer[0] = 2;
+        }
         resolve({
           status: 'timeout',
           errorCategory: 'timeout',

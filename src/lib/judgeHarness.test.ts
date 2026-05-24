@@ -6,6 +6,7 @@ import {
   executeJudgeRequest,
   parseRunnerOutput,
   runSingleTestWithTimeout,
+  supportsSharedInterruptBuffer,
   type PyodideRunner,
 } from './judgeHarness';
 
@@ -77,6 +78,21 @@ function createMockPyodide(responses: unknown[]): PyodideRunner {
   }
   return { runPythonAsync };
 }
+
+describe('createInterruptBuffer', () => {
+  it('falls back when SharedArrayBuffer is unavailable', () => {
+    const sab = globalThis.SharedArrayBuffer;
+    // @ts-expect-error test stub
+    delete globalThis.SharedArrayBuffer;
+
+    const buffer = createInterruptBuffer();
+    expect(buffer).toHaveLength(1);
+    expect(supportsSharedInterruptBuffer()).toBe(false);
+    expect(buffer.buffer).toBeInstanceOf(ArrayBuffer);
+
+    globalThis.SharedArrayBuffer = sab;
+  });
+});
 
 describe('parseRunnerOutput', () => {
   it('returns failed with expected/actual for wrong answer', () => {

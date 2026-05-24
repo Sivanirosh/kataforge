@@ -33,7 +33,7 @@ export class JudgeClient {
         this.pending = null;
         resolve(event.data);
       };
-      this.worker.onerror = () => {
+      this.worker.onerror = (event: ErrorEvent) => {
         if (!this.pending) {
           this.resetWorker();
           return;
@@ -43,10 +43,11 @@ export class JudgeClient {
         clearTimeout(safetyTimer);
         this.pending = null;
         this.resetWorker();
+        const detail = event.message?.trim();
         resolve({
           requestId: request.requestId,
           results: [],
-          error: 'Worker failed to execute',
+          error: detail || 'Worker failed to execute',
         });
       };
     }

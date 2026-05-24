@@ -1,6 +1,7 @@
 import {
   createInterruptBuffer,
   executeJudgeRequest,
+  supportsSharedInterruptBuffer,
 } from '../lib/judgeHarness';
 import type { JudgeRequest, JudgeResponse } from '../lib/configTypes';
 
@@ -18,7 +19,9 @@ async function getPyodide(): Promise<PyodideInterface> {
   if (!pyodideInstance) {
     const { loadPyodide } = await import('pyodide');
     pyodideInstance = await loadPyodide({ indexURL: PYODIDE_INDEX });
-    pyodideInstance.setInterruptBuffer(interruptBuffer);
+    if (supportsSharedInterruptBuffer()) {
+      pyodideInstance.setInterruptBuffer(interruptBuffer);
+    }
   }
   return pyodideInstance;
 }
