@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { z } from 'astro/zod';
 import { loadKataForgeConfig } from './lib/loadConfig';
+import { problemSchema } from './lib/problemSchema';
 
 const config = await loadKataForgeConfig();
 
@@ -15,24 +15,7 @@ const problems = defineCollection({
     pattern: patterns,
     base: config.problemDirs.length === 1 ? `./${config.problemDirs[0]}` : '.',
   }),
-  schema: z.object({
-    id: z.string(),
-    title: z.string(),
-    difficulty: z.enum(['easy', 'easy-medium', 'medium', 'hard']),
-    estimatedMinutes: z.number(),
-    functionName: z.string(),
-    tags: z.array(z.string()).default([]),
-    starterCode: z.string(),
-    tests: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        hidden: z.boolean(),
-        args: z.array(z.unknown()),
-        expected: z.unknown(),
-      }),
-    ),
-  }),
+  schema: problemSchema,
 });
 
 export const collections = { problems };
