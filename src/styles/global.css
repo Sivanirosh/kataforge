@@ -120,9 +120,34 @@ a {
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
   font-size: 0.75rem;
+  font-weight: 600;
   text-transform: capitalize;
   background: var(--surface-2);
   border: 1px solid var(--border);
+}
+
+.badge-easy {
+  background: rgba(74, 222, 128, 0.14);
+  border-color: rgba(74, 222, 128, 0.45);
+  color: #bbf7d0;
+}
+
+.badge-easy-medium {
+  background: rgba(163, 230, 53, 0.14);
+  border-color: rgba(163, 230, 53, 0.45);
+  color: #d9f99d;
+}
+
+.badge-medium {
+  background: rgba(251, 191, 36, 0.14);
+  border-color: rgba(251, 191, 36, 0.45);
+  color: #fde68a;
+}
+
+.badge-hard {
+  background: rgba(248, 113, 113, 0.14);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fecaca;
 }
 
 .assessment-shell {
@@ -293,9 +318,28 @@ a {
   overflow: auto;
 }
 
+.test-panel-status {
+  color: var(--muted);
+  margin: 0;
+}
+
+.test-panel-error {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 8px;
+  color: #fecaca;
+  margin: 0 0 0.75rem;
+  padding: 0.6rem 0.75rem;
+}
+
 .test-panel-summary {
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.test-panel-empty {
+  color: var(--muted);
+  margin: 0;
 }
 
 .test-list {
