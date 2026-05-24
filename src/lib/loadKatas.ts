@@ -9,7 +9,7 @@ import type { KataData } from '../components/AssessmentShell';
 export async function loadAllKatas(): Promise<KataData[]> {
   const config = await loadKataForgeConfig();
   const katas: KataData[] = [];
-  const seen = new Set<string>();
+  const idToPath = new Map<string, string>();
 
   for (const dir of config.problemDirs) {
     const absDir = path.resolve(process.cwd(), dir);
@@ -17,11 +17,18 @@ export async function loadAllKatas(): Promise<KataData[]> {
 
     for (const file of fs.readdirSync(absDir)) {
       if (!file.endsWith('.md')) continue;
-      const raw = fs.readFileSync(path.join(absDir, file), 'utf-8');
+      const filePath = path.join(absDir, file);
+      const raw = fs.readFileSync(filePath, 'utf-8');
       const { data, content } = matter(raw);
       const parsed = problemSchema.parse(data);
-      if (seen.has(parsed.id)) continue;
-      seen.add(parsed.id);
+
+      const existingPath = idToPath.get(parsed.id);
+      if (existingPath) {
+        throw new Error(
+          `Duplicate kata id "${parsed.id}" in ${existingPath} and ${filePath}`,
+        );
+      }
+      idToPath.set(parsed.id, filePath);
 
       katas.push({
         ...parsed,
