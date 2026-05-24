@@ -189,13 +189,15 @@ export default function AssessmentShell({
   return (
     <div className="assessment-shell">
       <header className="app-header">
-        <div className="header-left">
+        <div className="header-brand">
           <a href="/" className="brand">
             {brandingTitle}
           </a>
+          <span className="header-sep" aria-hidden="true">
+            /
+          </span>
           <span className="assessment-name">{assessment.title}</span>
         </div>
-        <Timer session={session} />
         <ProblemNavigator
           kataIds={assessment.kataIds}
           kataTitles={kataTitles}
@@ -203,24 +205,27 @@ export default function AssessmentShell({
           completed={completed}
           onSelect={(index) => setSession((s) => ({ ...s, currentKataIndex: index }))}
         />
-        <button
-          type="button"
-          className="btn btn-accent"
-          onClick={handleSubmitAssessment}
-          aria-label="Submit Assessment"
-        >
-          Submit Assessment
-        </button>
-        <a
-          href={`/results/${assessment.id}`}
-          className="btn btn-secondary"
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = `/results/${assessment.id}`;
-          }}
-        >
-          View Results
-        </a>
+        <div className="header-actions">
+          <Timer session={session} />
+          <button
+            type="button"
+            className="btn btn-accent"
+            onClick={handleSubmitAssessment}
+            aria-label="Submit Assessment"
+          >
+            Submit
+          </button>
+          <a
+            href={`/results/${assessment.id}`}
+            className="btn btn-secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `/results/${assessment.id}`;
+            }}
+          >
+            Results
+          </a>
+        </div>
       </header>
 
       {expired && (
@@ -241,24 +246,26 @@ export default function AssessmentShell({
         </section>
         <section className="pane pane-code">
           <div className="toolbar">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => runTests('samples')}
-              disabled={loading}
-              aria-label="Run Samples"
-            >
-              Run Samples
-            </button>
-            <button
-              type="button"
-              className="btn btn-accent"
-              onClick={() => runTests('submit')}
-              disabled={loading}
-              aria-label="Submit"
-            >
-              Submit
-            </button>
+            <div className="toolbar-group">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => runTests('samples')}
+                disabled={loading}
+                aria-label="Run Samples"
+              >
+                Run Samples
+              </button>
+              <button
+                type="button"
+                className="btn btn-accent"
+                onClick={() => runTests('submit')}
+                disabled={loading}
+                aria-label="Submit"
+              >
+                Submit
+              </button>
+            </div>
             <button
               type="button"
               className="btn btn-ghost"

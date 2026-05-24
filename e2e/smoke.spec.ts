@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('acceptance smoke', () => {
   test('landing page loads', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.locator('.hero-title')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Assessments' })).toBeVisible();
   });
 

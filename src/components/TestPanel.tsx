@@ -26,6 +26,23 @@ function statusLabel(status: TestResult['status']): string {
   }
 }
 
+function TestPanelHeader({ results }: { results: TestResult[] }) {
+  const passed = results.filter((r) => r.status === 'passed').length;
+  const failed = results.length - passed;
+
+  return (
+    <div className="test-panel-header">
+      <span className="test-panel-summary">
+        {passed}/{results.length} tests passed
+      </span>
+      <div className="test-panel-counts">
+        <span className="count-pill count-pass">✓ {passed}</span>
+        {failed > 0 && <span className="count-pill count-fail">✗ {failed}</span>}
+      </div>
+    </div>
+  );
+}
+
 export default function TestPanel({
   results,
   loading,
@@ -49,9 +66,7 @@ export default function TestPanel({
         </p>
         {results && results.length > 0 ? (
           <>
-            <div className="test-panel-summary">
-              {results.filter((r) => r.status === 'passed').length}/{results.length} tests passed
-            </div>
+            <TestPanelHeader results={results} />
             <ul className="test-list">
               {results.map((result) => (
                 <li
@@ -86,13 +101,9 @@ export default function TestPanel({
     );
   }
 
-  const passed = results.filter((r) => r.status === 'passed').length;
-
   return (
     <div className="test-panel" aria-live="polite">
-      <div className="test-panel-summary">
-        {passed}/{results.length} tests passed
-      </div>
+      <TestPanelHeader results={results} />
       <ul className="test-list">
         {results.map((result) => (
           <li
