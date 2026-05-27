@@ -1,0 +1,30 @@
+<script is:inline>
+  (function () {
+    try {
+      if (localStorage.getItem('kataforge-ui-version') === 'v2') {
+        document.documentElement.setAttribute('data-ui-version', 'v2');
+      }
+    } catch (_e) {}
+  })();
+</script>
+<style is:inline>
+  html[data-ui-version='v2'] {
+    color-scheme: dark;
+    background: #02010a;
+    color: #f0effa;
+  }
+
+  html[data-ui-version='v2'][data-theme='light'] {
+    color-scheme: light;
+    background: #f0f0fa;
+    color: #1e1b3a;
+  }
+
+  html[data-ui-version='v2'] .cursus-boot-shell {
+    background: #02010a;
+  }
+
+  html[data-ui-version='v2'][data-theme='light'] .cursus-boot-shell {
+    background: #f0f0fa;
+  }
+</style>

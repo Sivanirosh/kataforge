@@ -1,9 +1,12 @@
 ---
 import '../../styles/global.css';
+import '../../styles/global-v2.css';
 import '../../styles/landing-transitions.css';
 import FontLinks from '../../components/FontLinks.astro';
 import SiteNav from '../../components/SiteNav.astro';
 import ThemeScript from '../../components/ThemeScript.astro';
+import UIVersionScript from '../../components/UIVersionScript.astro';
+import UIVersionToggle from '../../components/UIVersionToggle';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 import { loadAllCursus } from '../../lib/loadCursus';
 import { countCursusSteps } from '../../lib/cursusSteps';
@@ -17,6 +20,7 @@ const cursusList = await loadAllCursus();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>Cursus · {config.branding.title}</title>
   </head>
@@ -46,5 +50,6 @@ const cursusList = await loadAllCursus();
         </ul>
       </section>
     </main>
+    <UIVersionToggle client:load />
   </body>
 </html>

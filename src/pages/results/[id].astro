@@ -3,11 +3,14 @@ import FontLinks from '../../components/FontLinks.astro';
 import ResultsPageLoader from '../../components/ResultsPageLoader';
 import SiteNav from '../../components/SiteNav.astro';
 import ThemeScript from '../../components/ThemeScript.astro';
+import UIVersionScript from '../../components/UIVersionScript.astro';
+import UIVersionToggle from '../../components/UIVersionToggle';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 import { loadAssessments } from '../../lib/loadAssessments';
 import { kataPracticeAssessment } from '../../lib/kataPractice';
 import { loadKataMap } from '../../lib/loadKatas';
 import '../../styles/global.css';
+import '../../styles/global-v2.css';
 
 export async function getStaticPaths() {
   const assessments = await loadAssessments();
@@ -56,6 +59,7 @@ const isKataPractice = assessment.kataIds.length === 1 && assessment.id === asse
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>Results · {config.branding.title}</title>
   </head>
@@ -72,5 +76,6 @@ const isKataPractice = assessment.kataIds.length === 1 && assessment.id === asse
         retryHref={isKataPractice ? `/problem/${assessment.id}` : `/assessment/${assessment.id}`}
       />
     </main>
+    <UIVersionToggle client:load />
   </body>
 </html>

@@ -1,11 +1,14 @@
 ---
 import '../styles/global.css';
+import '../styles/global-v2.css';
 import '../styles/landing-transitions.css';
 import AssessmentStartActions from '../components/AssessmentStartActions';
 import FontLinks from '../components/FontLinks.astro';
 import KataPracticeSection from '../components/KataPracticeSection';
 import SiteNav from '../components/SiteNav.astro';
 import ThemeScript from '../components/ThemeScript.astro';
+import UIVersionScript from '../components/UIVersionScript.astro';
+import UIVersionToggle from '../components/UIVersionToggle';
 import { loadKataForgeConfig } from '../lib/loadConfig';
 import { loadAssessments } from '../lib/loadAssessments';
 import { loadAllCursus } from '../lib/loadCursus';
@@ -23,13 +26,14 @@ const katas = await loadAllKatas();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>{config.branding.title}</title>
   </head>
   <body>
     <SiteNav title={config.branding.title} />
 
-    <section class="hero">
+    <section class="hero v1-hero">
       <div class="hero-inner">
         <div class="hero-badge">Kata Practice Tool</div>
         <h1 class="hero-title">{config.branding.title}</h1>
@@ -38,20 +42,87 @@ const katas = await loadAllKatas();
       </div>
     </section>
 
+    <section class="hero v2-hero" aria-label="KataForge introduction">
+      <div class="hero-aurora" aria-hidden="true">
+        <div class="aurora-orb aurora-orb-1"></div>
+        <div class="aurora-orb aurora-orb-2"></div>
+        <div class="aurora-orb aurora-orb-3"></div>
+        <div class="aurora-grid"></div>
+      </div>
+
+      <div class="hero-inner v2-hero-inner">
+        <div class="hero-badge v2-hero-badge">
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          Practice · Drill · Master
+        </div>
+
+        <h1 class="hero-title v2-hero-title">
+          <span class="v2-hero-line">Forge fluent</span>
+          <span class="v2-hero-line v2-hero-line-accent">coding instincts.</span>
+        </h1>
+
+        <p class="hero-tagline v2-hero-tagline">
+          A focused arena for deliberate practice — timed katas, guided learning paths,
+          instant feedback from a real Python runtime in your browser.
+        </p>
+
+        <div class="v2-hero-actions">
+          <a class="btn btn-primary btn-lg v2-cta-primary" href="#katas">
+            <span class="v2-cta-label">Start a kata</span>
+            <span class="v2-cta-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-secondary btn-lg v2-cta-secondary" href="#cursus">
+            Browse paths
+          </a>
+        </div>
+
+        <dl class="v2-hero-stats" aria-label="Library at a glance">
+          <div class="v2-hero-stat">
+            <dt>Katas</dt>
+            <dd>{katas.length}</dd>
+          </div>
+          <span class="v2-hero-stat-sep" aria-hidden="true"></span>
+          <div class="v2-hero-stat">
+            <dt>Paths</dt>
+            <dd>{cursusList.length}</dd>
+          </div>
+          <span class="v2-hero-stat-sep" aria-hidden="true"></span>
+          <div class="v2-hero-stat">
+            <dt>Assessments</dt>
+            <dd>{assessments.length}</dd>
+          </div>
+        </dl>
+
+        <a class="v2-hero-scroll" href="#cursus" aria-label="Scroll to content">
+          <span class="v2-hero-scroll-line" aria-hidden="true"></span>
+          <span class="v2-hero-scroll-label">Scroll</span>
+        </a>
+      </div>
+    </section>
+
     <main class="landing page-main">
       <section class="landing-section" id="cursus">
         <div class="section-header">
-          <h2>Cursus</h2>
+          <h2>
+            <span class="v2-section-eyebrow" aria-hidden="true">01 ·</span>
+            <span class="v2-section-label">Cursus</span>
+          </h2>
+          <span class="v2-section-meta" aria-hidden="true">
+            {cursusList.length} {cursusList.length === 1 ? 'path' : 'paths'}
+          </span>
         </div>
         <ul class="card-list">
           {cursusList.map((cursus) => (
             <li class="card">
+              <span class="v2-card-marker" aria-hidden="true"></span>
+              <span class="v2-card-eyebrow" aria-hidden="true">Learning path</span>
               <h3>{cursus.title}</h3>
               <p>
                 {cursus.modules.length} modules · {countCursusSteps(cursus)} steps
               </p>
               <a class="btn btn-primary" href={`/cursus/${cursus.id}`}>
                 Open
+                <span class="v2-card-arrow" aria-hidden="true">→</span>
               </a>
             </li>
           ))}
@@ -60,11 +131,21 @@ const katas = await loadAllKatas();
 
       <section class="landing-section" id="assessments">
         <div class="section-header">
-          <h2>Assessments</h2>
+          <h2>
+            <span class="v2-section-eyebrow" aria-hidden="true">02 ·</span>
+            <span class="v2-section-label">Assessments</span>
+          </h2>
+          <span class="v2-section-meta" aria-hidden="true">
+            {assessments.length} {assessments.length === 1 ? 'set' : 'sets'}
+          </span>
         </div>
         <ul class="card-list">
           {assessments.map((assessment) => (
             <li class="card">
+              <span class="v2-card-marker" aria-hidden="true"></span>
+              <span class="v2-card-eyebrow" aria-hidden="true">
+                {assessment.durationMinutes ? `Timed · ${assessment.durationMinutes} min` : 'Untimed'}
+              </span>
               <h3>{assessment.title}</h3>
               <p>
                 {assessment.kataIds.length} katas
@@ -96,5 +177,6 @@ const katas = await loadAllKatas();
         />
       </section>
     </main>
+    <UIVersionToggle client:load />
   </body>
 </html>

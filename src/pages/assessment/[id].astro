@@ -2,10 +2,13 @@
 import AssessmentShell from '../../components/AssessmentShell';
 import FontLinks from '../../components/FontLinks.astro';
 import ThemeScript from '../../components/ThemeScript.astro';
+import UIVersionScript from '../../components/UIVersionScript.astro';
+import UIVersionToggle from '../../components/UIVersionToggle';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 import { loadAssessments } from '../../lib/loadAssessments';
 import { loadKataMap } from '../../lib/loadKatas';
 import '../../styles/global.css';
+import '../../styles/global-v2.css';
 
 export async function getStaticPaths() {
   const assessments = await loadAssessments();
@@ -28,6 +31,7 @@ const katas = assessment.kataIds
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>{assessment.title} · {config.branding.title}</title>
   </head>
@@ -39,5 +43,6 @@ const katas = assessment.kataIds
       judgeConfig={config.judge}
       brandingTitle={config.branding.title}
     />
+    <UIVersionToggle client:load />
   </body>
 </html>

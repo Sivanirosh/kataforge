@@ -11,7 +11,7 @@ Establish a dual-layer KataForge repo: committed generic framework plus gitignor
 | AD-1 | JSON overlay (`kataforge.local.json`), not `.ts` | Simple merge at build/dev; no compile step for local paths |
 | AD-2 | `private/`, overlay JSON, `sources/repos/` gitignored | Employer-neutral public repo |
 | AD-3 | `loadConfig` shallow-merges branding/judge; replaces dir arrays when provided | Predictable overlay semantics |
-| AD-4 | CI runs `pnpm test` + `pnpm build` without private folder | Examples-only path for OSS contributors |
+| AD-4 | CI runs `pnpm test`, `pnpm build`, and `pnpm test:e2e` without private folder | Examples-only path for OSS contributors |
 
 ## Interface Registry
 
@@ -43,7 +43,7 @@ Establish a dual-layer KataForge repo: committed generic framework plus gitignor
 | #19 | Add GitHub Actions CI | **done** | Commit `2b6d5f8`, `.github/workflows/ci.yml` |
 | #20 | Add MIT LICENSE file | **done** | Commit `8af238e` |
 | #21 | Expand config overlay merge tests | **done** | Commit `40fba82`, 5 tests |
-| #23 | Fail loudly on malformed local overlay JSON | **done** | Console warn + base config (TDD slice) |
+| #23 | Fail loudly on malformed local overlay JSON | **done** | Warn + base config by default; `KATAFORGE_STRICT_CONFIG=1` throws |
 
 ## Scout Dialogue Log
 

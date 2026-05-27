@@ -1,9 +1,12 @@
 ---
 import '../../styles/global.css';
+import '../../styles/global-v2.css';
 import FontLinks from '../../components/FontLinks.astro';
 import KataAuthoringReference from '../../components/KataAuthoringReference';
 import SiteNav from '../../components/SiteNav.astro';
 import ThemeScript from '../../components/ThemeScript.astro';
+import UIVersionScript from '../../components/UIVersionScript.astro';
+import UIVersionToggle from '../../components/UIVersionToggle';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 
 const config = await loadKataForgeConfig();
@@ -14,6 +17,7 @@ const config = await loadKataForgeConfig();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>Docs · {config.branding.title}</title>
   </head>
@@ -22,5 +26,6 @@ const config = await loadKataForgeConfig();
     <main class="page-main">
       <KataAuthoringReference client:load />
     </main>
+    <UIVersionToggle client:load />
   </body>
 </html>

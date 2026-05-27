@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, type ComponentProps } from 'react';
 import Editor from '@monaco-editor/react';
-import { defineKataForgeThemes, getMonacoTheme } from '../lib/monacoTheme';
+import {
+  defineKataForgeThemes,
+  defineKataForgeV2Themes,
+  getMonacoTheme,
+} from '../lib/monacoTheme';
 
 interface CodeEditorProps {
   value: string;
@@ -30,6 +34,7 @@ export default function CodeEditor({
       editorRef.current = editor;
       monacoRef.current = monaco;
       defineKataForgeThemes(monaco);
+      defineKataForgeV2Themes(monaco);
       monaco.editor.setTheme(getMonacoTheme());
 
       editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
@@ -47,13 +52,17 @@ export default function CodeEditor({
   );
 
   useEffect(() => {
-    const onThemeChange = () => {
+    const onThemeOrVersionChange = () => {
       if (monacoRef.current) {
         monacoRef.current.editor.setTheme(getMonacoTheme());
       }
     };
-    window.addEventListener('kataforge-theme-change', onThemeChange);
-    return () => window.removeEventListener('kataforge-theme-change', onThemeChange);
+    window.addEventListener('kataforge-theme-change', onThemeOrVersionChange);
+    window.addEventListener('kataforge-version-change', onThemeOrVersionChange);
+    return () => {
+      window.removeEventListener('kataforge-theme-change', onThemeOrVersionChange);
+      window.removeEventListener('kataforge-version-change', onThemeOrVersionChange);
+    };
   }, []);
 
   return (

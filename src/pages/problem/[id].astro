@@ -2,9 +2,12 @@
 import FontLinks from '../../components/FontLinks.astro';
 import ProblemPage from '../../components/ProblemPage';
 import ThemeScript from '../../components/ThemeScript.astro';
+import UIVersionScript from '../../components/UIVersionScript.astro';
+import UIVersionToggle from '../../components/UIVersionToggle';
 import { loadKataForgeConfig } from '../../lib/loadConfig';
 import { loadAllKatas } from '../../lib/loadKatas';
 import '../../styles/global.css';
+import '../../styles/global-v2.css';
 
 export async function getStaticPaths() {
   const katas = await loadAllKatas();
@@ -23,6 +26,7 @@ const config = await loadKataForgeConfig();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>{kata.title} · {config.branding.title}</title>
   </head>
@@ -34,5 +38,6 @@ const config = await loadKataForgeConfig();
       judgeConfig={config.judge}
       brandingTitle={config.branding.title}
     />
+    <UIVersionToggle client:load />
   </body>
 </html>

@@ -1,7 +1,10 @@
 ---
 import '../styles/global.css';
+import '../styles/global-v2.css';
 import FontLinks from '../components/FontLinks.astro';
 import ThemeScript from '../components/ThemeScript.astro';
+import UIVersionScript from '../components/UIVersionScript.astro';
+import UIVersionToggle from '../components/UIVersionToggle';
 import UserKataRouteFallback from '../components/UserKataRouteFallback';
 import { loadKataForgeConfig } from '../lib/loadConfig';
 
@@ -13,6 +16,7 @@ const config = await loadKataForgeConfig();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ThemeScript />
+    <UIVersionScript />
     <FontLinks />
     <title>Not found · {config.branding.title}</title>
   </head>
@@ -22,5 +26,6 @@ const config = await loadKataForgeConfig();
       brandingTitle={config.branding.title}
       judgeConfig={config.judge}
     />
+    <UIVersionToggle client:load />
   </body>
 </html>

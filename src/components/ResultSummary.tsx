@@ -1,6 +1,7 @@
 import type { AssessmentScore, TestResult } from '../lib/configTypes';
 import FailedTestReview from './FailedTestReview';
 import SolutionReview from './SolutionReview';
+import V2ScoreConfetti from './V2ScoreConfetti';
 
 export interface KataSolution {
   solutionCode?: string;
@@ -29,8 +30,12 @@ export default function ResultSummary({
 }: ResultSummaryProps) {
   return (
     <div className="result-summary">
+      <V2ScoreConfetti percentage={score.percentage} />
       <h2>Assessment Results</h2>
-      <div className="score-hero">
+      <div
+        className="score-hero"
+        data-perfect={score.percentage === 100 ? 'true' : undefined}
+      >
         <div className="score-percent">{score.percentage}%</div>
         <div className="score-detail">
           {score.totalPassed}/{score.totalTests} tests passed · {formatDuration(score.elapsedMs)}
