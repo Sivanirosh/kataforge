@@ -1,0 +1,18 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "src/**/*",
+    "e2e/**/*",
+    "*.config.ts",
+    "*.config.mjs",
+    "kataforge.config.ts"
+  ],
+  "exclude": ["dist", "node_modules", "sources", "private"]
+}

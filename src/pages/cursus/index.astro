@@ -1,0 +1,51 @@
+---
+import '../../styles/global.css';
+import '../../styles/landing-transitions.css';
+import '../../styles/kiro.css';
+import FontLinks from '../../components/FontLinks.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import ThemeScript from '../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../lib/loadConfig';
+import { loadAllCursus } from '../../lib/loadCursus';
+import { countCursusSteps } from '../../lib/cursusSteps';
+
+const config = await loadKataForgeConfig();
+const cursusList = await loadAllCursus();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>Cursus · {config.branding.title}</title>
+  </head>
+  <body>
+    <SiteNav title={config.branding.title} />
+    <main class="landing page-main">
+      <section class="landing-section">
+        <div class="section-header">
+          <h2>Cursus</h2>
+        </div>
+        <p class="cursus-list-intro">
+          Guided learning paths that mix lessons with coding drills.
+        </p>
+        <ul class="card-list">
+          {cursusList.map((cursus) => (
+            <li class="card">
+              <h3>{cursus.title}</h3>
+              <p>{cursus.description}</p>
+              <p>
+                {cursus.modules.length} modules · {countCursusSteps(cursus)} steps
+              </p>
+              <a class="btn btn-primary" href={`/cursus/${cursus.id}`}>
+                Open
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

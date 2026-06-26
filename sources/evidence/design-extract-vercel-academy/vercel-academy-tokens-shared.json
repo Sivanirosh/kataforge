@@ -1,0 +1,51 @@
+{
+  "primitive": {
+    "color": {
+      "text": {
+        "text0": {
+          "$value": "#171717"
+        },
+        "text1": {
+          "$value": "#0072f5"
+        }
+      }
+    },
+    "fontFamily": {
+      "f0": {
+        "$value": "Geist"
+      },
+      "f1": {
+        "$value": "geistMonoFont"
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "action": {
+        "primary": {
+          "$value": "{primitive.color.brand.primary}"
+        }
+      },
+      "surface": {
+        "default": {
+          "$value": "{primitive.color.background.bg0}"
+        }
+      },
+      "text": {
+        "body": {
+          "$value": "{primitive.color.text.text0}"
+        }
+      }
+    },
+    "radius": {
+      "control": {
+        "$value": "{primitive.radius.r0}"
+      }
+    },
+    "shadow": {
+      "elevated": {
+        "$value": "{primitive.shadow.sh0}"
+      }
+    }
+  }
+}

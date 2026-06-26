@@ -1,0 +1,40 @@
+---
+import ThemeToggle from './ThemeToggle';
+
+interface Props {
+  title: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const { title, ctaLabel = 'Start practicing', ctaHref = '/#library' } = Astro.props;
+---
+
+<header class="kiro-nav">
+  <div class="kiro-nav-inner">
+    <a href="/" class="kiro-nav-brand" aria-label={title}>
+      <img
+        class="brand-logo"
+        src="/kataforge-logo.png"
+        alt=""
+        width="32"
+        height="32"
+        decoding="async"
+      />
+      <span>{title}</span>
+    </a>
+    <nav class="kiro-nav-links" aria-label="Site">
+      <a href="/#cursus">Cursus</a>
+      <a href="/#assessments">Assessments</a>
+      <a href="/#library">Practice</a>
+      <a href="/docs">Docs</a>
+    </nav>
+    <div class="kiro-nav-actions">
+      <ThemeToggle client:load />
+      <a class="kiro-nav-cta" href={ctaHref}>
+        <span>{ctaLabel}</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</header>

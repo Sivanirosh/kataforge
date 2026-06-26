@@ -1,0 +1,103 @@
+{
+  "url": "https://vercel.com/academy/build-ai-agent-harness",
+  "path": "/academy/build-ai-agent-harness",
+  "added": {},
+  "changed": {
+    "primitive": {
+      "color": {
+        "brand": {
+          "primary": {
+            "$value": "#0072f5"
+          }
+        },
+        "neutral": {
+          "n100": {
+            "$value": "#171717"
+          },
+          "n200": {
+            "$value": "#ebebeb"
+          },
+          "n300": {
+            "$value": "#ffffff"
+          },
+          "n400": {
+            "$value": "#000000"
+          },
+          "n500": {
+            "$value": "#888888"
+          }
+        },
+        "background": {
+          "bg0": {
+            "$value": "#ffffff"
+          },
+          "bg1": {
+            "$value": "#fafafa"
+          }
+        },
+        "text": {
+          "text2": {
+            "$value": "#000000"
+          },
+          "text3": {
+            "$value": "#ffffff"
+          },
+          "text4": {
+            "$value": "#888888"
+          }
+        }
+      },
+      "spacing": {
+        "s0": {
+          "$value": "2px"
+        },
+        "s1": {
+          "$value": "6px"
+        },
+        "s2": {
+          "$value": "11px"
+        },
+        "s3": {
+          "$value": "23px"
+        },
+        "s4": {
+          "$value": "32px"
+        }
+      },
+      "radius": {
+        "r0": {
+          "$value": "4px"
+        },
+        "r1": {
+          "$value": "8px"
+        }
+      },
+      "shadow": {
+        "sh0": {
+          "$value": "rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px"
+        },
+        "sh1": {
+          "$value": "rgb(235, 235, 235) 0px 0px 0px 1px"
+        },
+        "sh2": {
+          "$value": "rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
+        },
+        "sh3": {
+          "$value": "rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.02) 0px 1px 1px 0px, rgba(0, 0, 0, 0.04) 0px 4px 8px 0px, rgb(250, 250, 250) 0px 0px 0px 1px, rgb(255, 255, 255) 0px 0px 0px 1px"
+        }
+      }
+    },
+    "semantic": {
+      "typography": {
+        "body": {
+          "$value": {
+            "fontFamily": "Geist",
+            "fontSize": "32px",
+            "fontWeight": "600",
+            "lineHeight": "40px"
+          }
+        }
+      }
+    }
+  }
+}

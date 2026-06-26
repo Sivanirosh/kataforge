@@ -1,0 +1,165 @@
+{
+  "components": [
+    {
+      "cluster": "button--default",
+      "variant": 0,
+      "path": "screenshots/button-default-0.png",
+      "bounds": {
+        "w": 24,
+        "h": 24
+      },
+      "kind": "button",
+      "variantHint": "default",
+      "sizeHint": "",
+      "retina": true
+    },
+    {
+      "cluster": "button--default",
+      "variant": 1,
+      "path": "screenshots/button-default-1.png",
+      "bounds": {
+        "w": 24,
+        "h": 24
+      },
+      "kind": "button",
+      "variantHint": "default",
+      "sizeHint": "",
+      "retina": true
+    },
+    {
+      "cluster": "button--default",
+      "variant": 2,
+      "path": "screenshots/button-default-2.png",
+      "bounds": {
+        "w": 24,
+        "h": 24
+      },
+      "kind": "button",
+      "variantHint": "default",
+      "sizeHint": "",
+      "retina": true
+    },
+    {
+      "cluster": "button--outline--medium",
+      "variant": 0,
+      "path": "screenshots/button-outline-medium-0.png",
+      "bounds": {
+        "w": 240,
+        "h": 32
+      },
+      "kind": "button",
+      "variantHint": "outline",
+      "sizeHint": "medium",
+      "retina": true
+    },
+    {
+      "cluster": "button--outline--medium",
+      "variant": 1,
+      "path": "screenshots/button-outline-medium-1.png",
+      "bounds": {
+        "w": 32,
+        "h": 32
+      },
+      "kind": "button",
+      "variantHint": "outline",
+      "sizeHint": "medium",
+      "retina": true
+    },
+    {
+      "cluster": "button--outline--medium",
+      "variant": 2,
+      "path": "screenshots/button-outline-medium-2.png",
+      "bounds": {
+        "w": 32,
+        "h": 32
+      },
+      "kind": "button",
+      "variantHint": "outline",
+      "sizeHint": "medium",
+      "retina": true
+    },
+    {
+      "cluster": "button--outline--md",
+      "variant": 0,
+      "path": "screenshots/button-outline-md-0.png",
+      "bounds": {
+        "w": 240,
+        "h": 32
+      },
+      "kind": "button",
+      "variantHint": "outline",
+      "sizeHint": "md",
+      "retina": true
+    },
+    {
+      "cluster": "button--outline--md",
+      "variant": 1,
+      "path": "screenshots/button-outline-md-1.png",
+      "bounds": {
+        "w": 240,
+        "h": 32
+      },
+      "kind": "button",
+      "variantHint": "outline",
+      "sizeHint": "md",
+      "retina": true
+    },
+    {
+      "cluster": "button--outline--md",
+      "variant": 2,
+      "path": "screenshots/button-outline-md-2.png",
+      "bounds": {
+        "w": 240,
+        "h": 32
+      },
+      "kind": "button",
+      "variantHint": "outline",
+      "sizeHint": "md",
+      "retina": true
+    },
+    {
+      "cluster": "card--default--xl",
+      "variant": 0,
+      "path": "screenshots/card-default-xl-0.png",
+      "bounds": {
+        "w": 640,
+        "h": 152
+      },
+      "kind": "card",
+      "variantHint": "default",
+      "sizeHint": "xl",
+      "retina": true
+    },
+    {
+      "cluster": "card--secondary",
+      "variant": 0,
+      "path": "screenshots/card-secondary-0.png",
+      "bounds": {
+        "w": 638,
+        "h": 74
+      },
+      "kind": "card",
+      "variantHint": "secondary",
+      "sizeHint": "",
+      "retina": true
+    },
+    {
+      "cluster": "input--outline--md",
+      "variant": 0,
+      "path": "screenshots/input-outline-md-0.png",
+      "bounds": {
+        "w": 325,
+        "h": 56
+      },
+      "kind": "input",
+      "variantHint": "outline",
+      "sizeHint": "md",
+      "retina": true
+    }
+  ],
+  "fullPage": {
+    "path": "screenshots/full-page.png",
+    "retina": true
+  },
+  "count": 12
+}

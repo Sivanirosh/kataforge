@@ -1,0 +1,537 @@
+{
+  "id": "applied-algorithms-coding-round",
+  "title": "Applied Algorithms Coding Round",
+  "description": "Six-day accelerated preparation for a live algorithmic coding interview. Each module covers one preparation day, progressing from Python foundations through graphs, DP, and full mock interviews. Built around the live-coding protocol: restate, example, brute force, pattern, code, test, complexity.",
+  "estimatedHours": 48,
+  "prerequisites": [
+    "Basic Python \u2014 functions, loops, dictionaries, lists",
+    "Comfort reading short technical prose"
+  ],
+  "modules": [
+    {
+      "id": "reference",
+      "title": "Module 0 \u2014 Reference Material",
+      "summary": "Core frameworks to internalize before practice begins: the live-coding protocol, pattern recognition map, Big-O reference, Python toolkit, and all ten algorithm templates.",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-interview-protocol"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-pattern-map"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-python-toolkit"
+        }
+      ]
+    },
+    {
+      "id": "day1-foundations",
+      "title": "Day 1 \u2014 Python Foundations: Arrays, Strings, Hash Maps",
+      "summary": "Build speed with the most common interview building blocks. Goal: solve hash-map and string problems in 10\u201315 minutes.",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-day1-warmup"
+        },
+        {
+          "type": "kata",
+          "kataId": "two-sum"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-two-sum"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-contains-duplicate"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-contains-duplicate"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-valid-anagram"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-valid-anagram"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-majority-element"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-majority-element"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-first-unique-char"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-first-unique-char"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-group-anagrams"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-group-anagrams"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-top-k-frequent"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-top-k-frequent"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-product-except-self"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-product-except-self"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-longest-consecutive"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-longest-consecutive"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-day1-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "day2-windows-intervals",
+      "title": "Day 2 \u2014 Two Pointers, Sliding Window, Intervals",
+      "summary": "Recognize and solve contiguous-window and range-overlap problems. Goal: instantly classify sorted pair search, contiguous condition, and overlapping ranges.",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-day2-warmup"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-valid-palindrome"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-valid-palindrome"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-two-sum-ii"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-two-sum-ii"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-container-most-water"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-container-most-water"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-longest-no-repeat"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-longest-no-repeat"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-min-subarray-sum"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-min-subarray-sum"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-merge-intervals"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-merge-intervals"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-insert-interval"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-insert-interval"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-non-overlapping-intervals"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-non-overlapping-intervals"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-meeting-rooms"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-meeting-rooms"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-meeting-rooms-ii"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-meeting-rooms-ii"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-drill-e-sensor-anomaly"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-day2-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "day3-search-grids",
+      "title": "Day 3 \u2014 Binary Search, Prefix Sums, Grids",
+      "summary": "Prepare for engineering and geometry-like problems. Goal: confidently apply binary search on answer and reason about grid DP.",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-day3-warmup"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-binary-search"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-binary-search"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-search-insert"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-search-insert"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-search-rotated"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-search-rotated"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-find-min-rotated"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-find-min-rotated"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-koko-bananas"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-koko-bananas"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-subarray-sum-k"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-subarray-sum-k"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-range-sum-query"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-range-sum-query"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-range-sum-2d"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-range-sum-2d"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-number-of-islands"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-number-of-islands"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-max-area-island"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-max-area-island"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-maximal-square"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-maximal-square"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-drill-c-feasible-square"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-day3-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "day4-graphs-backtracking",
+      "title": "Day 4 \u2014 Graphs, BFS/DFS, Backtracking",
+      "summary": "Handle connected regions, shortest paths, and search over choices. Goal: distinguish BFS (shortest steps/layers) from DFS (exploration/components) and backtracking (enumerate choices).",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-day4-warmup"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-rotting-oranges"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-rotting-oranges"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-shortest-path-binary"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-shortest-path-binary"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-flood-fill"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-flood-fill"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-clone-graph"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-clone-graph"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-course-schedule"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-course-schedule"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-subsets"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-subsets"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-permutations"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-permutations"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-combination-sum"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-combination-sum"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-word-search"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-word-search"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-drill-f-mesh-components"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-day4-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "day5-dp-stacks-heaps",
+      "title": "Day 5 \u2014 Dynamic Programming, Stacks, Heaps",
+      "summary": "Cover patterns that are less frequent but dangerous if ignored. Goal: define DP states and base cases even for hard problems.",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-day5-warmup"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-climbing-stairs"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-climbing-stairs"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-house-robber"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-house-robber"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-coin-change"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-coin-change"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-lis"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-lis"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-lcs"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-lcs"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-valid-parentheses"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-valid-parentheses"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-min-stack"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-min-stack"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-daily-temperatures"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-daily-temperatures"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-eval-rpn"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-eval-rpn"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-k-closest-points"
+        },
+        {
+          "type": "checkpoint",
+          "checkpointId": "aa-cp-k-closest-points"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-drill-a-best-design"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-drill-b-pareto"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-day5-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "day6-mock-and-interview",
+      "title": "Day 6 + Interview Day \u2014 Mock Sessions and Final Warmup",
+      "summary": "Simulate the real interview with timed mock sessions. Close with the interview-day warmup to stay sharp and structured.",
+      "steps": [
+        {
+          "type": "lesson",
+          "lessonId": "aa-day6-mock-protocol"
+        },
+        {
+          "type": "kata",
+          "kataId": "aa-drill-d-shape-intervals"
+        },
+        {
+          "type": "lesson",
+          "lessonId": "aa-interview-day"
+        }
+      ]
+    }
+  ]
+}

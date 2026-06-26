@@ -1,0 +1,974 @@
+{
+  "colors": {
+    "all": [
+      {
+        "hex": "#171717",
+        "rgb": {
+          "r": 23,
+          "g": 23,
+          "b": 23,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 9
+        },
+        "count": 5972,
+        "contexts": [
+          "text",
+          "border",
+          "background"
+        ]
+      },
+      {
+        "hex": "#ebebeb",
+        "rgb": {
+          "r": 235,
+          "g": 235,
+          "b": 235,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 92
+        },
+        "count": 5006,
+        "contexts": [
+          "border",
+          "background"
+        ]
+      },
+      {
+        "hex": "#4d4d4d",
+        "rgb": {
+          "r": 77,
+          "g": 77,
+          "b": 77,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 30
+        },
+        "count": 1196,
+        "contexts": [
+          "text",
+          "border"
+        ]
+      },
+      {
+        "hex": "#ffffff",
+        "rgb": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 100
+        },
+        "count": 193,
+        "contexts": [
+          "background",
+          "text",
+          "border"
+        ]
+      },
+      {
+        "hex": "#666666",
+        "rgb": {
+          "r": 102,
+          "g": 102,
+          "b": 102,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 40
+        },
+        "count": 134,
+        "contexts": [
+          "text"
+        ]
+      },
+      {
+        "hex": "#a8a8a8",
+        "rgb": {
+          "r": 168,
+          "g": 168,
+          "b": 168,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 66
+        },
+        "count": 109,
+        "contexts": [
+          "border",
+          "text"
+        ]
+      },
+      {
+        "hex": "#000000",
+        "rgb": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 0
+        },
+        "count": 94,
+        "contexts": [
+          "text",
+          "border"
+        ]
+      },
+      {
+        "hex": "#0072f5",
+        "rgb": {
+          "r": 0,
+          "g": 114,
+          "b": 245,
+          "a": 1
+        },
+        "hsl": {
+          "h": 212,
+          "s": 100,
+          "l": 48
+        },
+        "count": 34,
+        "contexts": [
+          "text",
+          "background"
+        ]
+      },
+      {
+        "hex": "#7d7d7d",
+        "rgb": {
+          "r": 125,
+          "g": 125,
+          "b": 125,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 49
+        },
+        "count": 20,
+        "contexts": [
+          "text"
+        ]
+      },
+      {
+        "hex": "#8f8f8f",
+        "rgb": {
+          "r": 143,
+          "g": 143,
+          "b": 143,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 56
+        },
+        "count": 19,
+        "contexts": [
+          "text",
+          "background"
+        ]
+      },
+      {
+        "hex": "#0068d6",
+        "rgb": {
+          "r": 0,
+          "g": 104,
+          "b": 214,
+          "a": 1
+        },
+        "hsl": {
+          "h": 211,
+          "s": 100,
+          "l": 42
+        },
+        "count": 4,
+        "contexts": [
+          "text",
+          "background"
+        ]
+      },
+      {
+        "hex": "#ebf5ff",
+        "rgb": {
+          "r": 235,
+          "g": 245,
+          "b": 255,
+          "a": 1
+        },
+        "hsl": {
+          "h": 210,
+          "s": 100,
+          "l": 96
+        },
+        "count": 4,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#52aeff",
+        "rgb": {
+          "r": 82,
+          "g": 174,
+          "b": 255,
+          "a": 1
+        },
+        "hsl": {
+          "h": 208,
+          "s": 100,
+          "l": 66
+        },
+        "count": 4,
+        "contexts": [
+          "background",
+          "text"
+        ]
+      },
+      {
+        "hex": "#e5484d",
+        "rgb": {
+          "r": 229,
+          "g": 72,
+          "b": 77,
+          "a": 1
+        },
+        "hsl": {
+          "h": 358,
+          "s": 75,
+          "l": 59
+        },
+        "count": 3,
+        "contexts": [
+          "background",
+          "text"
+        ]
+      },
+      {
+        "hex": "#45dec5",
+        "rgb": {
+          "r": 69,
+          "g": 222,
+          "b": 197,
+          "a": 1
+        },
+        "hsl": {
+          "h": 170,
+          "s": 70,
+          "l": 57
+        },
+        "count": 3,
+        "contexts": [
+          "background",
+          "text"
+        ]
+      },
+      {
+        "hex": "#bd2864",
+        "rgb": {
+          "r": 189,
+          "g": 40,
+          "b": 100,
+          "a": 1
+        },
+        "hsl": {
+          "h": 336,
+          "s": 65,
+          "l": 45
+        },
+        "count": 3,
+        "contexts": [
+          "text"
+        ]
+      },
+      {
+        "hex": "#ffb224",
+        "rgb": {
+          "r": 255,
+          "g": 178,
+          "b": 36,
+          "a": 1
+        },
+        "hsl": {
+          "h": 39,
+          "s": 100,
+          "l": 57
+        },
+        "count": 2,
+        "contexts": [
+          "text"
+        ]
+      },
+      {
+        "hex": "#297a3a",
+        "rgb": {
+          "r": 41,
+          "g": 122,
+          "b": 58,
+          "a": 1
+        },
+        "hsl": {
+          "h": 133,
+          "s": 50,
+          "l": 32
+        },
+        "count": 2,
+        "contexts": [
+          "text"
+        ]
+      },
+      {
+        "hex": "#7820bc",
+        "rgb": {
+          "r": 120,
+          "g": 32,
+          "b": 188,
+          "a": 1
+        },
+        "hsl": {
+          "h": 274,
+          "s": 71,
+          "l": 43
+        },
+        "count": 2,
+        "contexts": [
+          "text",
+          "background"
+        ]
+      },
+      {
+        "hex": "#cce6ff",
+        "rgb": {
+          "r": 204,
+          "g": 230,
+          "b": 255,
+          "a": 1
+        },
+        "hsl": {
+          "h": 209,
+          "s": 100,
+          "l": 90
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#bf89ec",
+        "rgb": {
+          "r": 191,
+          "g": 137,
+          "b": 236,
+          "a": 1
+        },
+        "hsl": {
+          "h": 273,
+          "s": 72,
+          "l": 73
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#398e4a",
+        "rgb": {
+          "r": 57,
+          "g": 142,
+          "b": 74,
+          "a": 1
+        },
+        "hsl": {
+          "h": 132,
+          "s": 43,
+          "l": 39
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#067a6e",
+        "rgb": {
+          "r": 6,
+          "g": 122,
+          "b": 110,
+          "a": 1
+        },
+        "hsl": {
+          "h": 174,
+          "s": 91,
+          "l": 25
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#ff990a",
+        "rgb": {
+          "r": 255,
+          "g": 153,
+          "b": 10,
+          "a": 1
+        },
+        "hsl": {
+          "h": 35,
+          "s": 100,
+          "l": 52
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#ffc96b",
+        "rgb": {
+          "r": 255,
+          "g": 201,
+          "b": 107,
+          "a": 1
+        },
+        "hsl": {
+          "h": 38,
+          "s": 100,
+          "l": 71
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#6cda75",
+        "rgb": {
+          "r": 108,
+          "g": 218,
+          "b": 117,
+          "a": 1
+        },
+        "hsl": {
+          "h": 125,
+          "s": 60,
+          "l": 64
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#ea3e83",
+        "rgb": {
+          "r": 234,
+          "g": 62,
+          "b": 131,
+          "a": 1
+        },
+        "hsl": {
+          "h": 336,
+          "s": 80,
+          "l": 58
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#fffaf0",
+        "rgb": {
+          "r": 255,
+          "g": 250,
+          "b": 240,
+          "a": 1
+        },
+        "hsl": {
+          "h": 40,
+          "s": 100,
+          "l": 97
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#24292e",
+        "rgb": {
+          "r": 36,
+          "g": 41,
+          "b": 46,
+          "a": 1
+        },
+        "hsl": {
+          "h": 210,
+          "s": 12,
+          "l": 16
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#6b4fbb",
+        "rgb": {
+          "r": 107,
+          "g": 79,
+          "b": 187,
+          "a": 1
+        },
+        "hsl": {
+          "h": 256,
+          "s": 44,
+          "l": 52
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      },
+      {
+        "hex": "#0052cc",
+        "rgb": {
+          "r": 0,
+          "g": 82,
+          "b": 204,
+          "a": 1
+        },
+        "hsl": {
+          "h": 216,
+          "s": 100,
+          "l": 40
+        },
+        "count": 1,
+        "contexts": [
+          "background"
+        ]
+      }
+    ]
+  },
+  "regions": [
+    {
+      "role": "nav",
+      "tag": "header",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 64
+      },
+      "heading": null,
+      "buttonCount": 2,
+      "cardCount": 2,
+      "className": "flex h-header min-h-[var(--header-height)] items-center px-4 md:px-6 [&>*:not(a)]:h-header [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-0 [&_a]:ease-[easing-function:ease] [&_a]:no-underline [&_a]:transition-colors [&_a]:duration-200 [&_button]:ease-[easing-function:ease] [&_button]:transition-colors [&_button]:duration-200 bg-background-200"
+    },
+    {
+      "role": "nav",
+      "tag": "nav",
+      "bounds": {
+        "x": 24,
+        "y": 0,
+        "w": 1232,
+        "h": 64
+      },
+      "heading": null,
+      "buttonCount": 2,
+      "cardCount": 1,
+      "className": "flex flex-row items-center gap-6 flex-1 md:pl-8 w-full justify-end"
+    },
+    {
+      "role": "nav",
+      "tag": "nav",
+      "bounds": {
+        "x": 1180,
+        "y": 16,
+        "w": 76,
+        "h": 32
+      },
+      "heading": null,
+      "buttonCount": 2,
+      "cardCount": 0,
+      "className": "flex flex-row items-center justify-end gap-3 flex-initial"
+    },
+    {
+      "role": "hero",
+      "tag": "main",
+      "bounds": {
+        "x": 0,
+        "y": 64,
+        "w": 1280,
+        "h": 736
+      },
+      "heading": "Log in to Vercel",
+      "buttonCount": 19,
+      "cardCount": 6,
+      "className": "min-h-[calc(100vh-var(--header-height)-var(--footer-height))] text-[14px] leading-[24px] [&:has([data-not-found])]:bg-background-100 bg-[var(--ds-background-200)] flex flex-col items-stretch justify-center flex-initial"
+    },
+    {
+      "role": "footer",
+      "tag": "footer",
+      "bounds": {
+        "x": 0,
+        "y": 736,
+        "w": 1280,
+        "h": 64
+      },
+      "heading": null,
+      "buttonCount": 0,
+      "cardCount": 2,
+      "className": "py-6"
+    }
+  ],
+  "componentClusters": [
+    {
+      "kind": "button",
+      "structuralHash": "header>a>nav",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "rgb(250, 250, 250)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 24px 0px 24px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "a>span",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 6px 0px 6px",
+            "borderRadius": "6px",
+            "border": "0px none rgb(23, 23, 23)",
+            "fontSize": "14px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "span>p",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 6px 0px 6px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "14px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "input",
+      "structuralHash": "input",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(0, 0, 0)",
+            "padding": "0px 12px 0px 12px",
+            "borderRadius": "8px",
+            "border": "0px none rgb(0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "button>span",
+      "instanceCount": 2,
+      "variants": [
+        {
+          "css": {
+            "background": "rgb(23, 23, 23)",
+            "color": "rgb(255, 255, 255)",
+            "padding": "0px 14px 0px 14px",
+            "borderRadius": "8px",
+            "border": "0px none rgb(255, 255, 255)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 1
+        },
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 14px 0px 14px",
+            "borderRadius": "8px",
+            "border": "0px none rgb(23, 23, 23)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "span",
+      "instanceCount": 4,
+      "variants": [
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "padding": "0px 6px 0px 6px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 1
+        },
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 6px 0px 6px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 3
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "button>span>span",
+      "instanceCount": 5,
+      "variants": [
+        {
+          "css": {
+            "background": "rgb(255, 255, 255)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 14px 0px 14px",
+            "borderRadius": "8px",
+            "border": "0px none rgb(23, 23, 23)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 5
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "span>span",
+      "instanceCount": 4,
+      "variants": [
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 0px 0px 0px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 4
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "span>svg",
+      "instanceCount": 4,
+      "variants": [
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 0px 0px 0px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "500"
+          },
+          "instanceCount": 4
+        }
+      ]
+    },
+    {
+      "kind": "card",
+      "structuralHash": "div>div",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 0px 0px 0px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "card",
+      "structuralHash": "div>svg",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(23, 23, 23)",
+            "padding": "0px 0px 0px 0px",
+            "borderRadius": "0px",
+            "border": "0px solid rgb(235, 235, 235)",
+            "fontSize": "16px",
+            "fontWeight": "400"
+          },
+          "instanceCount": 1
+        }
+      ]
+    }
+  ],
+  "accessibility": {
+    "remediation": [
+      {
+        "fg": "#0072f5",
+        "bg": "#ffffff",
+        "ratio": 4.44,
+        "rule": "AA-normal",
+        "suggestion": {
+          "replace": "fg",
+          "color": "#000000",
+          "newRatio": 21
+        }
+      },
+      {
+        "fg": "#0068d6",
+        "bg": "#cce6ff",
+        "ratio": 4.13,
+        "rule": "AA-normal",
+        "suggestion": {
+          "replace": "fg",
+          "color": "#000000",
+          "newRatio": 16.33
+        }
+      }
+    ]
+  },
+  "cssHealth": {
+    "sheets": [
+      {
+        "url": "https://vercel.com/vc-ap-7ae771/_next/static/css/77b8209755e3b224.css?dpl=dpl_3GbCBAiRi7TaNKLU3hNDeGq1Lk98",
+        "totalBytes": 55995,
+        "usedBytes": 1008,
+        "unusedBytes": 54987,
+        "unusedPercent": 98
+      },
+      {
+        "url": "https://vercel.com/vc-ap-7ae771/_next/static/css/4ebb66f7b06c782a.css?dpl=dpl_3GbCBAiRi7TaNKLU3hNDeGq1Lk98",
+        "totalBytes": 73530,
+        "usedBytes": 16012,
+        "unusedBytes": 57518,
+        "unusedPercent": 78
+      },
+      {
+        "url": "https://vercel.com/vc-ap-7ae771/_next/static/css/3152521bf03fd454.css?dpl=dpl_3GbCBAiRi7TaNKLU3hNDeGq1Lk98",
+        "totalBytes": 432891,
+        "usedBytes": 367064,
+        "unusedBytes": 65827,
+        "unusedPercent": 15
+      },
+      {
+        "url": "https://vercel.com/vc-ap-7ae771/_next/static/css/42df0f53be8a1e71.css?dpl=dpl_3GbCBAiRi7TaNKLU3hNDeGq1Lk98",
+        "totalBytes": 28111,
+        "usedBytes": 39,
+        "unusedBytes": 28072,
+        "unusedPercent": 100
+      }
+    ],
+    "totalBytes": 590527,
+    "usedBytes": 384123,
+    "unusedBytes": 206404,
+    "unusedPercent": 35,
+    "importantCount": 490,
+    "duplicates": 6142,
+    "vendorPrefixes": {
+      "webkit": 149,
+      "moz": 21,
+      "ms": 6,
+      "o": 0
+    },
+    "keyframes": [],
+    "specificity": {
+      "max": [
+        2,
+        13,
+        6
+      ],
+      "average": [
+        0.01,
+        2.01,
+        0.17
+      ],
+      "count": 6587
+    },
+    "issues": [
+      "490 !important rules",
+      "6142 duplicate declarations"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "tone": "neutral",
+  "pronoun": "third-person",
+  "headingStyle": "Title Case",
+  "headingLengthClass": "tight",
+  "ctaVerbs": [
+    {
+      "value": "continue",
+      "count": 12
+    },
+    {
+      "value": "sign",
+      "count": 3
+    },
+    {
+      "value": "show",
+      "count": 2
+    }
+  ],
+  "buttonPatterns": [
+    {
+      "value": "sign up",
+      "count": 3
+    },
+    {
+      "value": "continue with email",
+      "count": 2
+    },
+    {
+      "value": "continue with google",
+      "count": 2
+    },
+    {
+      "value": "continue with github",
+      "count": 2
+    },
+    {
+      "value": "continue with apple",
+      "count": 2
+    },
+    {
+      "value": "continue with saml sso",
+      "count": 2
+    },
+    {
+      "value": "continue with passkey",
+      "count": 2
+    },
+    {
+      "value": "show other options",
+      "count": 2
+    }
+  ],
+  "sampleHeadings": [
+    "Log in to Vercel"
+  ],
+  "stats": {
+    "buttons": 17,
+    "headings": 1
+  }
+}

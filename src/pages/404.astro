@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+import '../styles/landing-transitions.css';
+import '../styles/kiro.css';
+import FontLinks from '../components/FontLinks.astro';
+import ThemeScript from '../components/ThemeScript.astro';
+import UserKataRouteFallback from '../components/UserKataRouteFallback';
+import { loadKataForgeConfig } from '../lib/loadConfig';
+
+const config = await loadKataForgeConfig();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>Not found · {config.branding.title}</title>
+  </head>
+  <body>
+    <UserKataRouteFallback
+      client:only="react"
+      brandingTitle={config.branding.title}
+      judgeConfig={config.judge}
+    />
+  </body>
+</html>

@@ -1,0 +1,239 @@
+---
+import '../styles/global.css';
+import '../styles/landing-transitions.css';
+import '../styles/kiro.css';
+import AssessmentStartActions from '../components/AssessmentStartActions';
+import CursusOverview from '../components/CursusOverview';
+import FontLinks from '../components/FontLinks.astro';
+import KataPracticeSection from '../components/KataPracticeSection';
+import PracticeHubPanel from '../components/PracticeHubPanel';
+import SiteNav from '../components/SiteNav.astro';
+import ThemeScript from '../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../lib/loadConfig';
+import { loadAssessments } from '../lib/loadAssessments';
+import { loadAllCursus } from '../lib/loadCursus';
+import { loadAllKatas } from '../lib/loadKatas';
+import { countCursusSteps, flattenCursusSteps } from '../lib/cursusSteps';
+
+const config = await loadKataForgeConfig();
+const assessments = await loadAssessments();
+const cursusList = await loadAllCursus();
+const katas = await loadAllKatas();
+
+const totalSteps = cursusList.reduce((sum, c) => sum + countCursusSteps(c), 0);
+const totalModules = cursusList.reduce((sum, c) => sum + c.modules.length, 0);
+const totalKatas = katas.length;
+
+const builtInKataSummaries = katas.map((kata) => ({
+  id: kata.id,
+  title: kata.title,
+  difficulty: kata.difficulty,
+  estimatedMinutes: kata.estimatedMinutes,
+}));
+
+const assessmentSummaries = assessments.map((assessment) => ({
+  id: assessment.id,
+  title: assessment.title,
+  durationMinutes: assessment.durationMinutes,
+  kataCount: assessment.kataIds.length,
+}));
+
+const cursusSummaries = cursusList.map((cursus) => {
+  const steps = flattenCursusSteps(cursus);
+  return {
+    id: cursus.id,
+    title: cursus.title,
+    description: cursus.description,
+    estimatedHours: cursus.estimatedHours,
+    prerequisites: cursus.prerequisites,
+    moduleCount: cursus.modules.length,
+    stepCount: steps.length,
+    stepKeys: steps.map((step) => step.key),
+  };
+});
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>{config.branding.title} — local kata practice</title>
+    <meta name="description" content="A local, private coding kata practice environment. Python runs in your browser. Built for the rep, not the show." />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to practice hub</a>
+    <SiteNav title={config.branding.title} />
+
+    <nav class="mobile-section-rail" aria-label="Homepage sections">
+      <a href="#library">Library</a>
+      <a href="#cursus">Cursus</a>
+      <a href="#assessments">Assessments</a>
+      <a href="/docs">Docs</a>
+    </nav>
+
+    <section class="kiro-hero">
+      <div class="kiro-shell kiro-hero-inner">
+        <div class="kiro-hero-copy">
+          <p class="kiro-hero-meta">
+            <strong>{config.branding.title}</strong>
+            <span>·</span>
+            <span>local Python practice</span>
+          </p>
+          <h1 class="kiro-hero-title">
+            KataForge Practice Hub
+          </h1>
+          <p class="kiro-hero-lede">
+            A workspace for the rep, not the show. Browse katas, resume local
+            progress, import UserKatas, or sit an assessment without sending
+            code to a backend.
+          </p>
+          <ul class="hub-proof-list" role="list">
+            <li>local-only drafts</li>
+            <li>Pyodide runtime</li>
+            <li>hidden tests</li>
+            <li>UserKata JSON</li>
+          </ul>
+        </div>
+
+        <PracticeHubPanel
+          client:load
+          builtInKatas={builtInKataSummaries}
+          assessments={assessmentSummaries}
+          cursus={cursusSummaries.map(({ id, title, stepCount, stepKeys }) => ({
+            id,
+            title,
+            stepCount,
+            stepKeys,
+          }))}
+        />
+      </div>
+    </section>
+
+    <section class="kiro-manifest" aria-label="Library overview">
+      <div class="kiro-shell kiro-manifest-inner">
+        <span class="kiro-mf-cell">
+          <span class="kiro-mf-k">katas</span>
+          <span class="kiro-mf-v">{totalKatas}</span>
+        </span>
+        <span class="kiro-mf-sep" aria-hidden="true">/</span>
+        <span class="kiro-mf-cell">
+          <span class="kiro-mf-k">paths</span>
+          <span class="kiro-mf-v">{cursusList.length}</span>
+          <span class="kiro-mf-n">· {totalModules} mod · {totalSteps} steps</span>
+        </span>
+        <span class="kiro-mf-sep" aria-hidden="true">/</span>
+        <span class="kiro-mf-cell">
+          <span class="kiro-mf-k">assessments</span>
+          <span class="kiro-mf-v">{assessments.length}</span>
+        </span>
+        <span class="kiro-mf-sep" aria-hidden="true">/</span>
+        <span class="kiro-mf-cell">
+          <span class="kiro-mf-k">runtime</span>
+          <span class="kiro-mf-v">python · pyodide</span>
+        </span>
+        <span class="kiro-mf-sep" aria-hidden="true">/</span>
+        <span class="kiro-mf-cell">
+          <span class="kiro-mf-k">storage</span>
+          <span class="kiro-mf-v">drafts · scores · progress</span>
+        </span>
+        <span class="kiro-mf-cell kiro-mf-right">
+          <span class="kiro-mf-k">scope</span>
+          <span class="kiro-mf-v">local</span>
+        </span>
+      </div>
+    </section>
+
+    <main id="main-content" class="kiro-shell kiro-page-main page-main">
+
+      <section class="kiro-sec" id="library">
+        <div class="kiro-sec-head">
+          <div>
+            <span class="kiro-sec-tag">library</span>
+            <h2 class="kiro-sec-title">Library</h2>
+            <p class="kiro-sec-desc">
+              Search by title, filter by difficulty, and keep imported UserKatas
+              beside the built-in drills. The default order starts easy and
+              climbs toward hard.
+            </p>
+          </div>
+          <span class="kiro-sec-meta">{totalKatas} built-in</span>
+        </div>
+
+        <KataPracticeSection
+          client:load
+          builtInKatas={builtInKataSummaries}
+          builtInIds={katas.map((kata) => kata.id)}
+        />
+      </section>
+
+      <section class="kiro-sec" id="cursus">
+        <div class="kiro-sec-head">
+          <div>
+            <span class="kiro-sec-tag">cursus</span>
+            <h2 class="kiro-sec-title">Cursus</h2>
+            <p class="kiro-sec-desc">
+              Compare guided paths by time, modules, prerequisites, and current
+              progress before you open the next lesson or kata step.
+            </p>
+          </div>
+          <span class="kiro-sec-meta">{cursusList.length} {cursusList.length === 1 ? 'path' : 'paths'} · {totalSteps} steps</span>
+        </div>
+
+        <CursusOverview client:load items={cursusSummaries} />
+      </section>
+
+      <section class="kiro-sec" id="assessments">
+        <div class="kiro-sec-head">
+          <div>
+            <span class="kiro-sec-tag">assessments</span>
+            <h2 class="kiro-sec-title">Assessments</h2>
+            <p class="kiro-sec-desc">
+              Timed and untimed bundles keep their session state locally. Resume
+              in place or start over from the row action.
+            </p>
+          </div>
+          <span class="kiro-sec-meta">{assessments.length} {assessments.length === 1 ? 'set' : 'sets'}</span>
+        </div>
+
+        <ul class="kiro-assess" role="list">
+          {assessments.map((assessment) => (
+            <li class="kiro-assess-row">
+              <span class={`kiro-assess-time${assessment.durationMinutes ? '' : ' untimed'}`}>
+                {assessment.durationMinutes ? `${assessment.durationMinutes}m` : 'untimed'}
+              </span>
+              <span class="kiro-assess-title">
+                {assessment.title}
+                <small>{assessment.durationMinutes ? 'Timed set' : 'Untimed set'}</small>
+              </span>
+              <span class="kiro-assess-meta">{assessment.kataIds.length} katas</span>
+              <span class="assessment-start-actions">
+                <AssessmentStartActions
+                  client:load
+                  assessmentId={assessment.id}
+                  durationMinutes={assessment.durationMinutes}
+                  kataIds={assessment.kataIds}
+                />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+
+    <footer class="kiro-statusbar" role="contentinfo">
+      <div class="kiro-statusbar-inner">
+        <span><span class="kiro-statusbar-pill">● ready</span></span>
+        <span><span class="sep">·</span> pyodide</span>
+        <span><span class="sep">·</span> local-only judge</span>
+        <span><span class="sep">·</span> hidden tests</span>
+        <span class="right">
+          <a href="/docs">docs</a>
+          <span class="sep">·</span>
+          <a href="https://github.com/anthropics/claude-code/issues">feedback</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

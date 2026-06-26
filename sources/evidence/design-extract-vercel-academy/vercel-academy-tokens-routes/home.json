@@ -1,0 +1,195 @@
+{
+  "url": "https://vercel.com/home",
+  "path": "/home",
+  "added": {
+    "primitive": {
+      "color": {
+        "text": {
+          "text8": {
+            "$value": "#45dec5"
+          }
+        }
+      },
+      "spacing": {
+        "s7": {
+          "$value": "96px"
+        },
+        "s8": {
+          "$value": "144px"
+        }
+      },
+      "radius": {
+        "r5": {
+          "$value": "64px"
+        },
+        "r6": {
+          "$value": "99px"
+        },
+        "r7": {
+          "$value": "9999px"
+        }
+      },
+      "shadow": {
+        "sh6": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px"
+        },
+        "sh7": {
+          "$value": "rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px"
+        },
+        "sh8": {
+          "$value": "rgba(0, 0, 0, 0.04) 0px 1px 2px 0px"
+        },
+        "sh9": {
+          "$value": "rgba(0, 0, 0, 0.04) 0px 2px 2px 0px"
+        }
+      }
+    }
+  },
+  "changed": {
+    "primitive": {
+      "color": {
+        "brand": {
+          "primary": {
+            "$value": "#52aeff"
+          },
+          "secondary": {
+            "$value": "#0068d6"
+          }
+        },
+        "neutral": {
+          "n100": {
+            "$value": "#171717"
+          },
+          "n200": {
+            "$value": "#ebebeb"
+          },
+          "n300": {
+            "$value": "#4d4d4d"
+          },
+          "n400": {
+            "$value": "#ffffff"
+          },
+          "n500": {
+            "$value": "#000000"
+          },
+          "n600": {
+            "$value": "#a8a8a8"
+          },
+          "n700": {
+            "$value": "#ebf5ff"
+          },
+          "n800": {
+            "$value": "#8f8f8f"
+          }
+        },
+        "background": {
+          "bg0": {
+            "$value": "#fafafa"
+          },
+          "bg1": {
+            "$value": "#ffffff"
+          }
+        },
+        "text": {
+          "text2": {
+            "$value": "#4d4d4d"
+          },
+          "text3": {
+            "$value": "#ffffff"
+          },
+          "text4": {
+            "$value": "#0068d6"
+          },
+          "text5": {
+            "$value": "#52aeff"
+          },
+          "text6": {
+            "$value": "#e5484d"
+          },
+          "text7": {
+            "$value": "#ffb224"
+          }
+        }
+      },
+      "spacing": {
+        "s0": {
+          "$value": "1px"
+        },
+        "s1": {
+          "$value": "24px"
+        },
+        "s2": {
+          "$value": "32px"
+        },
+        "s3": {
+          "$value": "40px"
+        },
+        "s4": {
+          "$value": "44px"
+        },
+        "s5": {
+          "$value": "48px"
+        },
+        "s6": {
+          "$value": "85px"
+        }
+      },
+      "radius": {
+        "r0": {
+          "$value": "4px"
+        },
+        "r1": {
+          "$value": "7px"
+        },
+        "r2": {
+          "$value": "16px"
+        },
+        "r3": {
+          "$value": "32px"
+        },
+        "r4": {
+          "$value": "50px"
+        }
+      },
+      "shadow": {
+        "sh0": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px"
+        },
+        "sh1": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(235, 235, 235) 0px 0px 0px 1px"
+        },
+        "sh2": {
+          "$value": "rgb(235, 235, 235) 0px 0px 0px 1px"
+        },
+        "sh3": {
+          "$value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px inset"
+        },
+        "sh4": {
+          "$value": "rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
+        },
+        "sh5": {
+          "$value": "rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px"
+        }
+      }
+    },
+    "semantic": {
+      "color": {
+        "action": {
+          "secondary": {
+            "$value": "{primitive.color.brand.secondary}"
+          }
+        }
+      },
+      "typography": {
+        "body": {
+          "$value": {
+            "fontFamily": "Geist",
+            "fontSize": "48px",
+            "fontWeight": "600",
+            "lineHeight": "48px"
+          }
+        }
+      }
+    }
+  }
+}

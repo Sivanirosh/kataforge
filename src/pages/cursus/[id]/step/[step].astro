@@ -1,0 +1,79 @@
+---
+import '../../../../styles/global.css';
+import '../../../../styles/ui.css';
+import CursusShell from '../../../../components/CursusShell';
+import FontLinks from '../../../../components/FontLinks.astro';
+import ThemeScript from '../../../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../../../lib/loadConfig';
+import {
+  collectCursusCheckpointIds,
+  collectCursusKataIds,
+  collectCursusLessonIds,
+} from '../../../../lib/cursusSteps';
+import { loadCheckpointCollection } from '../../../../lib/loadCheckpoints';
+import { loadLessonMap } from '../../../../lib/loadLessons';
+import { loadKataMap } from '../../../../lib/loadKatas';
+
+export async function getStaticPaths() {
+  const { loadAllCursus } = await import('../../../../lib/loadCursus');
+  const all = await loadAllCursus();
+  const paths = [];
+  for (const cursus of all) {
+    let stepCount = 0;
+    for (const mod of cursus.modules) {
+      stepCount += mod.steps.length;
+    }
+    for (let step = 0; step < stepCount; step += 1) {
+      paths.push({
+        params: { id: cursus.id, step: String(step) },
+        props: { cursus, stepIndex: step },
+      });
+    }
+  }
+  return paths;
+}
+
+const { cursus, stepIndex } = Astro.props;
+const config = await loadKataForgeConfig();
+const allLessons = await loadLessonMap();
+const allKatas = await loadKataMap();
+const lessonMap = Object.fromEntries(
+  collectCursusLessonIds(cursus)
+    .map((id) => [id, allLessons[id]])
+    .filter(([, lesson]) => Boolean(lesson)),
+);
+const kataMap = Object.fromEntries(
+  collectCursusKataIds(cursus)
+    .map((id) => [id, allKatas[id]])
+    .filter(([, kata]) => Boolean(kata)),
+);
+const checkpointCollection = await loadCheckpointCollection();
+const checkpointMap = Object.fromEntries(
+  collectCursusCheckpointIds(cursus)
+    .map((id) => [id, checkpointCollection.byId.get(id)])
+    .filter(([, checkpoint]) => Boolean(checkpoint)),
+);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>{cursus.title} · Step {stepIndex + 1} · {config.branding.title}</title>
+  </head>
+  <body class="cursus-step-page">
+    <div id="cursus-boot" class="cursus-boot-shell" aria-hidden="true"></div>
+    <CursusShell
+      client:only="react"
+      cursus={cursus}
+      currentGlobalIndex={stepIndex}
+      lessonMap={lessonMap}
+      kataMap={kataMap}
+      checkpointMap={checkpointMap}
+      judgeConfig={config.judge}
+      brandingTitle={config.branding.title}
+    />
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "problemDirs": ["examples/problems", "packs/applied-algorithms-2026/problems", "private/problems"],
+  "assessmentDirs": ["examples/assessments", "private/assessments"],
+  "cursusDirs": ["examples/cursus", "packs/applied-algorithms-2026", "private/cursus"],
+  "lessonDirs": ["examples/lessons", "packs/applied-algorithms-2026/lessons", "private/lessons"],
+  "checkpointDirs": ["examples/checkpoints", "packs/applied-algorithms-2026/checkpoints", "private/checkpoints"]
+}

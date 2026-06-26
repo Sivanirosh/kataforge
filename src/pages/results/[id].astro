@@ -1,0 +1,78 @@
+---
+import FontLinks from '../../components/FontLinks.astro';
+import ResultsPageLoader from '../../components/ResultsPageLoader';
+import SiteNav from '../../components/SiteNav.astro';
+import ThemeScript from '../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../lib/loadConfig';
+import { loadAssessments } from '../../lib/loadAssessments';
+import { kataPracticeAssessment } from '../../lib/kataPractice';
+import { loadKataMap } from '../../lib/loadKatas';
+import '../../styles/global.css';
+import '../../styles/landing-transitions.css';
+import '../../styles/kiro.css';
+
+export async function getStaticPaths() {
+  const assessments = await loadAssessments();
+  const kataMap = await loadKataMap();
+  const assessmentIds = new Set(assessments.map((assessment) => assessment.id));
+
+  const paths = assessments.map((assessment) => ({
+    params: { id: assessment.id },
+    props: { assessment },
+  }));
+
+  for (const kata of Object.values(kataMap)) {
+    if (assessmentIds.has(kata.id)) continue;
+    paths.push({
+      params: { id: kata.id },
+      props: { assessment: kataPracticeAssessment(kata) },
+    });
+  }
+
+  return paths;
+}
+
+const { assessment } = Astro.props;
+const config = await loadKataForgeConfig();
+const kataMap = await loadKataMap();
+const kataTitles = Object.fromEntries(
+  Object.values(kataMap).map((k) => [k.id, k.title]),
+);
+const kataSolutions = Object.fromEntries(
+  assessment.kataIds.map((kataId) => {
+    const kata = kataMap[kataId];
+    return [
+      kataId,
+      {
+        solutionCode: kata?.solutionCode,
+        solutionExplanationHtml: kata?.solutionExplanationHtml,
+      },
+    ];
+  }),
+);
+const isKataPractice = assessment.kataIds.length === 1 && assessment.id === assessment.kataIds[0];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>Results · {config.branding.title}</title>
+  </head>
+  <body>
+    <SiteNav title={config.branding.title} />
+    <main class="results-page page-main">
+      <ResultsPageLoader
+        client:load
+        assessmentId={assessment.id}
+        builtInAssessment={assessment}
+        builtInKataTitles={kataTitles}
+        builtInKataSolutions={kataSolutions}
+        durationMinutes={assessment.durationMinutes}
+        retryHref={isKataPractice ? `/problem/${assessment.id}` : `/assessment/${assessment.id}`}
+      />
+    </main>
+  </body>
+</html>

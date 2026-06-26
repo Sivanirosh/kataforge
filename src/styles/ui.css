@@ -1,0 +1,213 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   KataForge — Tailwind v4 + shadcn/ui layer (scoped to .kf-ui)
+
+   This stylesheet powers ONLY the redesigned lesson + self-check React
+   islands. It is deliberately fenced off from the rest of the app, which
+   stays on the vanilla CSS / OKLCH token system:
+
+   1. NO global preflight. Tailwind's reset would clobber every vanilla-CSS
+      page, so we import only the theme + utilities layers and scope a
+      minimal reset to `.kf-ui` below.
+   2. Tailwind's theme vars live in `@layer theme` (and utilities in
+      `@layer utilities`). Layered CSS loses the cascade to the app's
+      UNLAYERED tokens.css, so collisions on --font-sans / --ease-out /
+      --accent / --muted resolve to the app's values automatically.
+   3. shadcn semantic tokens are defined on `.kf-ui` (not :root) and ALIASED
+      to the existing OKLCH tokens. Because those already flip with
+      [data-theme='light'], the shadcn components inherit dark/light for free
+      with zero duplication. The three names that collide app-wide
+      (--accent, --muted, --border) use `-sc` suffixes so they never shadow
+      the originals even inside .kf-ui.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import 'tw-animate-css';
+
+/* Map Tailwind color/radius utilities to shadcn semantic tokens. `inline`
+   keeps these out of :root — they are inlined into utilities and resolved
+   per-element from the nearest .kf-ui ancestor. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted-sc);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent-sc);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-border: var(--border-sc);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* shadcn token register, scoped + aliased to the app's OKLCH tokens. */
+.kf-ui {
+  --background: var(--surface);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--text);
+
+  --primary: var(--accent);
+  --primary-foreground: oklch(99% 0.01 275);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text);
+
+  /* `-sc` = scoped shadcn variants of names that collide app-wide. */
+  --muted-sc: var(--surface-2);
+  --muted-foreground: var(--muted);
+  --accent-sc: var(--surface-3);
+  --accent-foreground: var(--text);
+  --border-sc: var(--border);
+
+  --destructive: var(--danger);
+  --destructive-foreground: oklch(99% 0.01 20);
+  --success: var(--accent-2);
+  --success-foreground: oklch(26% 0.06 150);
+
+  --input: var(--border);
+  --ring: var(--accent);
+
+  --radius: 0.75rem;
+
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Minimal scoped reset replacing the bits of preflight shadcn relies on. */
+@layer base {
+  .kf-ui *,
+  .kf-ui *::before,
+  .kf-ui *::after {
+    border-width: 0;
+    border-style: solid;
+    border-color: var(--border-sc);
+  }
+}
+
+/* ── Lesson prose ──────────────────────────────────────
+   Typographic treatment for the rendered Markdown lesson body. Scoped to
+   .kf-ui so it never touches the kata-prompt markdown elsewhere. */
+.kf-prose {
+  color: var(--foreground);
+  font-size: 0.975rem;
+  line-height: 1.7;
+}
+.kf-prose > :first-child {
+  margin-top: 0;
+}
+.kf-prose > :last-child {
+  margin-bottom: 0;
+}
+.kf-prose h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+.kf-prose h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--foreground);
+}
+.kf-prose p {
+  margin: 0 0 1rem;
+}
+.kf-prose strong {
+  color: var(--foreground);
+  font-weight: 650;
+}
+.kf-prose a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in oklab, var(--primary) 40%, transparent);
+}
+.kf-prose ul,
+.kf-prose ol {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.kf-prose li {
+  padding-left: 0.15rem;
+}
+.kf-prose li::marker {
+  color: var(--muted-foreground);
+}
+.kf-prose blockquote {
+  margin: 1.25rem 0;
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-left: 3px solid color-mix(in oklab, var(--primary) 55%, transparent);
+  color: var(--muted-foreground);
+  font-style: normal;
+}
+.kf-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.12em 0.38em;
+  border-radius: 6px;
+  background: var(--surface-3);
+  color: var(--foreground);
+}
+.kf-prose pre {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-lg);
+  background: oklch(0% 0 0 / 28%);
+  border: 1px solid var(--border-sc);
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.kf-prose pre code {
+  padding: 0;
+  background: transparent;
+  font-size: inherit;
+}
+.kf-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+}
+.kf-prose th,
+.kf-prose td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-sc);
+}
+.kf-prose th {
+  background: var(--surface-2);
+  font-weight: 650;
+}
+.kf-prose tbody tr:nth-child(even) {
+  background: color-mix(in oklab, var(--surface-2) 45%, transparent);
+}
+.kf-prose hr {
+  margin: 1.75rem 0;
+  border: none;
+  border-top: 1px solid var(--border-sc);
+}

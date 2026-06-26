@@ -1,0 +1,262 @@
+<!doctype html>
+<!--
+  PROTOTYPE v2 — throwaway. Dashboard direction, refined for clarity.
+  "FOCUS": calm single centered column, strong vertical sectioning, generous
+  whitespace. "Library by difficulty" is the hero block (4 big difficulty cards).
+  One thing at a time, clear top-to-bottom reading order.
+  Flip variants with the floating bar at the bottom (or  ←  /  →  keys).
+-->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KataForge — Dashboard / Focus (v2)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-mono/style.css" />
+<style>
+  :root{
+    --bg:oklch(5.5% 0.008 264);--bg-elev:oklch(8.5% 0.006 260);
+    --surface:oklch(10.5% 0.006 260);--surface-2:oklch(14% 0.006 260);--surface-3:oklch(18% 0.007 260);
+    --border:oklch(20% 0.007 260);--border-2:oklch(28% 0.008 260);
+    --text:oklch(94% 0.007 283);--text-2:oklch(73% 0.009 270);--muted:oklch(55% 0.01 270);--faint:oklch(38% 0.01 270);
+    --accent:oklch(70% 0.13 65);--accent-ink:oklch(13% 0.012 65);--accent-soft:oklch(70% 0.13 65 / 0.14);
+    --easy:oklch(74% 0.15 150);--em:oklch(74% 0.11 220);--med:oklch(78% 0.15 75);--hard:oklch(68% 0.18 25);
+    --font-sans:'Geist',system-ui,sans-serif;--font-mono:'Geist Mono',ui-monospace,monospace;
+    --r-3:6px;--r-4:8px;--r-5:14px;--r-6:18px;--header-h:56px;
+    --s-3:.75rem;--s-4:1rem;--s-5:1.5rem;--s-6:2rem;--s-7:3rem;
+    --shadow:0 1px 0 oklch(100% 0 0 / .02) inset,0 16px 50px oklch(0% 0 0 / .28);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;background:var(--bg);color:var(--text)}
+  body{font-family:var(--font-sans);font-size:.9375rem;line-height:1.55;font-feature-settings:'ss01','cv11';-webkit-font-smoothing:antialiased}
+  a{color:inherit}::selection{background:var(--accent-soft)}
+  .shell{max-width:920px;margin:0 auto;padding:0 1.5rem}
+
+  /* nav */
+  .nav{position:sticky;top:0;z-index:40;background:oklch(5.5% .008 264 / .82);border-bottom:1px solid var(--border);backdrop-filter:blur(12px) saturate(140%)}
+  .nav-in{max-width:920px;margin:0 auto;height:var(--header-h);padding:0 1.5rem;display:flex;align-items:center;gap:1.25rem}
+  .brand{display:inline-flex;align-items:center;gap:.55rem;font-weight:650;font-size:.9375rem;text-decoration:none}
+  .brand::before{content:'';width:14px;height:14px;border-radius:3px;background:linear-gradient(90deg,transparent 46%,var(--bg) 46% 54%,transparent 54%),linear-gradient(0deg,transparent 46%,var(--bg) 46% 54%,transparent 54%),var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .nav-links{display:flex;gap:.2rem;margin-left:.75rem}
+  .nav-links a{padding:.4rem .7rem;border-radius:var(--r-3);text-decoration:none;color:var(--text-2);font-size:.8125rem;font-weight:560}
+  .nav-links a:hover{background:var(--surface-2);color:var(--text)}
+  .nav-cta{margin-left:auto;display:inline-flex;gap:.4rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;height:34px;padding:0 .9rem;border-radius:var(--r-3);border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);font-weight:620;font-size:.8125rem;text-decoration:none;cursor:pointer;transition:border-color .15s,background .15s,transform .12s}
+  .btn:hover{border-color:var(--accent);background:var(--surface-3)}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{border-color:transparent;background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:hover{filter:brightness(1.06)}
+  .btn-lg{height:42px;padding:0 1.2rem;font-size:.875rem}
+
+  /* page header */
+  .head{padding:var(--s-7) 0 var(--s-5)}
+  .head .hi{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+  .head .hi::before{content:'';width:7px;height:7px;border-radius:99px;background:var(--easy);box-shadow:0 0 0 3px oklch(74% .15 150 / .12)}
+  .head h1{margin:.7rem 0 0;font-size:2rem;letter-spacing:-.025em;font-weight:680}
+  .head p{margin:.4rem 0 0;color:var(--text-2)}
+
+  /* resume band */
+  .resume{display:grid;grid-template-columns:1fr auto;gap:var(--s-5);align-items:center;padding:var(--s-5);border:1px solid var(--border-2);border-radius:var(--r-6);background:linear-gradient(120deg,var(--surface),var(--bg-elev));box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .resume::after{content:'';position:absolute;inset:0;background:radial-gradient(24rem 16rem at 100% -20%,var(--accent-soft),transparent 70%);pointer-events:none}
+  .resume>*{position:relative}
+  .resume .kind{font-family:var(--font-mono);font-size:.75rem;color:var(--accent)}
+  .resume h2{margin:.5rem 0 .2rem;font-size:1.9rem;letter-spacing:-.02em}
+  .resume .sub{margin:0;color:var(--text-2)}
+  .resume .pwrap{margin-top:1rem;max-width:380px}
+  .pbar{height:8px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+  .pbar i{display:block;height:100%;background:var(--accent)}
+  .pcap{display:flex;justify-content:space-between;margin-top:.4rem;font-family:var(--font-mono);font-size:.6875rem;color:var(--muted)}
+  .resume .cta{display:flex;flex-direction:column;gap:.5rem}
+  @media(max-width:640px){.resume{grid-template-columns:1fr}.resume .cta{flex-direction:row}}
+
+  /* stats row */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4);margin-top:var(--s-5)}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{padding:var(--s-4);border:1px solid var(--border);border-radius:var(--r-5);background:var(--surface)}
+  .stat .k{font-family:var(--font-mono);font-size:.6875rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .stat .v{margin-top:.5rem;font-size:1.75rem;font-weight:680;letter-spacing:-.02em;line-height:1}
+  .stat .v small{font-size:.875rem;color:var(--muted);font-weight:500}
+
+  /* section heading */
+  .sec{margin-top:var(--s-7)}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:var(--s-4)}
+  .sec-head .tag{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+  .sec-head .tag::before{content:'';width:16px;height:1px;background:var(--accent)}
+  .sec-head h2{margin:.4rem 0 0;font-size:1.45rem;letter-spacing:-.02em}
+  .sec-head p{margin:.3rem 0 0;color:var(--text-2);font-size:.875rem;max-width:52ch}
+  .sec-link{font-family:var(--font-mono);font-size:.8125rem;color:var(--text-2);text-decoration:none;white-space:nowrap}
+  .sec-link:hover{color:var(--accent)}
+
+  /* DIFFICULTY HERO — 2x2 big cards */
+  .diffgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+  @media(max-width:640px){.diffgrid{grid-template-columns:1fr}}
+  .dcard{--c:var(--easy);display:block;text-decoration:none;padding:1.25rem;border:1px solid var(--border);border-radius:var(--r-5);background:var(--surface);transition:border-color .15s,transform .15s,background .15s}
+  .dcard:hover{border-color:var(--c);transform:translateY(-2px);background:var(--surface-2)}
+  .dcard .top{display:flex;align-items:center;justify-content:space-between}
+  .dcard .name{display:inline-flex;align-items:center;gap:.5rem;font-weight:650;font-size:1.05rem;color:var(--text)}
+  .dcard .dot{width:9px;height:9px;border-radius:99px;background:var(--c)}
+  .dcard .count{font-family:var(--font-mono);font-size:.8125rem;color:var(--c)}
+  .dcard .meter{height:6px;margin:.9rem 0 .5rem;border-radius:99px;background:var(--surface-3);overflow:hidden}
+  .dcard .meter i{display:block;height:100%;background:var(--c);opacity:.85}
+  .dcard .done{font-family:var(--font-mono);font-size:.6875rem;color:var(--muted)}
+  .dcard .samples{margin:.85rem 0 0;display:flex;flex-wrap:wrap;gap:.35rem}
+  .dcard .samples span{font-family:var(--font-mono);font-size:.6875rem;color:var(--text-2);padding:.18rem .45rem;border:1px solid var(--border);border-radius:99px;background:var(--bg-elev)}
+  .dcard .go{margin-top:.9rem;display:inline-flex;align-items:center;gap:.35rem;font-size:.8125rem;font-weight:600;color:var(--c)}
+  .d-easy{--c:var(--easy)}.d-em{--c:var(--em)}.d-med{--c:var(--med)}.d-hard{--c:var(--hard)}
+
+  /* secondary grid */
+  .sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+  @media(max-width:640px){.sub-grid{grid-template-columns:1fr}}
+  .card{padding:var(--s-4);border:1px solid var(--border);border-radius:var(--r-5);background:var(--surface);display:flex;flex-direction:column}
+  .card h3{margin:0 0 .6rem;font-family:var(--font-mono);font-size:.6875rem;text-transform:uppercase;letter-spacing:.04em;color:var(--faint);font-weight:600}
+  .focus .t{font-size:1.2rem;letter-spacing:-.01em}
+  .focus .m{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);margin:.2rem 0 .5rem}
+  .focus p{margin:0 0 .9rem;color:var(--text-2);font-size:.8125rem}
+  .focus .row{margin-top:auto;display:flex;gap:.5rem}
+  .rows a{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.55rem 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);font-size:.875rem}
+  .rows a:last-child{border-bottom:0}
+  .rows small{font-family:var(--font-mono);font-size:.6875rem;color:var(--muted)}
+  .rows a:hover span:first-child{color:var(--accent)}
+  .ppath{margin-bottom:.7rem}
+  .ppath .pt{display:flex;justify-content:space-between;font-size:.8125rem}
+  .ppath .pt small{font-family:var(--font-mono);font-size:.6875rem;color:var(--muted)}
+  .ppath .pbar{height:6px;margin-top:.35rem}
+  .import p{margin:0 0 .9rem;color:var(--text-2);font-size:.8125rem}
+  .import .row{margin-top:auto}
+
+  footer{margin-top:var(--s-7);border-top:1px solid var(--border);background:var(--bg-elev)}
+  .foot{max-width:920px;margin:0 auto;padding:1rem 1.5rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+  .foot .pill{padding:.05rem .45rem;border-radius:4px;background:oklch(74% .15 150 / .12);color:var(--easy)}
+  .foot .right{margin-left:auto;display:flex;gap:1rem}.foot a{color:var(--text-2);text-decoration:none}
+
+  .proto-switch{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:.25rem;padding:.3rem .4rem;border-radius:999px;background:#15151c;border:1px solid #34343f;box-shadow:0 10px 34px rgba(0,0,0,.55);font-family:var(--font-mono);font-size:12px;color:#cfcfe0}
+  .proto-arrow{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;color:#cfcfe0;text-decoration:none;font-size:16px}
+  .proto-arrow:hover{background:#26262f;color:#fff}
+  .proto-label{padding:0 .5rem}.proto-label b{color:var(--accent)}
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="#">KataForge</a>
+      <nav class="nav-links"><a href="#">Library</a><a href="#">Paths</a><a href="#">Assessments</a><a href="#">Docs</a></nav>
+      <div class="nav-cta"><a class="btn" href="#">Import kata</a><a class="btn" href="#">◐</a></div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <div class="head">
+      <span class="hi">Local workspace · nothing leaves this browser</span>
+      <h1>Welcome back</h1>
+      <p>Practice for the rep, not the show. Here's where you stand.</p>
+    </div>
+
+    <!-- resume -->
+    <section class="resume">
+      <div>
+        <span class="kind">▶ Resume · starter kata</span>
+        <h2>Two Sum</h2>
+        <p class="sub">easy · 15 min — your suggested first rep. No draft saved yet.</p>
+        <div class="pwrap">
+          <div class="pbar"><i style="width:0%"></i></div>
+          <div class="pcap"><span>0 of 63 katas solved</span><span>0%</span></div>
+        </div>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary btn-lg" href="#">Start practice →</a>
+        <a class="btn btn-lg" href="#">Browse library</a>
+      </div>
+    </section>
+
+    <!-- stats -->
+    <div class="stats">
+      <div class="stat"><div class="k">Solved</div><div class="v">0<small> / 63</small></div></div>
+      <div class="stat"><div class="k">Day streak</div><div class="v">0</div></div>
+      <div class="stat"><div class="k">Practiced</div><div class="v">0<small> min</small></div></div>
+      <div class="stat"><div class="k">Paths</div><div class="v">0<small> / 2</small></div></div>
+    </div>
+
+    <!-- DIFFICULTY HERO -->
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <span class="tag">library · 63 katas</span>
+          <h2>Pick your level</h2>
+          <p>The library, sorted into four tiers. Start where it feels right and climb.</p>
+        </div>
+        <a class="sec-link" href="#">Search all 63 →</a>
+      </div>
+      <div class="diffgrid">
+        <a class="dcard d-easy" href="#">
+          <div class="top"><span class="name"><i class="dot"></i>Easy</span><span class="count">17 katas</span></div>
+          <div class="meter"><i style="width:0%"></i></div><div class="done">0 / 17 solved</div>
+          <div class="samples"><span>Two Sum</span><span>FizzBuzz</span><span>Valid Parentheses</span></div>
+          <span class="go">Start easy →</span>
+        </a>
+        <a class="dcard d-em" href="#">
+          <div class="top"><span class="name"><i class="dot"></i>Easy–Medium</span><span class="count">24 katas</span></div>
+          <div class="meter"><i style="width:0%"></i></div><div class="done">0 / 24 solved</div>
+          <div class="samples"><span>Container With Most Water</span><span>Group Anagrams</span></div>
+          <span class="go">Browse easy–medium →</span>
+        </a>
+        <a class="dcard d-med" href="#">
+          <div class="top"><span class="name"><i class="dot"></i>Medium</span><span class="count">20 katas</span></div>
+          <div class="meter"><i style="width:0%"></i></div><div class="done">0 / 20 solved</div>
+          <div class="samples"><span>Number of Islands</span><span>Coin Change</span><span>Clone Graph</span></div>
+          <span class="go">Browse medium →</span>
+        </a>
+        <a class="dcard d-hard" href="#">
+          <div class="top"><span class="name"><i class="dot"></i>Hard</span><span class="count">2 katas</span></div>
+          <div class="meter"><i style="width:0%"></i></div><div class="done">0 / 2 solved</div>
+          <div class="samples"><span>Word Ladder</span><span>Median of Two Sorted Arrays</span></div>
+          <span class="go">Browse hard →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- secondary -->
+    <section class="sec">
+      <div class="sub-grid">
+        <div class="card focus">
+          <h3>Today's focus</h3>
+          <div class="t">Number of Islands</div>
+          <div class="m">medium · 25 min · graphs</div>
+          <p>Picked to stretch you past the easy tier. Grid-DFS pattern that unlocks Flood Fill and Rotting Oranges next.</p>
+          <div class="row"><a class="btn btn-primary" href="#">Start kata →</a><a class="btn" href="#">Shuffle</a></div>
+        </div>
+        <div class="card">
+          <h3>Your paths</h3>
+          <div class="ppath"><div class="pt"><span>Build an AI Agent Harness</span><small>0 / 6</small></div><div class="pbar"><i style="width:0%"></i></div></div>
+          <div class="ppath"><div class="pt"><span>Applied Algorithms Coding Round</span><small>0 / 119</small></div><div class="pbar"><i style="width:0%"></i></div></div>
+        </div>
+        <div class="card">
+          <h3>Assessments</h3>
+          <div class="rows">
+            <a href="#"><span>60-Minute Practice</span><small>60m · 4 katas</small></a>
+            <a href="#"><span>Example Katas</span><small>30m · 2 katas</small></a>
+          </div>
+        </div>
+        <div class="card import">
+          <h3>Import a kata</h3>
+          <p>Paste kata JSON (e.g. from ChatGPT) to drill it instantly — browser-only.</p>
+          <div class="row"><a class="btn" href="#">Paste JSON →</a></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer><div class="foot">
+    <span class="pill">● ready</span><span>pyodide</span><span>local-only judge</span><span>hidden tests</span>
+    <span class="right"><a href="#">docs</a><a href="#">feedback</a></span>
+  </div></footer>
+
+  <nav class="proto-switch" aria-label="Prototype variants">
+    <a class="proto-arrow" href="v2-lanes.html" aria-label="Previous">‹</a>
+    <span class="proto-label"><b>1</b> — Focus column</span>
+    <a class="proto-arrow" href="v2-rail.html" aria-label="Next">›</a>
+  </nav>
+  <script>(function(){const p="v2-lanes.html",n="v2-rail.html";addEventListener('keydown',e=>{const t=e.target;if(t&&(/input|textarea/i.test(t.tagName)||t.isContentEditable))return;if(e.key==='ArrowLeft')location.href=p;if(e.key==='ArrowRight')location.href=n;});})();</script>
+</body>
+</html>

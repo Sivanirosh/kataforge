@@ -1,0 +1,63 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   KataForge — Design tokens (single source of truth)
+
+   This is the canonical token register for the app shell: hubs, cursus,
+   assessments, problems, results, docs. It is imported first (via the
+   @import at the top of global.css) so every page that loads global.css
+   gets these tokens before any component rule that consumes them.
+
+   kiro.css is a deliberate *landing re-tint* layer: on landing/browse pages
+   it is imported AFTER global.css and intentionally overrides a subset of
+   these tokens (hue 285, lighter neutrals, its own type/radius scales).
+   It is the only register allowed to redefine these names.
+
+   Dark and light values are kept TOGETHER here on purpose. They used to live
+   ~2000 lines apart in global.css, which made it easy to change one and
+   forget the other. Edit both blocks together.
+
+   Pre-paint sync: src/components/ThemeScript.astro hardcodes the first-paint
+   background/text as hex so there is no flash before this stylesheet loads.
+   Those hexes mirror --bg / --text below:
+     dark  --bg  #09090e   --text #edecf4
+     light --bg  #fafafa   --text #18181b
+   If you change --bg or --text here, update ThemeScript.astro to match.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: dark;
+  --bg:         oklch(5.5% 0.008 264);
+  --surface:    oklch(8.5% 0.007 266);
+  --surface-2:  oklch(13%  0.009 268);
+  --surface-3:  oklch(17%  0.010 270);
+  --border:     oklch(18%  0.010 270);
+  --text:       oklch(94%  0.007 283);
+  --muted:      oklch(59%  0.014 283);
+  --accent:     oklch(60%  0.19  275);
+  --accent-2:   oklch(82%  0.17  144);
+  --danger:     oklch(69%  0.18  20);
+  --warning:    oklch(82%  0.17  75);
+  --accent-glow: rgba(124, 109, 248, 0.15);
+  --accent-dim:  rgba(124, 109, 248, 0.08);
+  --header-h: 52px;
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', 'Fira Code', monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg:        oklch(98.5% 0.003 283);
+  --surface:   oklch(99.5% 0.002 283);
+  --surface-2: oklch(97%   0.003 280);
+  --surface-3: oklch(94%   0.004 280);
+  --border:    oklch(92%   0.004 280);
+  --text:      oklch(14%   0.005 269);
+  --muted:     oklch(50%   0.010 280);
+  --accent:    oklch(58%   0.21  275);
+  --accent-glow: rgba(109, 92, 232, 0.12);
+  --accent-dim:  rgba(109, 92, 232, 0.08);
+}

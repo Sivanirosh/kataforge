@@ -1,0 +1,76 @@
+---
+import '../../../styles/global.css';
+import '../../../styles/landing-transitions.css';
+import '../../../styles/kiro.css';
+import FontLinks from '../../../components/FontLinks.astro';
+import SiteNav from '../../../components/SiteNav.astro';
+import ThemeScript from '../../../components/ThemeScript.astro';
+import { loadKataForgeConfig } from '../../../lib/loadConfig';
+import { countCursusSteps } from '../../../lib/cursusSteps';
+
+export async function getStaticPaths() {
+  const { loadAllCursus } = await import('../../../lib/loadCursus');
+  const all = await loadAllCursus();
+  return all.map((cursus) => ({
+    params: { id: cursus.id },
+    props: { cursus },
+  }));
+}
+
+const { cursus } = Astro.props;
+const config = await loadKataForgeConfig();
+const totalSteps = countCursusSteps(cursus);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <FontLinks />
+    <title>{cursus.title} · {config.branding.title}</title>
+  </head>
+  <body>
+    <SiteNav title={config.branding.title} />
+    <main class="landing page-main">
+      <section class="landing-section">
+        <span class="cursus-overview-badge">Cursus</span>
+        <div class="section-header">
+          <h2>{cursus.title}</h2>
+        </div>
+        <p>{cursus.description}</p>
+        {cursus.estimatedHours && (
+          <p class="cursus-meta-line">Estimated {cursus.estimatedHours} hours</p>
+        )}
+        {cursus.prerequisites.length > 0 && (
+          <div class="cursus-prerequisites">
+            <h3>Prerequisites</h3>
+            <ul>
+              {cursus.prerequisites.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div class="cursus-modules-block">
+          <h3>Modules</h3>
+          {cursus.modules.map((mod) => (
+            <div class="cursus-module-card">
+              <h3>{mod.title}</h3>
+              {mod.summary && <p>{mod.summary}</p>}
+              <p>{mod.steps.length} steps</p>
+            </div>
+          ))}
+        </div>
+        <div class="card-actions">
+          <a class="btn btn-primary btn-lg" href={`/cursus/${cursus.id}/step/0`}>
+            Start Cursus ({totalSteps} steps)
+          </a>
+          <a class="btn btn-secondary" href="/cursus">
+            All Cursus
+          </a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
