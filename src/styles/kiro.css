@@ -608,7 +608,7 @@ body {
   top: calc(var(--header-h) + 0.5rem);
   z-index: 20;
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto auto auto;
+  grid-template-columns: minmax(220px, 1fr) auto auto minmax(160px, auto) auto;
   gap: 0.55rem;
   align-items: center;
   padding: 0.55rem;
@@ -671,6 +671,32 @@ body {
   background: var(--surface-3);
 }
 
+.library-pattern-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.library-pattern-filter span {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  font-weight: 620;
+}
+
+.library-pattern-filter select {
+  min-width: 9rem;
+  min-height: 34px;
+  padding: 0.35rem 1.75rem 0.35rem 0.55rem;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-3);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--t-12);
+}
+
 .library-toolbar-actions {
   display: inline-flex;
   justify-content: flex-end;
@@ -723,6 +749,12 @@ body {
   background: var(--surface-2);
 }
 
+.library-row-main {
+  min-width: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
 .library-row-title {
   min-width: 0;
   display: inline-flex;
@@ -753,6 +785,32 @@ body {
 
 .source-user .library-row-title small {
   color: var(--accent);
+}
+
+.library-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.library-tag-chip {
+  max-width: 9rem;
+  padding: 0.06rem 0.35rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elev);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-tag-chip-more {
+  color: var(--text-2);
 }
 
 .library-difficulty,
@@ -1116,6 +1174,7 @@ body {
   }
 
   .library-filter-group,
+  .library-pattern-filter,
   .library-toolbar-actions {
     justify-content: flex-start;
     overflow-x: auto;
@@ -1208,6 +1267,15 @@ body {
     display: none;
   }
 
+  .library-tags {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .library-tags .library-tag-chip:nth-child(n + 3) {
+    display: none;
+  }
+
   .docs-kata-item,
   .kiro-assess-row {
     grid-template-columns: 1fr;
@@ -1259,6 +1327,14 @@ body {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: max-content;
+  }
+
+  .library-pattern-filter {
+    align-items: stretch;
+  }
+
+  .library-tags .library-tag-chip:nth-child(n + 2) {
+    display: none;
   }
 
   .cursus-meta-grid {

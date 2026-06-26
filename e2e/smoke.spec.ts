@@ -22,6 +22,14 @@ test.describe('acceptance smoke', () => {
     await expect(page.locator('.mobile-section-rail').getByRole('link', { name: 'Library' })).toBeVisible();
   });
 
+  test('library pattern filter narrows to hash-map katas', async ({ page }) => {
+    await page.goto('/#library');
+    await page.getByLabel('Pattern filter').selectOption('hash-map');
+
+    await expect(page.locator('.library-row', { hasText: 'Two Sum' })).toBeVisible();
+    await expect(page.locator('.library-row', { hasText: 'FizzBuzz' })).toHaveCount(0);
+  });
+
   test('hero import action opens the Library import panel', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('link', { name: 'Import UserKata' }).click();

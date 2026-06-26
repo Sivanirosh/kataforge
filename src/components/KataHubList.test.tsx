@@ -2,7 +2,9 @@ import React, { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import KataHubList, {
+  availableTagsForLibrary,
   filterKatasForLibrary,
+  mergeKatas,
   sortKatasForLibrary,
   type BuiltInKataSummary,
   type HubKataEntry,
@@ -31,10 +33,10 @@ function createLocalStorageMock() {
 }
 
 const builtIns: BuiltInKataSummary[] = [
-  { id: 'medium-b', title: 'Medium B', difficulty: 'medium', estimatedMinutes: 25 },
-  { id: 'easy-b', title: 'Easy B', difficulty: 'easy', estimatedMinutes: 10 },
-  { id: 'easy-a', title: 'Easy A', difficulty: 'easy', estimatedMinutes: 12 },
-  { id: 'hard-a', title: 'Hard A', difficulty: 'hard', estimatedMinutes: 45 },
+  { id: 'medium-b', title: 'Medium B', difficulty: 'medium', estimatedMinutes: 25, tags: ['graphs'] },
+  { id: 'easy-b', title: 'Easy B', difficulty: 'easy', estimatedMinutes: 10, tags: ['strings'] },
+  { id: 'easy-a', title: 'Easy A', difficulty: 'easy', estimatedMinutes: 12, tags: ['arrays', 'hash-map'] },
+  { id: 'hard-a', title: 'Hard A', difficulty: 'hard', estimatedMinutes: 45, tags: ['dynamic-programming'] },
 ];
 
 const userKata = {
@@ -69,6 +71,12 @@ function setInputValue(input: HTMLInputElement, value: string): void {
   input.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
+function setSelectValue(select: HTMLSelectElement, value: string): void {
+  const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')?.set;
+  setter?.call(select, value);
+  select.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
 describe('KataHubList helpers', () => {
   it('sorts by difficulty ladder, then title', () => {
     const entries: HubKataEntry[] = builtIns.map((kata) => ({ ...kata, source: 'builtin' }));
@@ -89,6 +97,7 @@ describe('KataHubList helpers', () => {
         title: 'User A',
         difficulty: 'easy-medium',
         estimatedMinutes: 15,
+        tags: ['demo', 'user-only'],
         source: 'user',
       },
     ];
@@ -96,6 +105,44 @@ describe('KataHubList helpers', () => {
     expect(filterKatasForLibrary(entries, 'user', 'easy-medium', 'user')).toMatchObject([
       { id: 'user-a' },
     ]);
+    expect(filterKatasForLibrary(entries, 'user', 'easy-medium', 'user', 'user-only')).toMatchObject([
+      { id: 'user-a' },
+    ]);
+  });
+
+  it('extracts available tags across built-ins and UserKatas', () => {
+    const entries = mergeKatas(builtIns, [
+      { ...userKata, tags: ['demo', 'user-only'], source: 'user', bodyHtml: '<h1>User A</h1>' },
+    ]);
+
+    expect(availableTagsForLibrary(entries)).toEqual([
+      'arrays',
+      'demo',
+      'dynamic-programming',
+      'graphs',
+      'hash-map',
+      'strings',
+      'user-only',
+    ]);
+  });
+
+  it('filters by tag and returns an empty no-match result when filters conflict', () => {
+    const entries: HubKataEntry[] = [
+      ...builtIns.map((kata) => ({ ...kata, source: 'builtin' as const })),
+      {
+        id: 'user-a',
+        title: 'User A',
+        difficulty: 'easy-medium',
+        estimatedMinutes: 15,
+        tags: ['demo', 'user-only'],
+        source: 'user',
+      },
+    ];
+
+    expect(filterKatasForLibrary(entries, '', 'all', 'all', 'user-only')).toMatchObject([
+      { id: 'user-a' },
+    ]);
+    expect(filterKatasForLibrary(entries, '', 'all', 'builtin', 'user-only')).toEqual([]);
   });
 });
 
@@ -152,5 +199,38 @@ describe('KataHubList', () => {
 
     expect(rowTitles(container)).toEqual(['User A']);
     expect(container.textContent).toContain('1 of 5 katas');
+  });
+
+  it('filters by pattern from the generated tags control', async () => {
+    importUserKata(
+      { ...userKata, tags: ['user-only'] },
+      new Set(builtIns.map((kata) => kata.id)),
+    );
+
+    await act(async () => {
+      root.render(<KataHubList builtInKatas={builtIns} />);
+    });
+
+    const patternFilter = container.querySelector<HTMLSelectElement>(
+      'select[aria-label="Pattern filter"]',
+    )!;
+    expect([...patternFilter.options].map((option) => option.value)).toContain('user-only');
+
+    await act(async () => {
+      setSelectValue(patternFilter, 'user-only');
+    });
+
+    expect(rowTitles(container)).toEqual(['User A']);
+    expect(container.textContent).toContain('1 of 5 katas');
+
+    await act(async () => {
+      [...container.querySelectorAll('button')]
+        .find((button) => button.textContent === 'Built-in')!
+        .click();
+    });
+
+    expect(rowTitles(container)).toEqual([]);
+    expect(container.textContent).toContain('0 of 5 katas');
+    expect(container.textContent).toContain('No katas match the current filters.');
   });
 });
