@@ -1,0 +1,24 @@
+{
+  "id": "kataforge-practice-loop-demo",
+  "title": "KataForge Practice Loop Demo",
+  "description": "A short local-first tour of the KataForge practice loop using the public Two Sum and FizzBuzz examples.",
+  "estimatedHours": 0.5,
+  "prerequisites": [
+    "Basic Python functions",
+    "Comfort editing code in the browser"
+  ],
+  "modules": [
+    {
+      "id": "practice-loop",
+      "title": "Module 1: Local Practice Loop",
+      "summary": "Try a kata, inspect feedback, keep drafts locally, and check your next step.",
+      "steps": [
+        { "type": "lesson", "lessonId": "practice-loop-local-first" },
+        { "type": "kata", "kataId": "two-sum" },
+        { "type": "checkpoint", "checkpointId": "two-sum-practice-loop-check" },
+        { "type": "lesson", "lessonId": "practice-loop-feedback-and-imports" },
+        { "type": "kata", "kataId": "fizzbuzz" }
+      ]
+    }
+  ]
+}
