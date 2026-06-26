@@ -5,28 +5,6 @@ test.describe('acceptance smoke', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: 'KataForge Practice Hub' })).toBeVisible();
     await expect(page.getByText('A workspace for the rep, not the show.')).toBeVisible();
-    const onboarding = page.getByRole('region', { name: 'Start here in 60 seconds' });
-    await expect(onboarding).toBeVisible();
-    await expect(onboarding).toContainText('Run Samples vs Submit');
-    await expect(onboarding).toContainText('Assessments');
-    await expect(onboarding).toContainText('Cursus');
-    await expect(onboarding).toContainText('Self-checks and Checkpoints');
-    await expect(onboarding.getByRole('link', { name: 'Start with Two Sum' })).toHaveAttribute(
-      'href',
-      '/problem/two-sum',
-    );
-    await expect(onboarding.getByRole('link', { name: 'Import your own Kata' })).toHaveAttribute(
-      'href',
-      '#import-user-kata',
-    );
-    await expect(onboarding.getByRole('link', { name: 'Open Applied Algorithms Cursus' })).toHaveAttribute(
-      'href',
-      '/cursus/applied-algorithms-coding-round',
-    );
-    const homeSections = await page.locator('main > section').evaluateAll((sections) =>
-      sections.map((section) => section.id),
-    );
-    expect(homeSections.slice(0, 2)).toEqual(['getting-started', 'library']);
     await expect(page.getByRole('heading', { name: 'Library' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Assessments' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Practice', exact: true })).toHaveAttribute(
@@ -44,12 +22,9 @@ test.describe('acceptance smoke', () => {
     await expect(page.locator('.mobile-section-rail').getByRole('link', { name: 'Library' })).toBeVisible();
   });
 
-  test('onboarding import action opens the Library import panel', async ({ page }) => {
+  test('hero import action opens the Library import panel', async ({ page }) => {
     await page.goto('/');
-    await page
-      .getByRole('region', { name: 'Start here in 60 seconds' })
-      .getByRole('link', { name: 'Import your own Kata' })
-      .click();
+    await page.getByRole('link', { name: 'Import UserKata' }).click();
     await expect(page.locator('.docs-import-textarea')).toBeVisible();
     await expect(page).toHaveURL(/#import-user-kata$/);
   });

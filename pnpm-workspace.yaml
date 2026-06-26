@@ -1,4 +1,4 @@
 allowBuilds:
-  esbuild: true
+  esbuild: set this to true or false
   opensrc: true
-  sharp: true
+  sharp: set this to true or false

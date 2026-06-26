@@ -8,19 +8,6 @@ interface KataPracticeSectionProps {
   builtInIds: string[];
 }
 
-function focusImportFlow() {
-  requestAnimationFrame(() => {
-    const textarea = document.querySelector<HTMLTextAreaElement>('.docs-import-textarea');
-    if (textarea) {
-      textarea.focus();
-      textarea.scrollIntoView({ block: 'center' });
-      return;
-    }
-
-    document.getElementById('import-user-kata')?.scrollIntoView({ block: 'center' });
-  });
-}
-
 export default function KataPracticeSection({
   builtInKatas,
   builtInIds,
@@ -30,14 +17,10 @@ export default function KataPracticeSection({
 
   const openImport = useCallback(() => {
     setImportOpen(true);
-    focusImportFlow();
+    requestAnimationFrame(() => {
+      document.getElementById('import-user-kata')?.scrollIntoView({ block: 'center' });
+    });
   }, []);
-
-  useEffect(() => {
-    if (importOpen) {
-      focusImportFlow();
-    }
-  }, [importOpen]);
 
   useEffect(() => {
     const handleHash = () => {
