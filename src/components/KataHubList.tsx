@@ -7,6 +7,7 @@ export interface BuiltInKataSummary {
   title: string;
   difficulty: Difficulty;
   estimatedMinutes: number;
+  tags: string[];
 }
 
 export interface HubKataEntry {
@@ -14,6 +15,7 @@ export interface HubKataEntry {
   title: string;
   difficulty: Difficulty;
   estimatedMinutes: number;
+  tags: string[];
   source: 'builtin' | 'user';
 }
 
@@ -25,6 +27,7 @@ interface KataHubListProps {
 
 type DifficultyFilter = 'all' | Difficulty;
 type SourceFilter = 'all' | HubKataEntry['source'];
+type PatternFilter = 'all' | string;
 
 const difficultyFilters: DifficultyFilter[] = ['all', 'easy', 'easy-medium', 'medium', 'hard'];
 const sourceFilters: SourceFilter[] = ['all', 'builtin', 'user'];
@@ -58,6 +61,7 @@ export function mergeKatas(
       title: kata.title,
       difficulty: kata.difficulty,
       estimatedMinutes: kata.estimatedMinutes,
+      tags: kata.tags,
       source: 'user' as const,
     })),
   ];
@@ -71,11 +75,22 @@ export function sortKatasForLibrary(katas: HubKataEntry[]): HubKataEntry[] {
   });
 }
 
+export function availableTagsForLibrary(katas: HubKataEntry[]): string[] {
+  const tags = new Set<string>();
+  for (const kata of katas) {
+    for (const tag of kata.tags) {
+      if (tag) tags.add(tag);
+    }
+  }
+  return [...tags].sort((a, b) => a.localeCompare(b));
+}
+
 export function filterKatasForLibrary(
   katas: HubKataEntry[],
   query: string,
   difficulty: DifficultyFilter,
   source: SourceFilter,
+  pattern: PatternFilter = 'all',
 ): HubKataEntry[] {
   const normalizedQuery = query.trim().toLowerCase();
   return sortKatasForLibrary(katas).filter((kata) => {
@@ -83,7 +98,8 @@ export function filterKatasForLibrary(
       normalizedQuery.length === 0 || kata.title.toLowerCase().includes(normalizedQuery);
     const matchesDifficulty = difficulty === 'all' || kata.difficulty === difficulty;
     const matchesSource = source === 'all' || kata.source === source;
-    return matchesQuery && matchesDifficulty && matchesSource;
+    const matchesPattern = pattern === 'all' || kata.tags.includes(pattern);
+    return matchesQuery && matchesDifficulty && matchesSource && matchesPattern;
   });
 }
 
@@ -96,6 +112,7 @@ export default function KataHubList({
   const [query, setQuery] = useState('');
   const [difficulty, setDifficulty] = useState<DifficultyFilter>('all');
   const [source, setSource] = useState<SourceFilter>('all');
+  const [pattern, setPattern] = useState<PatternFilter>('all');
 
   useEffect(() => {
     const refresh = () => setUserKatas(listUserKatas());
@@ -112,9 +129,17 @@ export default function KataHubList({
     () => mergeKatas(builtInKatas, userKatas),
     [builtInKatas, userKatas],
   );
+  const availableTags = useMemo(() => availableTagsForLibrary(allKatas), [allKatas]);
+
+  useEffect(() => {
+    if (pattern !== 'all' && !availableTags.includes(pattern)) {
+      setPattern('all');
+    }
+  }, [availableTags, pattern]);
+
   const visibleKatas = useMemo(
-    () => filterKatasForLibrary(allKatas, query, difficulty, source),
-    [allKatas, difficulty, query, source],
+    () => filterKatasForLibrary(allKatas, query, difficulty, source, pattern),
+    [allKatas, difficulty, pattern, query, source],
   );
 
   return (
@@ -158,6 +183,22 @@ export default function KataHubList({
           ))}
         </div>
 
+        <label className="library-pattern-filter">
+          <span>Pattern</span>
+          <select
+            aria-label="Pattern filter"
+            value={pattern}
+            onChange={(event) => setPattern(event.target.value)}
+          >
+            <option value="all">All patterns</option>
+            {availableTags.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
+          </select>
+        </label>
+
         {toolbarActions && <div className="library-toolbar-actions">{toolbarActions}</div>}
       </div>
 
@@ -175,10 +216,26 @@ export default function KataHubList({
         <ul className="library-list" aria-label="Kata library">
           {visibleKatas.map((kata) => (
             <li className={`library-row source-${kata.source}`} key={`${kata.source}-${kata.id}`}>
-              <a className="library-row-title" href={`/problem/${kata.id}`}>
-                <span>{kata.title}</span>
-                <small>{kata.source === 'user' ? 'UserKata' : 'built-in'}</small>
-              </a>
+              <div className="library-row-main">
+                <a className="library-row-title" href={`/problem/${kata.id}`}>
+                  <span>{kata.title}</span>
+                  <small>{kata.source === 'user' ? 'UserKata' : 'built-in'}</small>
+                </a>
+                {kata.tags.length > 0 && (
+                  <span className="library-tags" aria-label={`${kata.title} tags`}>
+                    {kata.tags.slice(0, 3).map((tag, index) => (
+                      <span className="library-tag-chip" key={`${tag}-${index}`}>
+                        {tag}
+                      </span>
+                    ))}
+                    {kata.tags.length > 3 && (
+                      <span className="library-tag-chip library-tag-chip-more">
+                        +{kata.tags.length - 3}
+                      </span>
+                    )}
+                  </span>
+                )}
+              </div>
               <span className={`library-difficulty difficulty-${kata.difficulty}`}>
                 {kata.difficulty}
               </span>

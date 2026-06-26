@@ -29,6 +29,7 @@ const builtInKataSummaries = katas.map((kata) => ({
   title: kata.title,
   difficulty: kata.difficulty,
   estimatedMinutes: kata.estimatedMinutes,
+  tags: kata.tags,
 }));
 
 const assessmentSummaries = assessments.map((assessment) => ({
@@ -153,7 +154,7 @@ const cursusSummaries = cursusList.map((cursus) => {
             <span class="kiro-sec-tag">library</span>
             <h2 class="kiro-sec-title">Library</h2>
             <p class="kiro-sec-desc">
-              Search by title, filter by difficulty, and keep imported UserKatas
+              Search by title, filter by difficulty or pattern, and keep imported UserKatas
               beside the built-in drills. The default order starts easy and
               climbs toward hard.
             </p>
