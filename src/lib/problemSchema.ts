@@ -15,6 +15,7 @@ export const problemSchema = z.object({
   estimatedMinutes: z.number().int().positive(),
   functionName: z.string().min(1),
   tags: z.array(z.string()).default([]),
+  hints: z.array(z.string().min(1)).default([]),
   starterCode: z.string(),
   solutionCode: z.string().optional(),
   solutionExplanation: z.string().optional(),

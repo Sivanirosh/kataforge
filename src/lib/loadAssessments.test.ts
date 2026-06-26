@@ -61,6 +61,7 @@ describe('loadAssessments', () => {
         estimatedMinutes: 15,
         functionName: 'two_sum',
         tags: [],
+        hints: [],
         starterCode: '',
         tests: [],
         bodyHtml: '',

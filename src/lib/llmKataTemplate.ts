@@ -13,6 +13,7 @@ Required top-level fields:
 - tests: array of TestCase objects (at least one visible sample + at least one hidden)
 
 Optional fields:
+- hints: ordered string array of nudges shown one at a time before any solution
 - solutionCode: reference Python solution
 - solutionExplanation: markdown explanation shown after failed submit
 
@@ -36,6 +37,10 @@ export const LLM_KATA_EXAMPLE_JSON = {
   estimatedMinutes: 15,
   functionName: 'two_sum',
   tags: ['arrays', 'hash-map'],
+  hints: [
+    'A brute-force nested loop works for small inputs; ask what repeated work it does.',
+    'As you scan left to right, keep a lookup from each number you have already seen to its index.',
+  ],
   starterCode: `def two_sum(nums, target):
     # Return indices of two numbers that add up to target
     pass`,
@@ -113,6 +118,11 @@ export const KATA_FIELD_REFERENCE = [
   { field: 'estimatedMinutes', type: 'number', description: 'Suggested completion time' },
   { field: 'functionName', type: 'string', description: 'Python function the Judge calls' },
   { field: 'tags', type: 'string[]', description: 'Topic labels shown in problem metadata' },
+  {
+    field: 'hints',
+    type: 'string[]?',
+    description: 'Optional ordered nudges revealed one at a time before solution review',
+  },
   { field: 'starterCode', type: 'string', description: 'Initial editor content' },
   { field: 'bodyMarkdown', type: 'string', description: 'Markdown problem statement body' },
   { field: 'solutionCode', type: 'string?', description: 'Reference solution (optional)' },

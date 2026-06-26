@@ -7,6 +7,9 @@ functionName: two_sum
 tags:
   - arrays
   - hash-map
+hints:
+  - A brute-force nested loop works for small inputs; ask what repeated work it does.
+  - As you scan left to right, keep a lookup from each number you have already seen to its index.
 starterCode: |
   def two_sum(nums, target):
       # Return indices of two numbers that add up to target

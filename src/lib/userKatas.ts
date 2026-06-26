@@ -31,12 +31,24 @@ function notifyUserKatasChanged(): void {
   window.dispatchEvent(new Event('kataforge:user-katas-changed'));
 }
 
+function normalizeUserKataRecord(record: UserKataRecord): UserKataRecord {
+  return {
+    ...record,
+    hints: Array.isArray(record.hints)
+      ? record.hints.filter((hint): hint is string => typeof hint === 'string')
+      : [],
+  };
+}
+
 function readStore(): Record<string, UserKataRecord> {
   if (typeof localStorage === 'undefined') return {};
   const raw = localStorage.getItem(storageKey());
   if (!raw) return {};
   try {
-    return JSON.parse(raw) as Record<string, UserKataRecord>;
+    const parsed = JSON.parse(raw) as Record<string, UserKataRecord>;
+    return Object.fromEntries(
+      Object.entries(parsed).map(([id, record]) => [id, normalizeUserKataRecord(record)]),
+    );
   } catch {
     return {};
   }
