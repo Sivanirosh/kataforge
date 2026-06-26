@@ -83,6 +83,7 @@ function mockContent(tempDir: string, checkpointCollection = [checkpoint]) {
       estimatedMinutes: 15,
       functionName: 'two_sum',
       tags: [],
+      hints: [],
       starterCode: '',
       tests: [],
       bodyHtml: '',

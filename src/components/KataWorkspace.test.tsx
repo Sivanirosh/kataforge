@@ -57,6 +57,7 @@ const kata: KataData = {
   estimatedMinutes: 15,
   functionName: 'two_sum',
   tags: ['arrays'],
+  hints: ['Try a small input first.', 'Track seen values without revealing code.'],
   starterCode: 'def two_sum(nums, target):\n    pass\n',
   solutionCode: 'def two_sum(nums, target):\n    return []\n',
   solutionExplanationHtml: '<p>Use a hash map.</p>',

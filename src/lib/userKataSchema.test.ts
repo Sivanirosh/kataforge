@@ -22,8 +22,17 @@ const validKata = {
 };
 
 describe('userKataImportSchema', () => {
-  it('accepts valid kata import JSON', () => {
-    expect(userKataImportSchema.parse(validKata)).toMatchObject({ id: 'demo' });
+  it('accepts valid kata import JSON and defaults hints to empty', () => {
+    expect(userKataImportSchema.parse(validKata)).toMatchObject({ id: 'demo', hints: [] });
+  });
+
+  it('accepts optional hints', () => {
+    expect(
+      userKataImportSchema.parse({
+        ...validKata,
+        hints: ['Try the smallest input first.', 'Name the repeated subproblem.'],
+      }).hints,
+    ).toEqual(['Try the smallest input first.', 'Name the repeated subproblem.']);
   });
 
   it('rejects missing bodyMarkdown', () => {

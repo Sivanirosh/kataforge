@@ -262,6 +262,7 @@ test.describe('acceptance smoke', () => {
       timeout: 45_000,
     });
     await expect(page.locator('.monaco-editor')).toBeVisible();
+    await expect(page.getByRole('button', { name: /Show hint/ })).toHaveCount(0);
   });
 
   test('practice problem page shows two-sum metadata and editor', async ({ page }) => {
@@ -279,6 +280,15 @@ test.describe('acceptance smoke', () => {
     await expect(page.getByRole('button', { name: 'Finish assessment' })).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Results' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Submit' })).toHaveCount(1);
+
+    await expect(page.getByRole('button', { name: 'Show hint 1 of 2' })).toBeVisible();
+    await page.getByRole('button', { name: 'Show hint 1 of 2' }).click();
+    await expect(page.getByText('A brute-force nested loop works for small inputs')).toBeVisible();
+    await expect(page.getByText('As you scan left to right')).toHaveCount(0);
+    await page.getByRole('button', { name: 'Show hint 2 of 2' }).click();
+    await expect(page.getByText('As you scan left to right')).toBeVisible();
+    await expect(page.getByText('return [seen[complement], i]')).toHaveCount(0);
+    await expect(page.getByText('Use a hash map to remember each value')).toHaveCount(0);
   });
 
   test('multi-kata assessment shows Finish and Results in header', async ({ page }) => {

@@ -12,7 +12,10 @@ import { loadAllKatas } from './loadKatas';
 
 const mockedLoadConfig = vi.mocked(loadKataForgeConfig);
 
-function writeKata(dir: string, filename: string, id: string) {
+function writeKata(dir: string, filename: string, id: string, hints: string[] = []) {
+  const hintsYaml = hints.length
+    ? `hints:\n${hints.map((hint) => `  - ${hint}`).join('\n')}\n`
+    : '';
   const content = `---
 id: ${id}
 title: ${id}
@@ -20,7 +23,7 @@ difficulty: easy
 estimatedMinutes: 5
 functionName: f
 tags: []
-starterCode: "def f(): pass"
+${hintsYaml}starterCode: "def f(): pass"
 tests:
   - id: t1
     name: basic
@@ -41,6 +44,35 @@ describe('loadAllKatas', () => {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
     vi.clearAllMocks();
+  });
+
+  it('loads hints from frontmatter and defaults missing hints to empty', async () => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kataforge-katas-'));
+    writeKata(tempDir, 'a.md', 'with-hints', [
+      'Try the smallest input.',
+      'Track what changes after each step.',
+    ]);
+    writeKata(tempDir, 'b.md', 'without-hints');
+
+    mockedLoadConfig.mockResolvedValue({
+      problemDirs: [tempDir],
+      assessmentDirs: [],
+      cursusDirs: [],
+      lessonDirs: [],
+      checkpointDirs: [],
+      branding: { title: 'KataForge', tagline: '' },
+      judge: {
+        sampleTimeoutMs: 2000,
+        submitTimeoutMs: 3000,
+      },
+    });
+
+    const katas = await loadAllKatas();
+    expect(katas.find((kata) => kata.id === 'with-hints')?.hints).toEqual([
+      'Try the smallest input.',
+      'Track what changes after each step.',
+    ]);
+    expect(katas.find((kata) => kata.id === 'without-hints')?.hints).toEqual([]);
   });
 
   it('throws when duplicate kata id appears in two files', async () => {

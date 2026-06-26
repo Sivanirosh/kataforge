@@ -16,6 +16,7 @@ export interface KataData {
   estimatedMinutes: number;
   functionName: string;
   tags: string[];
+  hints: string[];
   starterCode: string;
   solutionCode?: string;
   solutionExplanationHtml?: string;
@@ -166,6 +167,7 @@ export default function KataWorkspace({
           difficulty={kata.difficulty}
           estimatedMinutes={kata.estimatedMinutes}
           tags={kata.tags}
+          hints={kata.hints}
           body={kata.bodyHtml}
         />
       </section>

@@ -1253,6 +1253,56 @@ a {
   overflow: auto;
 }
 
+.hint-ladder {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+.hint-ladder-header {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.hint-ladder h3,
+.hint-ladder p {
+  margin: 0;
+}
+
+.hint-ladder h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.hint-ladder-header p,
+.hint-ladder-status {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.hint-ladder-status {
+  margin-top: 0.5rem;
+}
+
+.hint-ladder-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.hint-ladder-item strong {
+  color: var(--accent);
+  font-size: 0.8125rem;
+}
+
+.hint-ladder-item p {
+  margin-top: 0.2rem;
+}
+
 .test-panel {
   border-top: 1px solid var(--border);
   max-height: 260px;
