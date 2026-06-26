@@ -59,6 +59,7 @@ Open http://localhost:4321.
 | --- | --- |
 | `pnpm dev` | Start the local dev server. |
 | `pnpm build` | Generate built-in kata metadata and build for production. |
+| `pnpm exec kataforge check` | Validate configured ProblemPack content before running the app. |
 | `pnpm preview` | Preview the production build locally. |
 | `pnpm test` | Run unit tests. |
 | `pnpm test:e2e` | Build and run Playwright smoke tests. |
@@ -86,6 +87,8 @@ cp kataforge.local.example.json kataforge.local.json
 ```
 
 Place private content under `private/problems/` and `private/assessments/`. See [CONTEXT.md](./CONTEXT.md) for project context.
+
+Run `pnpm exec kataforge check` after editing ProblemPack files to validate the merged config, problems, assessments, cursus files, lessons, checkpoints, and cross-file references before starting the app.
 
 If `kataforge.local.json` contains invalid JSON, KataForge logs a warning and falls back to the committed base config. Set `KATAFORGE_STRICT_CONFIG=1` to fail the build instead, which is useful for CI validation.
 
