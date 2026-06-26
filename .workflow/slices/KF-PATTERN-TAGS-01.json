@@ -1,0 +1,19 @@
+{
+  "id": "KF-PATTERN-TAGS-01",
+  "title": "Add pattern tag filters to Library",
+  "goal": "Let users filter the kata Library by algorithm/pattern tags across built-in and imported UserKatas while preserving existing search, difficulty, and source filters.",
+  "areas": ["library", "kata metadata", "filters", "tests"],
+  "acceptance": [
+    "Kata summaries passed into the Library include tags for built-in katas, and imported UserKatas retain their tags in Library entries.",
+    "The Library exposes an accessible Pattern or Tags filter generated from available kata tags, with an All patterns/tags option.",
+    "Pattern filtering composes with existing search, difficulty, and source filters and updates the visible count correctly.",
+    "Library rows surface useful tags/pattern chips without making the row visually noisy on mobile.",
+    "Unit tests cover tag extraction/filtering, including a UserKata-only tag and a no-match state.",
+    "Playwright smoke coverage verifies filtering to a known pattern such as hash-map shows Two Sum and hides an unrelated kata."
+  ],
+  "must_ask_if": [
+    "You need to rename existing tag values or rewrite public kata content broadly.",
+    "The only feasible UI is a large new section instead of extending the existing Library controls."
+  ],
+  "verify": ["pnpm test", "pnpm build", "pnpm test:e2e"]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "KF-DEMO-CURSUS-01",
+  "title": "Add public demo tutorial Cursus",
+  "goal": "Add a small public tutorial Cursus that teaches the KataForge practice loop through existing public example katas, without adding another homepage onboarding panel.",
+  "areas": ["cursus", "lessons", "public examples", "tests"],
+  "depends_on": ["KF-CHECK-VALIDATOR-01"],
+  "acceptance": [
+    "A new public tutorial/demo Cursus appears on the homepage and `/cursus` alongside existing paths, using only committed public example content.",
+    "The tutorial has concise lessons that explain local-only practice, Run Samples vs Submit, results, drafts, UserKata import, and checkpoints/self-checks in the context of the app.",
+    "The path includes at least two existing public katas such as Two Sum and FizzBuzz and at least one lightweight self-check/checkpoint if the existing checkpoint system supports public examples.",
+    "All new lesson/checkpoint/cursus content validates through the content loaders and `pnpm exec kataforge check`.",
+    "Playwright smoke coverage verifies the tutorial Cursus appears, opens its first lesson route, and can navigate to a kata step.",
+    "Do not use private branding/content, external links as required steps, telemetry, auth, or a large new homepage quick-start/onboarding section."
+  ],
+  "must_ask_if": [
+    "The tutorial requires new product positioning or copy that conflicts with the existing local-first KataForge language.",
+    "The checkpoint system cannot support a public self-check without broad schema/runtime changes."
+  ],
+  "verify": ["pnpm test", "pnpm build", "pnpm exec kataforge check", "pnpm test:e2e"]
+}
