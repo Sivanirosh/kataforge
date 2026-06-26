@@ -67,6 +67,7 @@ const cursusSummaries = cursusList.map((cursus) => {
     <SiteNav title={config.branding.title} />
 
     <nav class="mobile-section-rail" aria-label="Homepage sections">
+      <a href="#getting-started">Start</a>
       <a href="#library">Library</a>
       <a href="#cursus">Cursus</a>
       <a href="#assessments">Assessments</a>
@@ -146,6 +147,67 @@ const cursusSummaries = cursusList.map((cursus) => {
     </section>
 
     <main id="main-content" class="kiro-shell kiro-page-main page-main">
+      <section class="kiro-sec onboarding-panel" id="getting-started" aria-labelledby="getting-started-title">
+        <div class="onboarding-grid">
+          <div class="onboarding-copy">
+            <span class="kiro-sec-tag">first run</span>
+            <h2 class="kiro-sec-title" id="getting-started-title">Start here in 60 seconds</h2>
+            <p class="kiro-sec-desc">
+              New to KataForge? Pick a quick action, then use this loop: read the
+              prompt, code locally, run visible samples, and submit when you are
+              ready for the full check.
+            </p>
+            <ul class="onboarding-tour" role="list" aria-label="KataForge workflow tour">
+              <li>
+                <strong>Run Samples vs Submit:</strong> Run Samples checks the public
+                examples while you iterate; Submit runs the full visible and hidden
+                suite and stores the result in this browser.
+              </li>
+              <li>
+                <strong>Assessments:</strong> timed or untimed kata bundles keep local
+                session state so you can finish, retry, and review scores without
+                a server account.
+              </li>
+              <li>
+                <strong>Cursus:</strong> guided paths mix lessons with kata steps so
+                you can build a pattern map instead of browsing drills at random.
+              </li>
+              <li>
+                <strong>Self-checks and Checkpoints:</strong> lesson self-checks and
+                checkpoint prompts turn practice into a review loop before the
+                next harder problem.
+              </li>
+            </ul>
+          </div>
+
+          <div class="onboarding-actions" aria-label="Quick actions">
+            <a class="onboarding-action primary" href="/problem/two-sum" aria-label="Start with Two Sum">
+              <span class="onboarding-action-kicker">starter kata</span>
+              <strong>Start with Two Sum</strong>
+              <span>Open the smallest built-in drill and try the Run Samples → Submit loop.</span>
+            </a>
+            <a
+              class="onboarding-action"
+              href="#import-user-kata"
+              data-open-user-kata-import
+              aria-label="Import your own Kata"
+            >
+              <span class="onboarding-action-kicker">bring your own</span>
+              <strong>Import your own Kata</strong>
+              <span>Jump to the Library import panel for UserKata JSON.</span>
+            </a>
+            <a
+              class="onboarding-action"
+              href="/cursus/applied-algorithms-coding-round"
+              aria-label="Open Applied Algorithms Cursus"
+            >
+              <span class="onboarding-action-kicker">guided path</span>
+              <strong>Open Applied Algorithms Cursus</strong>
+              <span>Follow lessons, checkpoints, and coding-round drills in order.</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       <section class="kiro-sec" id="library">
         <div class="kiro-sec-head">
@@ -221,6 +283,16 @@ const cursusSummaries = cursusList.map((cursus) => {
         </ul>
       </section>
     </main>
+
+    <script>
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (target.closest('[data-open-user-kata-import]')) {
+          window.dispatchEvent(new Event('kataforge:open-user-kata-import'));
+        }
+      });
+    </script>
 
     <footer class="kiro-statusbar" role="contentinfo">
       <div class="kiro-statusbar-inner">
