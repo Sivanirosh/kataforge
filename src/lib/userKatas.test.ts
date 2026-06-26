@@ -77,6 +77,7 @@ describe('userKatas storage', () => {
     });
     const stored = getUserKata('sample-kata');
     expect(stored?.source).toBe('user');
+    expect(stored?.hints).toEqual([]);
     expect(stored?.bodyHtml).toContain('<h1>Sample</h1>');
   });
 
@@ -113,6 +114,30 @@ describe('userKatas storage', () => {
     expect(pack.version).toBe(1);
     expect(pack.katas[0]?.bodyMarkdown).toBe(sampleKata.bodyMarkdown);
     expect(pack.katas[0]?.id).toBe('sample-kata');
+  });
+
+  it('preserves hints through import and export', () => {
+    const hints = ['Check the sample manually.', 'Keep only the state you need.'];
+    importUserKata({ ...sampleKata, hints }, new Set());
+    expect(getUserKata('sample-kata')?.hints).toEqual(hints);
+    expect(exportUserKataPack().katas[0]?.hints).toEqual(hints);
+  });
+
+  it('defaults legacy stored katas without hints to an empty array', () => {
+    localStorage.setItem(
+      USER_KATAS_STORAGE_KEY,
+      JSON.stringify({
+        'legacy-kata': {
+          ...sampleKata,
+          id: 'legacy-kata',
+          source: 'user',
+          bodyHtml: '<h1>Sample</h1>',
+        },
+      }),
+    );
+
+    expect(getUserKata('legacy-kata')?.hints).toEqual([]);
+    expect(exportUserKataPack().katas[0]?.hints).toEqual([]);
   });
 
   it('deletes a user kata', () => {

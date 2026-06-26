@@ -22,11 +22,113 @@ test.describe('acceptance smoke', () => {
     await expect(page.locator('.mobile-section-rail').getByRole('link', { name: 'Library' })).toBeVisible();
   });
 
+  test('library pattern filter narrows to hash-map katas', async ({ page }) => {
+    await page.goto('/#library');
+    await page.waitForSelector('astro-island[opts*="KataPracticeSection"]:not([ssr])');
+    await page.getByLabel('Pattern filter').selectOption('hash-map');
+
+    await expect(page.locator('.library-row', { hasText: 'FizzBuzz' })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Two Sum built-in', exact: true })).toBeVisible();
+  });
+
   test('hero import action opens the Library import panel', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('link', { name: 'Import UserKata' }).click();
     await expect(page.locator('.docs-import-textarea')).toBeVisible();
     await expect(page).toHaveURL(/#import-user-kata$/);
+  });
+
+  test('practice dashboard renders a compact zero-state', async ({ page }) => {
+    await page.goto('/');
+    const dashboard = page.getByRole('complementary', { name: 'Practice dashboard' });
+
+    await expect(dashboard.getByText('Practice dashboard')).toBeVisible();
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Solved / submitted' })).toContainText('0 / 0');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Active drafts/sessions' })).toContainText('0');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Recent activity' })).toContainText('0');
+    await expect(dashboard.getByRole('link', { name: 'Start practice' })).toHaveAttribute(
+      'href',
+      '/problem/two-sum',
+    );
+    await expect(dashboard.getByText('No local progress yet.')).toBeVisible();
+  });
+
+  test('practice dashboard reflects seeded returning-user local state', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'kataforge:results:two-sum',
+        JSON.stringify([
+          {
+            testId: 's1',
+            name: 'basic',
+            hidden: false,
+            status: 'passed',
+            durationMs: 1,
+          },
+          {
+            testId: 'h1',
+            name: 'hidden case',
+            hidden: true,
+            status: 'passed',
+            durationMs: 1,
+          },
+        ]),
+      );
+      localStorage.setItem(
+        'kataforge:results:fizzbuzz',
+        JSON.stringify([
+          {
+            testId: 's1',
+            name: 'basic',
+            hidden: false,
+            status: 'passed',
+            durationMs: 1,
+          },
+          {
+            testId: 'h1',
+            name: 'hidden case',
+            hidden: true,
+            status: 'failed',
+            durationMs: 1,
+          },
+        ]),
+      );
+      localStorage.setItem(
+        'kataforge:draft:agent-loop-bash-gates',
+        'draft_marker = True\ndef solve():\n    pass',
+      );
+      localStorage.setItem(
+        'kataforge:session:full-examples',
+        JSON.stringify({
+          assessmentId: 'full-examples',
+          startedAt: 2_000,
+          durationMinutes: 30,
+          currentKataIndex: 1,
+          submitted: false,
+        }),
+      );
+      localStorage.setItem(
+        'kataforge:cursus-progress:build-ai-agent-harness',
+        JSON.stringify({
+          cursusId: 'build-ai-agent-harness',
+          completedStepKeys: ['agent-loop:0'],
+          lastStepKey: 'agent-loop:3',
+          startedAt: 1_000,
+        }),
+      );
+    });
+
+    await page.goto('/');
+    const dashboard = page.getByRole('complementary', { name: 'Practice dashboard' });
+
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Solved / submitted' })).toContainText('1 / 2');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Active drafts/sessions' })).toContainText('2');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Recent activity' })).toContainText('2');
+    await expect(dashboard.getByRole('link', { name: 'Continue' })).toHaveAttribute(
+      'href',
+      '/assessment/full-examples',
+    );
+    await expect(dashboard.locator('.hub-activity-list')).toContainText('Build Your Own AI Coding Agent Harness');
   });
 
   test('local activity panel continues the newest stored activity', async ({ page }) => {
@@ -169,6 +271,7 @@ test.describe('acceptance smoke', () => {
       timeout: 45_000,
     });
     await expect(page.locator('.monaco-editor')).toBeVisible();
+    await expect(page.getByRole('button', { name: /Show hint/ })).toHaveCount(0);
   });
 
   test('practice problem page shows two-sum metadata and editor', async ({ page }) => {
@@ -186,6 +289,15 @@ test.describe('acceptance smoke', () => {
     await expect(page.getByRole('button', { name: 'Finish assessment' })).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Results' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Submit' })).toHaveCount(1);
+
+    await expect(page.getByRole('button', { name: 'Show hint 1 of 2' })).toBeVisible();
+    await page.getByRole('button', { name: 'Show hint 1 of 2' }).click();
+    await expect(page.getByText('A brute-force nested loop works for small inputs')).toBeVisible();
+    await expect(page.getByText('As you scan left to right')).toHaveCount(0);
+    await page.getByRole('button', { name: 'Show hint 2 of 2' }).click();
+    await expect(page.getByText('As you scan left to right')).toBeVisible();
+    await expect(page.getByText('return [seen[complement], i]')).toHaveCount(0);
+    await expect(page.getByText('Use a hash map to remember each value')).toHaveCount(0);
   });
 
   test('multi-kata assessment shows Finish and Results in header', async ({ page }) => {
@@ -287,6 +399,34 @@ test.describe('acceptance smoke', () => {
     const session = JSON.parse(storage.session!);
     expect(session.submitted).toBe(false);
     await expect(page.locator('.monaco-editor')).toContainText('old_draft_marker');
+  });
+
+  test('public demo cursus appears and opens a kata step', async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto('/');
+    await expect(
+      page.locator('.cursus-row', { hasText: 'KataForge Practice Loop Demo' }),
+    ).toBeVisible();
+
+    await page.goto('/cursus');
+    const demoCard = page.locator('.card', { hasText: 'KataForge Practice Loop Demo' });
+    await expect(
+      demoCard.getByRole('heading', { name: 'KataForge Practice Loop Demo' }),
+    ).toBeVisible();
+    await demoCard.getByRole('link', { name: 'Open' }).click();
+
+    await page.getByRole('link', { name: /Start Cursus/ }).click();
+    await expect(page).toHaveURL(/\/cursus\/kataforge-practice-loop-demo\/step\/0$/);
+    await expect(page.getByRole('heading', { name: 'Practice Locally First' })).toBeVisible({
+      timeout: 45_000,
+    });
+
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await expect(page).toHaveURL(/\/cursus\/kataforge-practice-loop-demo\/step\/1$/);
+    await expect(page.locator('.pane-prompt h2', { hasText: 'Two Sum' })).toBeVisible({
+      timeout: 45_000,
+    });
+    await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible();
   });
 
   test('cursus lesson continue persists progress', async ({ page }) => {
