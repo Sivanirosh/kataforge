@@ -24,10 +24,11 @@ test.describe('acceptance smoke', () => {
 
   test('library pattern filter narrows to hash-map katas', async ({ page }) => {
     await page.goto('/#library');
+    await page.waitForSelector('astro-island[opts*="KataPracticeSection"]:not([ssr])');
     await page.getByLabel('Pattern filter').selectOption('hash-map');
 
-    await expect(page.locator('.library-row', { hasText: 'Two Sum' })).toBeVisible();
     await expect(page.locator('.library-row', { hasText: 'FizzBuzz' })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Two Sum built-in', exact: true })).toBeVisible();
   });
 
   test('hero import action opens the Library import panel', async ({ page }) => {
