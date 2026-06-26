@@ -400,6 +400,34 @@ test.describe('acceptance smoke', () => {
     await expect(page.locator('.monaco-editor')).toContainText('old_draft_marker');
   });
 
+  test('public demo cursus appears and opens a kata step', async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto('/');
+    await expect(
+      page.locator('.cursus-row', { hasText: 'KataForge Practice Loop Demo' }),
+    ).toBeVisible();
+
+    await page.goto('/cursus');
+    const demoCard = page.locator('.card', { hasText: 'KataForge Practice Loop Demo' });
+    await expect(
+      demoCard.getByRole('heading', { name: 'KataForge Practice Loop Demo' }),
+    ).toBeVisible();
+    await demoCard.getByRole('link', { name: 'Open' }).click();
+
+    await page.getByRole('link', { name: /Start Cursus/ }).click();
+    await expect(page).toHaveURL(/\/cursus\/kataforge-practice-loop-demo\/step\/0$/);
+    await expect(page.getByRole('heading', { name: 'Practice Locally First' })).toBeVisible({
+      timeout: 45_000,
+    });
+
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await expect(page).toHaveURL(/\/cursus\/kataforge-practice-loop-demo\/step\/1$/);
+    await expect(page.locator('.pane-prompt h2', { hasText: 'Two Sum' })).toBeVisible({
+      timeout: 45_000,
+    });
+    await expect(page.getByRole('button', { name: 'Run Samples' })).toBeVisible();
+  });
+
   test('cursus lesson continue persists progress', async ({ page }) => {
     test.setTimeout(60_000);
     await page.goto('/cursus/build-ai-agent-harness/step/0');
