@@ -397,6 +397,42 @@ body {
   color: var(--text-2);
 }
 
+.hub-dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border);
+}
+
+.hub-stat {
+  min-width: 0;
+  padding: 0.75rem 0.8rem;
+  border-right: 1px solid var(--border);
+}
+
+.hub-stat:last-child {
+  border-right: 0;
+}
+
+.hub-stat strong,
+.hub-stat small {
+  display: block;
+}
+
+.hub-stat strong {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--t-18);
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.hub-stat small {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: var(--t-12);
+  line-height: 1.25;
+}
+
 .hub-primary {
   padding-top: 1rem;
   padding-bottom: 1rem;
