@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
+import { type ActivityCatalog, type ActivityEntry } from '../lib/activity';
 import {
-  loadActivityFeed,
-  type ActivityCatalog,
-  type ActivityEntry,
-} from '../lib/activity';
+  emptyPracticeDashboard,
+  loadPracticeDashboard,
+  type PracticeDashboardSummary,
+} from '../lib/practiceDashboard';
 import { listUserKatas } from '../lib/userKatas';
 
 export interface PracticeHubKata {
@@ -46,7 +47,11 @@ export default function PracticeHubPanel({
 }: PracticeHubPanelProps) {
   const starterKata =
     builtInKatas.find((kata) => kata.id === 'two-sum') ?? builtInKatas[0] ?? null;
-  const [feed, setFeed] = useState<ActivityEntry[]>([]);
+  const initialDashboard = useMemo(
+    () => emptyPracticeDashboard(starterKata ?? undefined),
+    [starterKata],
+  );
+  const [dashboard, setDashboard] = useState<PracticeDashboardSummary>(initialDashboard);
 
   const refresh = useMemo(
     () => () => {
@@ -64,9 +69,9 @@ export default function PracticeHubPanel({
         assessments,
         cursus,
       };
-      setFeed(loadActivityFeed(catalog));
+      setDashboard(loadPracticeDashboard(catalog, starterKata ?? undefined));
     },
-    [assessments, builtInKatas, cursus],
+    [assessments, builtInKatas, cursus, starterKata],
   );
 
   useEffect(() => {
@@ -79,39 +84,49 @@ export default function PracticeHubPanel({
     };
   }, [refresh]);
 
-  const primary = feed[0] ?? null;
-  const primaryHref = primary?.href ?? (starterKata ? `/problem/${starterKata.id}` : '#library');
-  const primaryLabel = primary ? 'Continue' : 'Start practice';
-  const primaryTitle = primary?.title ?? starterKata?.title ?? 'Open Library';
-  const primaryDetail =
-    primary?.detail ??
-    (starterKata ? `${starterKata.difficulty} / ${starterKata.estimatedMinutes} min` : 'Browse the library');
+  const primary = dashboard.primary;
+  const visibleActivity = dashboard.activityEntries.slice(1, 4);
 
   const openImport = () => {
     window.dispatchEvent(new Event('kataforge:open-user-kata-import'));
   };
 
   return (
-    <aside className="hub-panel" aria-label="Practice state">
+    <aside className="hub-panel" aria-label="Practice dashboard">
       <div className="hub-panel-head">
-        <span className="hub-panel-kicker">Local state</span>
-        <span className="hub-panel-count">{feed.length || 'fresh'} sessions</span>
+        <span className="hub-panel-kicker">Practice dashboard</span>
+        <span className="hub-panel-count">
+          {dashboard.recentActivityCount ? `${dashboard.recentActivityCount} recent` : 'fresh'}
+        </span>
+      </div>
+
+      <div className="hub-dashboard-stats" aria-label="Practice dashboard stats">
+        <span className="hub-stat">
+          <strong>{dashboard.solvedCount} / {dashboard.submittedCount}</strong>
+          <small>Solved / submitted</small>
+        </span>
+        <span className="hub-stat">
+          <strong>{dashboard.activeCount}</strong>
+          <small>Active drafts/sessions</small>
+        </span>
+        <span className="hub-stat">
+          <strong>{dashboard.recentActivityCount}</strong>
+          <small>Recent activity</small>
+        </span>
       </div>
 
       <div className="hub-primary">
-        <span className="hub-primary-kind">
-          {primary ? entryKindLabel(primary.kind) : 'Starter kata'}
-        </span>
-        <h2>{primaryTitle}</h2>
-        <p>{primaryDetail}</p>
-        <a className="kiro-btn kiro-btn-primary" href={primaryHref}>
-          {primaryLabel}
+        <span className="hub-primary-kind">{primary.kindLabel}</span>
+        <h2>{primary.title}</h2>
+        <p>{primary.detail}</p>
+        <a className="kiro-btn kiro-btn-primary" href={primary.href}>
+          {primary.label}
         </a>
       </div>
 
-      {feed.length > 1 ? (
+      {visibleActivity.length > 0 ? (
         <ol className="hub-activity-list" aria-label="Recent activity">
-          {feed.slice(1, 4).map((entry) => (
+          {visibleActivity.map((entry) => (
             <li key={`${entry.kind}-${entry.id}`}>
               <a href={entry.href}>
                 <span>{entry.title}</span>
@@ -122,8 +137,8 @@ export default function PracticeHubPanel({
         </ol>
       ) : (
         <p className="hub-empty">
-          Drafts, scores, assessment sessions, and Cursus progress stay in this
-          browser and will appear here as you work.
+          No local progress yet. Drafts, scores, assessment sessions, and Cursus
+          progress stay in this browser and will appear here.
         </p>
       )}
 

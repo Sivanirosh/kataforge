@@ -29,6 +29,99 @@ test.describe('acceptance smoke', () => {
     await expect(page).toHaveURL(/#import-user-kata$/);
   });
 
+  test('practice dashboard renders a compact zero-state', async ({ page }) => {
+    await page.goto('/');
+    const dashboard = page.getByRole('complementary', { name: 'Practice dashboard' });
+
+    await expect(dashboard.getByText('Practice dashboard')).toBeVisible();
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Solved / submitted' })).toContainText('0 / 0');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Active drafts/sessions' })).toContainText('0');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Recent activity' })).toContainText('0');
+    await expect(dashboard.getByRole('link', { name: 'Start practice' })).toHaveAttribute(
+      'href',
+      '/problem/two-sum',
+    );
+    await expect(dashboard.getByText('No local progress yet.')).toBeVisible();
+  });
+
+  test('practice dashboard reflects seeded returning-user local state', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'kataforge:results:two-sum',
+        JSON.stringify([
+          {
+            testId: 's1',
+            name: 'basic',
+            hidden: false,
+            status: 'passed',
+            durationMs: 1,
+          },
+          {
+            testId: 'h1',
+            name: 'hidden case',
+            hidden: true,
+            status: 'passed',
+            durationMs: 1,
+          },
+        ]),
+      );
+      localStorage.setItem(
+        'kataforge:results:fizzbuzz',
+        JSON.stringify([
+          {
+            testId: 's1',
+            name: 'basic',
+            hidden: false,
+            status: 'passed',
+            durationMs: 1,
+          },
+          {
+            testId: 'h1',
+            name: 'hidden case',
+            hidden: true,
+            status: 'failed',
+            durationMs: 1,
+          },
+        ]),
+      );
+      localStorage.setItem(
+        'kataforge:draft:agent-loop-bash-gates',
+        'draft_marker = True\ndef solve():\n    pass',
+      );
+      localStorage.setItem(
+        'kataforge:session:full-examples',
+        JSON.stringify({
+          assessmentId: 'full-examples',
+          startedAt: 2_000,
+          durationMinutes: 30,
+          currentKataIndex: 1,
+          submitted: false,
+        }),
+      );
+      localStorage.setItem(
+        'kataforge:cursus-progress:build-ai-agent-harness',
+        JSON.stringify({
+          cursusId: 'build-ai-agent-harness',
+          completedStepKeys: ['agent-loop:0'],
+          lastStepKey: 'agent-loop:3',
+          startedAt: 1_000,
+        }),
+      );
+    });
+
+    await page.goto('/');
+    const dashboard = page.getByRole('complementary', { name: 'Practice dashboard' });
+
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Solved / submitted' })).toContainText('1 / 2');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Active drafts/sessions' })).toContainText('2');
+    await expect(dashboard.locator('.hub-stat').filter({ hasText: 'Recent activity' })).toContainText('2');
+    await expect(dashboard.getByRole('link', { name: 'Continue' })).toHaveAttribute(
+      'href',
+      '/assessment/full-examples',
+    );
+    await expect(dashboard.locator('.hub-activity-list')).toContainText('Build Your Own AI Coding Agent Harness');
+  });
+
   test('local activity panel continues the newest stored activity', async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem(
